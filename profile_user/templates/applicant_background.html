@@ -22,7 +22,8 @@
 
 
         <!--For Career History-->
-        <form action="" class="px-5 py-2 d-flex flex-column">
+        <form method="post" action="{% url 'applicant_background_career' %}" class="px-5 py-2 d-flex flex-column">
+            {%csrf_token%}
             <div>
                 <h5>Career History</h5>
             </div>
@@ -51,51 +52,61 @@
             </div>
         </form>
 
-        <!-- Added Employment History Here -->
+        {% for career in work_histories %}
         <div class="mx-5 px-4 py-2 border border-dark rounded career-entry">
             <!-- Read-Only Block -->
             <div class="d-flex justify-content-between read-only">
-                <h4>Senior Software Developer</h4>
+                <h4>{{ career.job_title }}</h4>
                 <div>
                     <button type="button" class="btn btn-warning edit-btn">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button type="button" class="btn btn-danger">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
+                    <form method="POST" action="{% url 'delete_career' career.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
-            <p>Deloitte</p>
-            <p>From June 2024 until August 2025</p>
+            <p>{{ career.company_name }}</p>
+            <p>
+                {{career.display_range}}
+            </p>
+
             <!-- Editable Form Block -->
-            <form action="" class="flex-column filled-form allow-edit" style="display: none;">
+            <form method="POST" action="{% url 'update_career' career.id %}" class="flex-column filled-form allow-edit" style="display: none;">
+                {% csrf_token %}
                 <div class="d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-success save-btn">
+                    <button type="submit" class="btn btn-success save-btn">
                         <i class="fa-solid fa-check"></i>
                     </button>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="form-group flex-fill">
                         <label for="jobtitle">Job Title</label>
-                        <input type="text" name="jobtitle" class="form-control" required>
+                        <input type="text" name="jobtitle" class="form-control" value="{{ career.job_title }}" required>
                     </div>
                     <div class="form-group flex-fill">
                         <label for="companyname">Company Name</label>
-                        <input type="text" name="companyname" class="form-control" required>
+                        <input type="text" name="companyname" class="form-control" value="{{ career.company_name }}" required>
                     </div>
                 </div>
                 <div class="d-flex gap-2 align-items-end">
                     <div class="form-group flex-fill">
                         <label for="startdate">Start Month & Year</label>
-                        <input type="month" name="startdate" class="form-control" required>
+                        <input type="month" name="startdate" class="form-control" value="{{ career.start_month_input }}" required>
                     </div>
                     <div class="form-group flex-fill">
                         <label for="enddate">End Month & Year</label>
-                        <input type="month" name="enddate" class="form-control">
+                        <input type="month" name="enddate" class="form-control" value="{{ career.end_month_input }}">
                     </div>
                 </div>
             </form>
         </div>
+        {% empty %}
+        {% endfor %}
+
 
         
         <!--For Education and etc-->
@@ -180,7 +191,7 @@
 
 
         <!--Skill-->
-        <form action="" class="px-5 py-2 d-flex flex-column">
+        <form action="" class="px-5 py-2 d-flex flex-column gap-2">
             <div>
                 <h5>Skills</h5>
             </div>
@@ -192,6 +203,15 @@
                 <div>
                     <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
                 </div>
+            </div>
+            <div class="skill-contain border border-dark rounded">
+                <form class="skill-form" action="/remove-skill" method="POST">
+                    <input type="hidden" name="skill" value="Time Management">
+                    <div class="skill-tag">
+                        <span>Time Management</span>
+                        <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
+                    </div>
+                </form>
             </div>
         </form>
     </main>

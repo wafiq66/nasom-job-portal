@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from document.models import Document
+from career_history.models import CareerHistory
+from education_vocation_training.models import EducationVocationalTraining
+from skill.models import Skill
 import os
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -95,4 +98,80 @@ def manage_resume(request):
 #BACKGROUND INFORMATION
 
 def applicant_background(request):
+    work_histories = request.user.careers.all()
+    education_histories = request.user.educations.all()
+    skills = request.user.skills.all()
+    return render(request,'applicant_background.html',
+                  {'work_histories':work_histories,
+                   'education_histories':education_histories,
+                   'skills':skills})
+
+#for career history
+def manage_career_history(request):
+    if request.method == "POST":
+
+        job_title_form = request.POST.get('jobtitle')
+        company_name_form = request.POST.get('companyname')
+
+        start_date = request.POST.get('startdate')  # "2024-06"
+        if start_date:
+            year, month = map(int, start_date.split('-'))  # year = 2024, month = 6
+
+        end_date = request.POST.get('enddate')
+        if end_date:
+            end_year, end_month = map(int, end_date.split('-'))
+        else:
+            end_year, end_month = None, None
+
+        career = CareerHistory(
+            user=request.user,
+            job_title=job_title_form,
+            company_name=company_name_form,
+            start_month = month,
+            start_year = year,
+            end_month = end_month,
+            end_year = end_year
+        )
+
+        career.save()
+
+        return redirect('applicant_background')
     return render(request,'applicant_background.html')
+
+#for deleting the career
+def delete_career(request, career_id):
+    if request.method == 'POST':
+        career = get_object_or_404(CareerHistory, id=career_id, user = request.user)
+        career.delete()
+        return redirect('applicant_background')
+    return render(request,'applicant_background.html')
+
+#for updating the career
+def update_career(request,career_id):
+    if request.method == 'POST':
+        career = get_object_or_404(CareerHistory, id=career_id, user = request.user)
+
+        career.job_title = request.POST.get('jobtitle')
+        career.company_name = request.POST.get('companyname')
+
+        # Handle startdate
+        startdate = request.POST.get('startdate')  # "YYYY-MM"
+        if startdate:
+            year, month = map(int, startdate.split('-'))
+            career.start_year = year
+            career.start_month = month
+
+        # Handle enddate
+        enddate = request.POST.get('enddate')
+        if enddate:
+            year, month = map(int, enddate.split('-'))
+            career.end_year = year
+            career.end_month = month
+        else:
+            career.end_year = None
+            career.end_month = None
+
+        career.save()
+        return redirect('applicant_background')
+    return render(request,'applicant_background.html')
+

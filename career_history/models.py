@@ -1,4 +1,5 @@
 from django.db import models
+import calendar
 from django.conf import settings
 
 class CareerHistory(models.Model):
@@ -19,9 +20,24 @@ class CareerHistory(models.Model):
     )
     end_year = models.PositiveIntegerField(null=True, blank=True)
 
-    still_in_role = models.BooleanField(default=False)
+    @property
+    def display_range(self):
+        start_str = f"{calendar.month_name[self.start_month]} {self.start_year}"
+        if self.end_month and self.end_year:
+            end_str = f"{calendar.month_name[self.end_month]} {self.end_year}"
+        else:
+            end_str = "Present"
+        return f"{start_str} - {end_str}"
 
+    @property
+    def start_month_input(self):
+        return f"{self.start_year}-{self.start_month:02d}"
+
+    @property
+    def end_month_input(self):
+        if self.end_year and self.end_month:
+            return f"{self.end_year}-{self.end_month:02d}"
+        return ""
+    
     def __str__(self):
-        if self.still_in_role:
-            return f"{self.job_title} at {self.company_name} (Present)"
         return f"{self.job_title} at {self.company_name} ({self.start_month}/{self.start_year} - {self.end_month}/{self.end_year})"

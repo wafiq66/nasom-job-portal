@@ -9,4 +9,8 @@ urlpatterns = [
     path('applicant/profile/resume/update', views.manage_resume,name='manage_resume'),
     #Section page for career history, education history, skills
     path('applicant/profile/background', views.applicant_background,name='applicant_background'),
+    
+    path('applicant/profile/background/career', views.manage_career_history,name='applicant_background_career'),
+    path('applicant/profile/background/career/delete/<int:career_id>', views.delete_career,name='delete_career'),
+    path('applicant/profile/background/career/update/<int:career_id>', views.update_career,name='update_career'),
 ]
