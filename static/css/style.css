@@ -290,3 +290,8 @@ input[type="radio"]:checked + label.btn-primary {
     border: 1px solid black;
     object-fit: cover; /* optional: keeps image filled without distortion */
   }
+
+.col-jobs { width: 50%; }
+.col-status { width: 20%; }
+.col-apps { width: 20%; }
+.col-action { width: 10%; }
