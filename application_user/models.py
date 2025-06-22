@@ -34,10 +34,14 @@ class ApplicationUser(AbstractUser):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
 
+    #biography
+    biography = models.TextField(blank=True, null=True)
+
     # Company-related (for employer accounts)
     company_name = models.CharField(max_length=255, blank=True, null=True)
     company_address = models.CharField(max_length=255, blank=True, null=True)
     company_email = models.EmailField(blank=True, null=True)
+    company_phone_number = models.CharField(max_length=20,null=True,blank=True)
     company_description = models.TextField(blank=True, null=True)
     company_logo = models.ImageField(
         upload_to='company_logos/',

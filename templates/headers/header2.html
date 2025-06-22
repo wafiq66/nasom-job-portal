@@ -22,9 +22,9 @@
     <div class="btn-group">
         <button type="button" class="btn btn-secondary dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {% if request.user.profile_image %}
-            <img src="{{ request.user.profile_image.url }}" alt="Profile Picture" class="profile-img-heading" id="profilePreview">
+            <img src="{{ request.user.profile_image.url }}" alt="Profile Picture" class="profile-img-heading" >
             {% else %}
-            <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="profile-img-heading" id="profilePreview">
+            <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="profile-img-heading">
             {% endif %}
             {{ user.first_name }}
         </button>
@@ -34,6 +34,7 @@
             <a class="dropdown-item" href="#">Saved Jobs</a>
             <a class="dropdown-item" href="#">Applied Jobs</a>
             <a class="dropdown-item" href="#">Setting</a>
+            <a href="{% url 'landing_employer' %}" class="text-primary dropdown-item">Switch To Employer Account</a>
             <form class="dropdown-item" method="post" action="{% url 'logout' %}" style="margin: 0;">
                 {% csrf_token %}
                 <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; padding: 0;">

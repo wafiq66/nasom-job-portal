@@ -45,11 +45,16 @@ INSTALLED_APPS = [
     "login_page", #page
     "landing_page", #page
     "profile_user", #page
+    "my_job_ad", #page
     "application_user", #model
     "document", #model
     "education_vocation_training",#model
     "career_history",#model
     "skill", #model
+    "communication_style", #model
+    "personal_interest", #model
+    "work_attitude", #model
+    "job_ad", #model
 ]
 
 AUTH_USER_MODEL = 'application_user.ApplicationUser'

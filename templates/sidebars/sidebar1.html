@@ -2,7 +2,7 @@
     <div class="upper-part d-flex flex-column gap-3">
         <h6>Applicant Dashboard</h6>
         <div class="sidebar-navigation d-flex flex-column">
-            <a href="" class="sidebar-navigation-element">Profile</a>
+            <a href="{% url 'applicant_profile' %}" class="sidebar-navigation-element">Profile</a>
             <a href="" class="sidebar-navigation-element">Dependents</a>
             <a href="" class="sidebar-navigation-element">Saved Jobs</a>
             <a href="" class="sidebar-navigation-element">Applied Jobs</a>
@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="d-flex flex-column">
-        <a href="" class="bottom-side-nav-element">Switch To Employer Account</a>
+        <a href="{% url 'landing_employer' %}" class="bottom-side-nav-element">Switch To Employer Account</a>
         <form class="bottom-side-nav-element" method="post" action="{% url 'logout' %}" style="margin: 0;">
             {% csrf_token %}
             <button type="submit" class=" text-danger" style="border: none; background: none; padding: 0;">

@@ -20,4 +20,21 @@ urlpatterns = [
     #Section for skill
     path('applicant/profile/background/skill', views.manage_skill,name='applicant_skill'),
     path('applicant/profile/background/skill/delete/<int:skill_id>', views.delete_skill,name='delete_skill'),
+
+
+    #Section page for Autistic Profile
+    path('applicant/profile/autistic', views.applicant_autistic_profile, name='applicant_autistic_profile'),
+    path('applicant/profile/autistic/workattitude', views.manage_work_attitude, name='applicant_work_attitude'),
+    path('applicant/profile/autistic/workattitude/delete/<int:attitude_id>', views.delete_work_attitude,name='delete_work_attitude'),
+    path('applicant/profile/autistic/communicationstyle', views.manage_communication_style, name='applicant_communication_style'),
+    path('applicant/profile/autistic/communicationstyle/delete/<int:com_id>', views.delete_communication_style,name='delete_communication_style'),
+    path('applicant/profile/autistic/personalinterest', views.manage_personal_interest, name='applicant_personal_interest'),
+    path('applicant/profile/autistic/personalinterest/delete/<int:interest_id>', views.delete_personal_interest,name='delete_personal_interest'),
+
+
+    #Section page to view employer profile
+
+    path('employer/profile', views.employer_profile,name='employer_profile'),
+    path('employer/profile/update', views.update_employer_profile,name='update_employer_profile'),
+
 ]

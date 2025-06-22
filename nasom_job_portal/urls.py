@@ -26,6 +26,7 @@ urlpatterns = [
     path('',include('login_page.urls')),
     path('',include('landing_page.urls')),
     path('',include('profile_user.urls')),
+    path('',include('my_job_ad.urls')),
     path('logout/', auth_views.LogoutView.as_view(next_page='landing_applicant'), name='logout'),
 ]
 

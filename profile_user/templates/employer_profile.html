@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Job Hiring Portal{% endblock %}
+
+{% block header %}
+        {% include "headers/header3.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    {% include "sidebars/sidebar2.html" %}
+    <main class="d-flex flex-column gap-2  w-100">
+        <div class="d-flex text-light bg-dark px-4 py-3">
+            <h5>Company Profile</h5>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+            <div class="mx-2 px-3 alert 
+                        {% if message.tags == 'error' %}
+                            alert-danger
+                        {% elif message.tags == 'success' %}
+                            alert-success
+                        {% elif message.tags == 'warning' %}
+                            alert-warning
+                        {% elif message.tags == 'info' %}
+                            alert-info
+                        {% else %}
+                            alert-secondary
+                        {% endif %}" 
+                        role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        <div class="px-4">
+            <h6>Company Logo</h6>
+        </div>
+        <form action="{% url 'update_employer_profile' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between px-4 gap-2">
+                <div class="d-flex flex-column gap-2">
+                    {% if request.user.company_logo %}
+                    <img src="{{ request.user.company_logo.url }}" alt="Profile Picture" class="logo-img" id="companyLogoPreview">
+                    {% else %}
+                    <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="logo-img" id="companyLogoPreview">
+                    {% endif %}
+
+                    <input type="file" 
+                        name="logo_image" 
+                        accept="image/*" 
+                        class="file-input form-control" 
+                        id="profileImageInput" 
+                        onchange="previewLogo(event)"
+                        style="width: 300px;">
+
+                </div>
+                <div class="flex-fill">
+                    <div class="form-group">
+                        <label for="company_name">Company Name</label>
+                        <input type="text" name="company_name" class="form-control" value="{{ request.user.company_name|default_if_none:'' }}" placeholder="Please specify...">
+                    </div>
+                    <div class="form-group">
+                        <label for="main_location">Main Address</label>
+                        <input type="text" name="main_location" class="form-control" value="{{ request.user.company_address|default_if_none:'' }}" placeholder="Please specify...">
+                    </div>
+                    <div class="form-group">
+                        <label for="company_description">Company Description</label>
+                        <textarea class="form-control" id="company_description" name="company_description" rows="5" placeholder="Describe more about your company...">{{ request.user.company_description|default_if_none:'' }}</textarea>
+                    </div>
+                    <div class="d-flex justify-content-between gap-2">
+                        <div class="form-group flex-fill">
+                            <label for="company_email">Company Email</label>
+                            <input type="email" name="company_email" class="form-control" value="{{ request.user.company_email|default_if_none:'' }}" placeholder="Please specify...">
+                        </div>
+                        <div class="form-group flex-fill">
+                            <label for="company_phone_number">Company Phone Number</label>
+                            <input type="tel" name="company_phone_number" class="form-control" value="{{ request.user.company_phone_number|default_if_none:'' }}" placeholder="Please specify...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end align-items-end px-4 my-2">
+                <input type="submit" value="Save" class="btn btn-primary btn-primary-extend">
+            </div>
+        </form>
+        
+    </main>
+</div>
+
+<script>
+function previewLogo(event) {
+    console.log("📸 previewProfile triggered");
+    
+    // Prevent any form submission
+    event.preventDefault();
+    event.stopPropagation();
+
+    const input = event.target;
+    const preview = document.getElementById("companyLogoPreview");
+
+    console.log("🔍 Input element:", input);
+    console.log("🔍 Preview element:", preview);
+    console.log("🔍 Files:", input.files);
+
+    if (!preview) {
+        console.error("❌ Preview image element not found.");
+        alert("Preview element not found! Check the HTML.");
+        return;
+    }
+
+    if (input.files && input.files.length > 0) {
+        const file = input.files[0];
+        console.log("📁 Selected file:", file.name, file.type, file.size);
+
+        // Check if it's actually an image
+        if (!file.type.startsWith('image/')) {
+            console.error("❌ Selected file is not an image");
+            alert("Please select an image file!");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            console.log("📷 FileReader loaded successfully");
+            
+            // Remove any existing border
+            preview.style.border = "";
+            
+            // Update the image source
+            preview.src = e.target.result;
+            
+            // Add a green border to show it worked
+            preview.style.border = "3px solid green";
+            
+            console.log("✅ Preview updated successfully!");
+            
+            // Remove the green border after 2 seconds
+            setTimeout(() => {
+                preview.style.border = "";
+            }, 2000);
+        };
+
+        reader.onerror = function() {
+            console.error("❌ FileReader error occurred");
+            alert("Error reading the file!");
+        };
+
+        reader.readAsDataURL(file);
+    } else {
+        console.warn("⚠️ No file selected or files array is empty.");
+        alert("No file selected!");
+    }
+}
+</script>
+
+{% endblock %}
+
+{% block footer %}
+        {% include "footers/footer2.html" %}
+{% endblock %}
+
