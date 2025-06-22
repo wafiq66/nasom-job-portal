@@ -175,3 +175,92 @@ def update_career(request,career_id):
         return redirect('applicant_background')
     return render(request,'applicant_background.html')
 
+#for entering education
+def manage_education_history(request):
+    if request.method == 'POST':
+        course_title = request.POST.get('course')
+        institution = request.POST.get('institution')
+
+        start_date = request.POST.get('startdate')  # "2024-06"
+        if start_date:
+            year, month = map(int, start_date.split('-'))  # year = 2024, month = 6
+
+        end_date = request.POST.get('enddate')
+        if end_date:
+            end_year, end_month = map(int, end_date.split('-'))
+        else:
+            end_year, end_month = None, None
+
+        edus = EducationVocationalTraining(
+            user=request.user,
+            course_title=course_title,
+            institution=institution,
+            start_month = month,
+            start_year = year,
+            end_month = end_month,
+            end_year = end_year
+        )
+
+        edus.save()
+        return redirect('applicant_background')
+    return render(request,'applicant_background.html')
+
+#for deleting the education
+def delete_education(request, edu_id):
+    if request.method == 'POST':
+        edu = get_object_or_404(EducationVocationalTraining, id=edu_id, user = request.user)
+        edu.delete()
+        return redirect('applicant_background')
+    return render(request,'applicant_background.html')
+
+#for updating the education
+def update_education(request,edu_id):
+    if request.method == 'POST':
+        edu = get_object_or_404(EducationVocationalTraining, id=edu_id, user = request.user)
+
+        edu.course_title = request.POST.get('course')
+        edu.institution = request.POST.get('institution')
+
+        # Handle startdate
+        startdate = request.POST.get('startdate')  # "YYYY-MM"
+        if startdate:
+            year, month = map(int, startdate.split('-'))
+            edu.start_year = year
+            edu.start_month = month
+
+        # Handle enddate
+        enddate = request.POST.get('enddate')
+        if enddate:
+            year, month = map(int, enddate.split('-'))
+            edu.end_year = year
+            edu.end_month = month
+        else:
+            edu.end_year = None
+            edu.end_month = None
+
+        edu.save()
+        return redirect('applicant_background')
+    return render(request,'applicant_background.html')
+
+#for entering new skill
+def manage_skill(request):
+    if request.method == 'POST':
+
+        skill_set = request.POST.get('skill')
+
+        skill = Skill(
+            user=request.user,
+            skill=skill_set
+        )
+
+        skill.save()
+        return redirect('applicant_background')
+    return render(request, 'applicant_background.html')
+
+#for deleting the education
+def delete_skill(request, skill_id):
+    if request.method == 'POST':
+        skill = get_object_or_404(Skill, id=skill_id, user = request.user)
+        skill.delete()
+        return redirect('applicant_background')
+    return render(request,'applicant_background.html')

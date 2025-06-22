@@ -110,7 +110,8 @@
 
         
         <!--For Education and etc-->
-        <form action="" class="px-5 py-2 d-flex flex-column">
+        <form action="{% url 'applicant_education' %}" method="post" class="px-5 py-2 d-flex flex-column">
+            {% csrf_token%}
             <div>
                 <h5>Education/Vocational Training</h5>
             </div>
@@ -142,56 +143,65 @@
         </form>
 
         <!-- Added Education History Here -->
+        {% for edu in education_histories %}
         <div class="mx-5 px-4 py-2 border border-dark rounded career-entry">
             <!-- Read-Only Block -->
             <div class="d-flex justify-content-between read-only">
-                <h4>Bachelor in Software Engineering</h4>
+                <h4>{{ edu.course_title }}</h4>
                 <div>
                     <button type="button" class="btn btn-warning edit-btn">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button type="button" class="btn btn-danger">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
+                    <form method="POST" action="{% url 'delete_education' edu.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
-            <p>Uitm Shah Alam</p>
-            <p>From June 2024 until August 2025</p>
+            <p>{{ edu.institution }}</p>
+            <p>{{ edu.display_range }}</p>
+
             <!-- Editable Form Block -->
-            <form action="" class="flex-column filled-form allow-edit" style="display: none;">
+            <form method="POST" action="{% url 'update_education' edu.id %}" class="flex-column filled-form allow-edit" style="display: none;">
+                {% csrf_token %}
                 <div class="d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-success save-btn">
+                    <button type="submit" class="btn btn-success save-btn">
                         <i class="fa-solid fa-check"></i>
                     </button>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="form-group flex-fill">
                         <label for="course">Course/Qualification/Training</label>
-                        <input type="text" name="course" class="form-control" required>
+                        <input type="text" name="course" class="form-control" value="{{ edu.course_title }}" required>
                     </div>
                 </div>
                 <div class="d-flex gap-2">
                     <div class="form-group flex-fill">
                         <label for="institution">Institution</label>
-                        <input type="text" name="institution" class="form-control" required>
+                        <input type="text" name="institution" class="form-control" value="{{ edu.institution }}" required>
                     </div>
                 </div>
                 <div class="d-flex gap-2 align-items-end">
                     <div class="form-group flex-fill">
                         <label for="startdate">Start Month & Year</label>
-                        <input type="month" name="startdate" class="form-control" required>
+                        <input type="month" name="startdate" class="form-control" value="{{ edu.start_month_input }}" required>
                     </div>
                     <div class="form-group flex-fill">
                         <label for="enddate">End Month & Year</label>
-                        <input type="month" name="enddate" class="form-control">
+                        <input type="month" name="enddate" class="form-control" value="{{ edu.end_month_input }}">
                     </div>
                 </div>
             </form>
         </div>
+        {% empty %}
+        {% endfor %}
 
 
-        <!--Skill-->
-        <form action="" class="px-5 py-2 d-flex flex-column gap-2">
+        <!-- Skill ADD Form -->
+        <form action="{% url 'applicant_skill' %}" method="POST" class="px-5 py-2 d-flex flex-column gap-2">
+            {% csrf_token %}
             <div>
                 <h5>Skills</h5>
             </div>
@@ -204,16 +214,22 @@
                     <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
                 </div>
             </div>
-            <div class="skill-contain border border-dark rounded">
-                <form class="skill-form" action="/remove-skill" method="POST">
-                    <input type="hidden" name="skill" value="Time Management">
-                    <div class="skill-tag">
-                        <span>Time Management</span>
-                        <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
-                    </div>
-                </form>
-            </div>
         </form>
+
+        <!-- Skill TAG Display -->
+        <div class="skill-contain border border-dark rounded mx-5">
+            {% for skill in skills %}
+            <form action="{% url 'delete_skill' skill.id %}" method="POST" class="skill-form">
+                {% csrf_token %}
+                <input type="hidden" name="skill_id" value="{{ skill.id }}">
+                <div class="skill-tag">
+                    <span>{{ skill.skill }}</span>
+                    <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
+                </div>
+            </form>
+            {% endfor %}
+        </div>
+
     </main>
 </div>
 
