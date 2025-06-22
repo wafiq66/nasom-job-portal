@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Register Page{% endblock %}
+<!--Call Header-->
+{% block header %}
+        {% include "headers/header1.html" %}
+{% endblock %}
+<!--Call Footer-->
+{% block footer %}
+        {% include "footers/footer1.html" %}
+{% endblock %}
+<!--Call Main Content-->
+{% block content %} 
+<style>
+  #right-side-image {
+  background: url("{% static 'images/side-image.jpg' %}") center center / cover no-repeat;
+  min-height: 100vh;
+  clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 0% 100%);
+  width: 50%;
+  z-index: 0;
+  backdrop-filter: blur(2px); /* Optional: soft blur effect */
+}
+
+.ambient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 123, 255, 0.2); /* Soft Bootstrap blue */
+}
+</style>
+
+<main class="d-flex justify-content-between align-items-center">
+  <div class="register-form">
+    <form onsubmit="return validatePasswordMatch()" method="POST" accept="{% url 'register_user' %}">
+      {% csrf_token %}
+      <div class="register-content">
+        <h2>Create Account</h2>
+      </div>
+      <div class="d-flex register-content sub-content">
+        <p>Already have account? </p>
+        <a href="">Sign In Here</a>
+      </div>
+      <div class="register-notice register-content">
+        <p><i class="fas fa-info-circle"></i> Once you create an account, you can login both applicant and employer site with a same email address.</p>
+      </div>
+      <div class="d-flex register-content sub-content">
+        <input type="text" placeholder="First Name" name="firstname" id="firstname" class="custom-input-1" required>
+        <input type="text" placeholder="Last Name" name="lastname" id="lastname" class="custom-input-1" required>
+      </div>
+      <div class="register-content">
+        <input type="email" placeholder="Email Address" name="email" id="email" class="custom-input-1" required>
+      </div>
+      <div class="register-content">
+        <input type="password" placeholder="Password" name="password" id="password" class="custom-input-1" required>
+      </div>
+      <div class="register-content">
+        <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" class="custom-input-1" required>
+      </div>
+      <div class="register-content">
+        <input type="submit" value="Create Account" class="btn btn-primary w-100">
+      </div>
+      <div id="passwordAlertContainer" class="register-content"></div>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert 
+                      {% if message.tags == 'error' %}
+                        alert-danger
+                      {% elif message.tags == 'success' %}
+                        alert-success
+                      {% elif message.tags == 'warning' %}
+                        alert-warning
+                      {% elif message.tags == 'info' %}
+                        alert-info
+                      {% else %}
+                        alert-secondary
+                      {% endif %}" 
+                       role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </form>
+  </div>
+  <div id="right-side-image" class="w-50">
+    <div class="ambient-overlay"></div>
+  </div>
+</main>
+
+
+<script>
+  function validatePasswordMatch() {
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmpassword").value;
+    const alertContainer = document.getElementById("passwordAlertContainer");
+
+    // Clear any previous alert
+    alertContainer.innerHTML = "";
+
+    if (password !== confirmPassword) {
+      alertContainer.innerHTML = `
+        <div class="alert alert-danger" role="alert">
+          Passwords do not match!
+        </div>
+      `;
+      return false; // prevent form submission
+    }
+
+    return true; // allow form submission
+  }
+</script>
+
+{% endblock %}

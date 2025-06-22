@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Job Hiring Portal{% endblock %}
+
+{% block header %}
+        {% include "headers/header2.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    {% include "sidebars/sidebar1.html" %}
+    <main class="d-flex flex-column gap-2  py-4 w-100">
+        <div class="px-3">
+            <h4>Profile</h4>
+        </div>
+        <div class="d-flex gap-5 border-bottom border-secondary border-1 px-3">
+            <a href="{% url 'applicant_profile'%}" class="top-header-nav">Personal</a>
+            <a href="{% url 'applicant_background' %}" class="top-header-nav-selected">Background Info</a>
+            <a href="" class="top-header-nav">Autism Profile</a>
+            <a href="" class="top-header-nav">Verification</a>
+        </div>
+
+
+        <!--For Career History-->
+        <form action="" class="px-5 py-2 d-flex flex-column">
+            <div>
+                <h5>Career History</h5>
+            </div>
+            <div class="d-flex gap-2">
+                <div class="form-group flex-fill">
+                    <label for="jobtitle">Job Title</label>
+                    <input type="text" name="jobtitle" class="form-control" required>
+                </div>
+                <div class="form-group flex-fill">
+                    <label for="companyname">Company Name</label>
+                    <input type="text" name="companyname" class="form-control" required>
+                </div>
+            </div>
+            <div class="d-flex gap-2 align-items-end">
+                <div class="form-group flex-fill">
+                    <label for="startdate">Start Month & Year</label>
+                    <input type="month" name="startdate" class="form-control" required>
+                </div>
+                <div class="form-group flex-fill">
+                    <label for="enddate">End Month & Year</label>
+                    <input type="month" name="enddate" class="form-control">
+                </div>
+                <div>
+                    <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Added Employment History Here -->
+        <div class="mx-5 px-4 py-2 border border-dark rounded career-entry">
+            <!-- Read-Only Block -->
+            <div class="d-flex justify-content-between read-only">
+                <h4>Senior Software Developer</h4>
+                <div>
+                    <button type="button" class="btn btn-warning edit-btn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <p>Deloitte</p>
+            <p>From June 2024 until August 2025</p>
+            <!-- Editable Form Block -->
+            <form action="" class="flex-column filled-form allow-edit" style="display: none;">
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-success save-btn">
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="form-group flex-fill">
+                        <label for="jobtitle">Job Title</label>
+                        <input type="text" name="jobtitle" class="form-control" required>
+                    </div>
+                    <div class="form-group flex-fill">
+                        <label for="companyname">Company Name</label>
+                        <input type="text" name="companyname" class="form-control" required>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 align-items-end">
+                    <div class="form-group flex-fill">
+                        <label for="startdate">Start Month & Year</label>
+                        <input type="month" name="startdate" class="form-control" required>
+                    </div>
+                    <div class="form-group flex-fill">
+                        <label for="enddate">End Month & Year</label>
+                        <input type="month" name="enddate" class="form-control">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        
+        <!--For Education and etc-->
+        <form action="" class="px-5 py-2 d-flex flex-column">
+            <div>
+                <h5>Education/Vocational Training</h5>
+            </div>
+            <div class="d-flex gap-2">
+                <div class="form-group flex-fill">
+                    <label for="course">Course/Qualification/Training</label>
+                    <input type="text" name="course" class="form-control" required>
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <div class="form-group flex-fill">
+                    <label for="institution">Institution</label>
+                    <input type="text" name="institution" class="form-control" required>
+                </div>
+            </div>
+            <div class="d-flex gap-2 align-items-end">
+                <div class="form-group flex-fill">
+                    <label for="startdate">Start Month & Year</label>
+                    <input type="month" name="startdate" class="form-control" required>
+                </div>
+                <div class="form-group flex-fill">
+                    <label for="enddate">End Month & Year</label>
+                    <input type="month" name="enddate" class="form-control">
+                </div>
+                <div>
+                    <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Added Education History Here -->
+        <div class="mx-5 px-4 py-2 border border-dark rounded career-entry">
+            <!-- Read-Only Block -->
+            <div class="d-flex justify-content-between read-only">
+                <h4>Bachelor in Software Engineering</h4>
+                <div>
+                    <button type="button" class="btn btn-warning edit-btn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <p>Uitm Shah Alam</p>
+            <p>From June 2024 until August 2025</p>
+            <!-- Editable Form Block -->
+            <form action="" class="flex-column filled-form allow-edit" style="display: none;">
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-success save-btn">
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="form-group flex-fill">
+                        <label for="course">Course/Qualification/Training</label>
+                        <input type="text" name="course" class="form-control" required>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="form-group flex-fill">
+                        <label for="institution">Institution</label>
+                        <input type="text" name="institution" class="form-control" required>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 align-items-end">
+                    <div class="form-group flex-fill">
+                        <label for="startdate">Start Month & Year</label>
+                        <input type="month" name="startdate" class="form-control" required>
+                    </div>
+                    <div class="form-group flex-fill">
+                        <label for="enddate">End Month & Year</label>
+                        <input type="month" name="enddate" class="form-control">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <!--Skill-->
+        <form action="" class="px-5 py-2 d-flex flex-column">
+            <div>
+                <h5>Skills</h5>
+            </div>
+            <div class="d-flex gap-2 align-items-end">
+                <div class="form-group flex-fill">
+                    <label for="skill">Skill</label>
+                    <input type="text" name="skill" class="form-control" required>
+                </div>
+                <div>
+                    <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
+
+
+<script>
+document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const entry = btn.closest('.career-entry');
+        const readOnly = entry.querySelector('.read-only');
+        const form = entry.querySelector('.allow-edit');
+
+        const isEditing = form.style.display === 'flex';
+
+        if (isEditing) {
+            // Hide edit form, show read-only
+            form.style.display = 'none';
+            form.classList.remove('d-flex');
+            readOnly.style.display = 'flex';
+        } else {
+            // Show edit form, hide read-only
+            readOnly.style.display = 'none';
+            form.style.display = 'flex';
+            form.classList.add('d-flex');
+        }
+    });
+});
+</script>
+
+
+{% endblock %}
+
+{% block footer %}
+        {% include "footers/footer2.html" %}
+{% endblock %}
+

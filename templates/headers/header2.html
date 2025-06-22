@@ -1,0 +1,53 @@
+{% load static %}
+<div class="d-flex top-header">
+{% if user.is_authenticated %}
+    <a href="{% url 'applicant_profile' %}" class="top-header-nav">Home</a>
+    <a href="{% url 'landing_applicant' %}" class="top-header-nav">Find Job</a>
+    <a href="" class="top-header-nav">Companies</a>
+{% else%}
+    <a href="" class="top-header-nav">Home</a>
+    <a href="" class="top-header-nav">Find Job</a>
+    <a href="" class="top-header-nav">Hiring Advice</a>
+    <a href="" class="top-header-nav">Companies</a>
+{% endif %}
+</div>
+
+
+<header>
+    <div class="d-flex justify-content-between align-items-center" style="width: auto; gap: 50px;"">
+        <img src="{% static 'images/header-logo.png' %}" alt="header" class="header-logo">
+    </div>
+{% if user.is_authenticated %}
+<!--if user logged in-->
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if request.user.profile_image %}
+            <img src="{{ request.user.profile_image.url }}" alt="Profile Picture" class="profile-img-heading" id="profilePreview">
+            {% else %}
+            <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="profile-img-heading" id="profilePreview">
+            {% endif %}
+            {{ user.first_name }}
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="{% url 'applicant_profile' %}">Profile</a>
+            <a class="dropdown-item" href="#">Dependents</a>
+            <a class="dropdown-item" href="#">Saved Jobs</a>
+            <a class="dropdown-item" href="#">Applied Jobs</a>
+            <a class="dropdown-item" href="#">Setting</a>
+            <form class="dropdown-item" method="post" action="{% url 'logout' %}" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; padding: 0;">
+                    Log Out
+                </button>
+            </form>
+
+        </div>
+    </div>
+{% else %}
+<!--if user logged out-->
+    <div class="d-flex justify-content-between gap-2">
+        <a href="{% url 'login_user' %}" class="btn btn-outline-primary">Sign In</a>
+        <a href="{% url 'login_user' %}" class="btn btn-primary">Post A Job</a>
+    </div>
+{% endif %}
+</header>

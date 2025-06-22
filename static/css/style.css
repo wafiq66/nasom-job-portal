@@ -1,0 +1,244 @@
+/*this is for all*/
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body{
+    font-family: "Inter", sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+ul li{
+    list-style-type: none;
+}
+/*this is for all header*/
+header{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 30px;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    border-bottom: solid 1px rgb(138, 138, 138);
+}
+
+header .header-logo{
+    width: 250px;
+    height: auto;
+}
+
+header .backward-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  font-size: 24px; color: black;
+  border-radius: 50%; /* Always circular */
+}
+
+header .backward-icon:hover {
+  background-color: #5a5454;
+  color: white; /* optional: changes icon color on hover */
+  cursor: pointer;
+}
+
+.top-header{
+    gap: 40px;
+    background-color: #F1F2F4;
+    padding: 0px 200px;
+}
+
+.top-header-nav{
+    font-size: 14px;
+    color: #5E6670;
+    padding: 10px 0px;
+}
+
+.top-header-nav-selected, .top-header-nav:hover{
+    color: #0A65CC;
+    font-size: 14px;
+    box-shadow: inset 0 -1px 0 #0A65CC;
+    padding: 10px 0px;
+}
+
+.navigation-header-side{
+    height: auto; /* Prevents stretching */
+  display: inline-block; /* So it wraps only the content */
+}
+
+.custom-dropdown-btn {
+    height: 40px;       /* Set desired height */
+    font-size: 14px;    /* Optional: adjust font size */
+    padding: 6px 12px;  /* Optional: adjust padding */
+}
+
+
+/*this is for all footer*/
+footer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+    color: #767F8C;
+    background-color: #262F36;
+    font-size: 12px;
+}
+
+footer a{
+    color: #767F8C;
+}
+
+footer .footer-logo{
+    width: 200px;
+    height: auto;
+}
+
+footer .footer-list {
+  display: flex;
+  flex-direction: column; /* or row if you want horizontal layout */
+  gap: 20px;
+}
+
+footer #footer-first{
+    border-bottom: #767F8C 1px solid;
+}
+
+/*This is for register form page*/
+main .register-form{
+    margin: 30px 50px;
+    width: 500px;
+    height: auto;
+}
+
+main .register-form form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+} 
+
+main .register-form form .sub-content{
+    gap: 5px;
+}
+main .register-notice{
+    background-color: #D4F9FF;
+    color: #001F59;
+    border: 1px solid #001F59;
+    border-radius: 15px;
+    padding: 5px 20px;
+    width: 100%;
+    display: flex;
+}
+
+main .custom-input-1 {
+  padding: 10px 10px;
+  border: 2px solid #5a5454; /* dark gray border */
+  border-radius: 15px;       /* pill shape */
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  width: 100%;
+}
+
+main .custom-input-1::placeholder {
+  color: #5a5454; /* match the border color for a subtle look */
+}
+
+main .register-content{
+    width: 100%;
+}
+
+main .choices{
+    background-color: #E8E8E8;
+}
+
+/* Darker background when radio is checked */
+input[type="radio"]:checked + label.btn-primary {
+  background-color: #004080; /* darker shade of primary */
+  border-color: #003366;
+  color: white;
+}
+
+/*This section is for the sidebar */
+
+.sidebar{
+    border-right: 1px solid rgb(138, 138, 138);
+}
+
+.sidebar-navigation-element{
+    color: #747272;
+    padding: 10px 5px;
+}
+
+.sidebar-navigation-element:hover,
+.sidebar-navigation-element-selected {
+    color: #101572;
+    background-color: #CCEBE6;
+    border-left: 2px solid #101572;
+    padding: 10px 5px;
+}
+
+.bottom-side-nav-element{
+    padding: 10px 5px;
+}
+
+.profile-img {
+    width: 275px;
+    height: 295px;
+    border: 1px solid black;
+    object-fit: cover; /* optional: keeps image filled without distortion */
+  }
+
+.btn-primary-extend{
+    color: #FEFEFE ;
+    background-color: #196FCF;
+    border-color: #196FCF;
+    padding: 5px 60px;
+}
+
+.form-control{
+    border-color: #262F36;
+}
+
+.profile-img-heading {
+  width: 24px;            /* Twitter-like size */
+  height: 24px;
+  border-radius: 50%;     /* Makes it a circle */
+  object-fit: cover;      /* Keeps aspect ratio, fills the box */
+  border: 1px solid #b1afaf; /* Light border like Twitter */
+}
+
+.btn-icon {
+  background-color: #5D5757;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-icon:hover {
+  background-color: #4a4545;
+  transform: scale(1.05);
+}
+
+.filled-form{
+    background-color: #5E6670;
+    color: white;
+    margin: 20px;
+    padding: 10px 20px 30px;
+    border-radius: 20px;
+}
+
+.view-mode{
+    font-size: 16px;
+    color: rgb(24, 21, 21);
+}
