@@ -21,7 +21,7 @@
 <!--if user logged in-->
     <div class="btn-group">
         <button type="button" class="btn btn-secondary dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {% if request.user.profile_image %}
+            {% if request.user.company_logo %}
             <img src="{{ request.user.company_logo.url }}" alt="Profile Picture" class="profile-img-heading" >
             {% else %}
             <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="profile-img-heading">

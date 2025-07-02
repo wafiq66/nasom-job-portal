@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+from decouple import config
 from pathlib import Path
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -24,17 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8ih+e%ot_dv+7((-yc7+y-f$itxyueq%*%)+a34c_g#&k)nh^!'
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split()
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -96,6 +97,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')  # Global static folder
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 WSGI_APPLICATION = 'nasom_job_portal.wsgi.application'
 
@@ -106,11 +108,11 @@ WSGI_APPLICATION = 'nasom_job_portal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # Postgresql also uses this
-        'NAME': 'nasom_job_portal',          
-        'USER': 'postgres',
-        'PASSWORD': '123',                        # Or your actual password if set
-        'HOST': 'localhost',                   # Use IP instead of localhost
-        'PORT': '5432',
+        'NAME': config('POSTGRES_DB'),          
+        'USER': config('POSTGRES_USER'),
+        'PASSWORD': config('POSTGRES_PASSWORD'),                        # Or your actual password if set
+        'HOST': os.environ.get('DB_HOST', 'db'),                   # Use IP instead of localhost
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -155,3 +157,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login/'
+
+#Jazzmin setting bro
+JAZZMIN_SETTINGS = {
+    "site_title": "Autism Job Hiring Portal Admin",
+    "site_header": "NASOM Admin",
+    "site_brand": "NASOM Portal",
+    "welcome_sign": "Welcome to Job Hiring Portal for Autistic Individual",
+    "copyright": "NASOM",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "order_with_respect_to": ["auth", "jobs", "users"],
+}
