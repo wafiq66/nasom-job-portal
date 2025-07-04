@@ -1,0 +1,608 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Job Hiring Portal{% endblock %}
+
+{% block header %}
+        {% include "headers/header3.html" %}
+{% endblock %}
+
+{% block footer %}
+        {% include "footers/footer2.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex">
+        {% include "sidebars/sidebar2.html" %}
+        <form method="post" action="" class="d-flex flex-column gap-2 w-100">
+            {% csrf_token %}
+
+            <main class="d-flex flex-column gap-2 py-4 w-100">
+
+                <div class="px-3">
+                    <h4>Post Job Advertisement</h4>
+                </div>
+
+                <div class="d-flex gap-5 border-bottom border-secondary border-1 px-3">
+                    <button type="button" onclick="goToStep('classify')" class="btn top-header-nav-selected">Classify</button>
+                    <button type="button" onclick="goToStep('write')" class="btn top-header-nav">Write</button>
+                    <button type="button" onclick="goToStep('pre')" class="btn top-header-nav">Pre Interview Questions</button>
+                    <button type="button" onclick="goToStep('review')" class="btn top-header-nav">Review</button>
+                </div>
+
+                <!--the first form that will be displayed-->
+                <div id="first-section" class=" d-flex flex-column px-4">
+                    <div class="d-flex">
+                        <div class="form-group flex-fill  py-2">
+                            <label for="jobtitle">Job Title</label>
+                            <input type="text" name="jobtitle" class="form-control" placeholder="Add Job Title..." required>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <div class="form-group flex-fill  py-2">
+                            <label for="jobtitle">State</label>
+                            <input type="text" name="state" class="form-control" placeholder="Add Job Title..." required>
+                        </div>
+                        <div class="form-group flex-fill  py-2">
+                            <label for="jobtitle">City</label>
+                            <input type="text" name="city" class="form-control" placeholder="Add Job Title..." required>
+                        </div>
+                    </div>
+                    <div class="form-group flex-fill  py-2">
+                        <label for="openfor">Open For</label>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <input type="checkbox" class="btn-check" id="autism-level-1" name="autism-level-1" autocomplete="off" value="autism-level-1">
+                        <label class="btn btn-outline-primary" for="autism-level-1">Autism Level 1</label>
+
+                        <input type="checkbox" class="btn-check" id="autism-level-2" name="autism-level-2" autocomplete="off" value="autism-level-2">
+                        <label class="btn btn-outline-primary" for="autism-level-2">Autism Level 2</label>
+
+                        <input type="checkbox" class="btn-check" id="autism-level-3" autocomplete="off" disabled>
+                        <label class="btn btn-outline-primary" for="autism-level-3">Autism Level 3</label>
+                    </div>
+                    <div class="form-group flex-fill  py-2">
+                        <label for="jobcategory">Job Category</label>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <input type="radio" class="btn-check" id="professional-job" name="job-category" autocomplete="off" value="Professional Job">
+                        <label class="btn btn-outline-primary" for="professional-job">Professional Job</label>
+
+                        <input type="radio" class="btn-check" id="semi-skilled-job" name="job-category" autocomplete="off" value="Semi-Skilled Job">
+                        <label class="btn btn-outline-primary" for="semi-skilled-job">Semi-Skilled Job</label>
+
+                        <input type="radio" class="btn-check" id="simple-job" name="job-category" autocomplete="off" value="Simple Job">
+                        <label class="btn btn-outline-primary" for="simple-job">Simple Job</label>
+                    </div>
+                    <div class="form-group flex-fill  py-2">
+                        <label for="jobtypes">Job Types</label>
+                    </div>
+                    <div class="d-flex  gap-2 align-items-end">
+                        <input type="checkbox" class="btn-check" id="full-time" name="full-time" autocomplete="off" value="professional-job">
+                        <label class="btn btn-outline-primary" for="full-time">Full-Time</label>
+
+                        <input type="checkbox" class="btn-check" id="part-time" name="part-time" autocomplete="off" value="semi-skilled-job">
+                        <label class="btn btn-outline-primary" for="part-time">Part-Time</label>
+
+                        <input type="checkbox" class="btn-check" id="remote" name="remote" autocomplete="off" value="simple-job">
+                        <label class="btn btn-outline-primary" for="remote">Remote</label>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="autism-level-3" id="autism-level-3-1" disabled>
+                            <label class="form-check-label" for="autism-level-3-1">
+                                Autism Level 3
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column gap-2 bg-secondary text-white rounded py-1 px-4 my-1 ">
+                        <div class="form-group flex-fill pt-2">
+                            <label for="jobtypes">Pay Range</label>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="form-group flex-fill  py-2">
+                                <label for="jobtitle">From</label>
+                                <input type="number" name="min-pay" class="form-control" placeholder="1200" id="min-pay">
+                            </div>
+                            <div class="form-group flex-fill  py-2">
+                                <label for="jobtitle">To</label>
+                                <input type="number" name="max-pay" class="form-control" placeholder="1500" id="max-pay">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="button-section">
+                            <button class="btn btn-secondary">Cancel</button>
+                        </div>
+                        <div class="button-section">
+                            <button class="btn btn-secondary">Save as Draft</button>
+                            <button class="btn btn-primary">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--the second form that will be displayed-->
+                <div id="second-section" class="d-flex flex-column px-4 py-2">
+                    <div class="form-group flex-fill  py-2">
+                        <label for="responsibilities">Responsibilities</label>
+                        <small class="text-muted d-block mt-1">Please tick and elaborate the responsibilities of the applicants.</small>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group flex-fill py-2">
+                            <label for="maintask" class="py-2">Main Task</label>
+                            <textarea name="maintask" id="maintask" class="form-control" placeholder="Write your main task here..." required style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleSubtask" data-bs-toggle="collapse" data-bs-target="#subtaskWrapper">
+                        <label class="form-check-label" for="toggleSubtask">
+                            Sub Task
+                        </label>
+                    </div>
+
+                    <!-- Textarea hidden by default, shown when checkbox is checked -->
+                    <div class="collapse" id="subtaskWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="subtask" id="subtask" class="form-control" placeholder="Write your sub task here..." required style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="repetitiveTask" name="repetitiveTask">
+                        <label class="form-check-label" for="repetitiveTask">
+                            Repetitive Task
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="easyToPerform" name="easyToPerform">
+                        <label class="form-check-label" for="easyToPerform">
+                            Easy to Perform
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="easyToRemember" name="easyToRemember">
+                        <label class="form-check-label" for="easyToRemember">
+                            Easy to Remember
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleInteractionWithCustomer" data-bs-toggle="collapse" data-bs-target="#interactionWithCustomerWrapper">
+                        <label class="form-check-label" for="toggleInteractionWithCustomer">
+                            Have Interaction with Customer
+                        </label>
+                    </div>
+
+                    <!-- Textarea hidden by default, shown when checkbox is checked -->
+                    <div class="collapse" id="interactionWithCustomerWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="interactionWithCustomer" id="interactionWithCustomer" class="form-control" placeholder="How do you ensure that the customers are aware of your employee is autistic..." required style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group flex-fill  py-2">
+                        <label for="interviewApproach">Interview Approach</label>
+                        <small class="text-muted d-block mt-1">Please tick and elaborate the interview approach that your company use.</small>
+                    </div>
+
+                    <!-- 2. Verbal -->
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleVerbal" data-bs-toggle="collapse" data-bs-target="#verbalWrapper">
+                        <label class="form-check-label" for="toggleVerbal">
+                            Verbal
+                        </label>
+                    </div>
+                    <div class="collapse" id="verbalWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="verbal" id="verbal" class="form-control" placeholder="Please explain how you conduct interview..." style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 3. Non-verbal -->
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleNonVerbal" data-bs-toggle="collapse" data-bs-target="#nonVerbalWrapper">
+                        <label class="form-check-label" for="toggleNonVerbal">
+                            Non-verbal
+                        </label>
+                    </div>
+                    <div class="collapse" id="nonVerbalWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="nonverbal" id="nonverbal" class="form-control" placeholder="Please explain how you conduct interview..." style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 4. Representative -->
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleRepresentative" data-bs-toggle="collapse" data-bs-target="#representativeWrapper">
+                        <label class="form-check-label" for="toggleRepresentative">
+                            Representative
+                        </label>
+                    </div>
+                    <div class="collapse" id="representativeWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="representative" id="representative" class="form-control" placeholder="Please explain how a representative is involved during interview..." style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="noInterview" name="noInterview">
+                        <label class="form-check-label" for="noInterview">
+                            No Interview
+                        </label>
+                    </div>
+
+                    <div class="form-group flex-fill py-2">
+                        <label for="benefit">Benefit</label>
+                        <small class="text-muted d-block mt-1">Please tick and elaborate the benefits that your company will provide.</small>
+                    </div>
+
+                    <!-- Special Training -->
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleSpecialTraining" data-bs-toggle="collapse" data-bs-target="#specialTrainingWrapper">
+                        <label class="form-check-label" for="toggleSpecialTraining">
+                            Special Training
+                        </label>
+                    </div>
+                    <div class="collapse" id="specialTrainingWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="specialTraining" id="specialTraining" class="form-control" placeholder="Please explain any special training provided for autistic employees..." style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- START: TOGGLABLE RADIO + TEXTAREA BLOCK -->
+                    <div class="toggle-section" id="training-time">
+                        <!-- Radio Buttons -->
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="training-time" value="one">
+                                <label class="form-check-label">One Time Traning</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="training-time" value="multiple">
+                                <label class="form-check-label">Multiple Times Training</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="training-time" value="none" checked>
+                                <label class="form-check-label">No Training</label>
+                            </div>
+                        </div>
+                        
+
+                        <!-- Collapsible Form Section -->
+                        <div class="collapse mt-2 toggle-form">
+                            <textarea 
+                            class="form-control" 
+                            name="training-description" 
+                            placeholder="Please explain more about the training frequency..." 
+                            style="min-height: 150px;"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <!-- END: TOGGLABLE RADIO + TEXTAREA BLOCK -->
+
+
+                    <!-- Work Buddy -->
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleWorkBuddy" data-bs-toggle="collapse" data-bs-target="#workBuddyWrapper">
+                        <label class="form-check-label" for="toggleWorkBuddy">
+                            Work Buddy
+                        </label>
+                    </div>
+                    <div class="collapse" id="workBuddyWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="workBuddy" id="workBuddy" class="form-control" placeholder="Please describe the role of a work buddy and how they support the employee..." style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Mentor -->
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleMentor" data-bs-toggle="collapse" data-bs-target="#mentorWrapper">
+                        <label class="form-check-label" for="toggleMentor">
+                            Mentor
+                        </label>
+                    </div>
+                    <div class="collapse" id="mentorWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="mentor" id="mentor" class="form-control" placeholder="Please explain the mentor’s involvement in the employee’s growth..." style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="lessNoisy" name="lessNoisy">
+                        <label class="form-check-label" for="lessNoisy">
+                            Less Noisy Working Environment
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="lessStressful" name="lessStressful">
+                        <label class="form-check-label" for="lessStressful">
+                            Less Stressful Working Environment
+                        </label>
+                    </div>
+
+                    <!-- Calming Space -->
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleCalmingSpace" data-bs-toggle="collapse" data-bs-target="#calmingSpaceWrapper">
+                        <label class="form-check-label" for="toggleCalmingSpace">
+                            Calming Space
+                        </label>
+                    </div>
+                    <div class="collapse" id="calmingSpaceWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="calmingSpace" id="calmingSpace" class="form-control" placeholder="Please explain if there is a calming space and how it's used..." style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Shift -->
+                    <!-- START: TOGGLABLE RADIO + TEXTAREA BLOCK -->
+                    <div class="toggle-section" id="shift-arrangement">
+                        <!-- Radio Buttons -->
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="shift-arrangement" value="flexible">
+                                <label class="form-check-label">Fully Flexible Shift</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="shift-arrangement" value="pool">
+                                <label class="form-check-label">Shift Pool</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="shift-arrangement" value="none" checked>
+                                <label class="form-check-label">No Shift</label>
+                            </div>
+                        </div>
+
+                        <!-- Collapsible Form Section -->
+                        <div class="collapse mt-2 toggle-form">
+                            <textarea 
+                                class="form-control" 
+                                name="shift-description" 
+                                placeholder="Please explain how shift arrangement is handled, including flexibility or pool system..." 
+                                style="min-height: 150px;"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <!-- END: TOGGLABLE RADIO + TEXTAREA BLOCK -->
+
+
+                    <!-- Regular Update on Progress -->
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleProgressUpdate" data-bs-toggle="collapse" data-bs-target="#progressUpdateWrapper">
+                        <label class="form-check-label" for="toggleProgressUpdate">
+                            Regular Update on Progress
+                        </label>
+                    </div>
+                    <div class="collapse" id="progressUpdateWrapper">
+                        <div class="form-group py-2">
+                            <textarea name="progressUpdate" id="progressUpdate" class="form-control" placeholder="Please explain how you provide regular updates or feedback on the employee’s progress..." style="min-height: 150px;"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Transportation -->
+                    <!-- START: TOGGLABLE RADIO + TEXTAREA BLOCK -->
+                    <div class="toggle-section" id="transportation">
+                        <!-- Radio Buttons -->
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="transportation" value="full">
+                                <label class="form-check-label">Fully Provided</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="transportation" value="partial">
+                                <label class="form-check-label">Partially Provided</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="transportation" value="none" checked>
+                                <label class="form-check-label">Not Provided</label>
+                            </div>
+                        </div>
+
+                        <!-- Collapsible Form Section -->
+                        <div class="collapse mt-2 toggle-form">
+                            <textarea 
+                                class="form-control" 
+                                name="transportation-description" 
+                                placeholder="Please explain what kind of transportation assistance is provided or not..." 
+                                style="min-height: 150px;"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <!-- END: TOGGLABLE RADIO + TEXTAREA BLOCK -->
+
+                    <div class="form-group flex-fill  py-2">
+                        <label for="benefit">Further Description</label>
+                        <small class="text-muted d-block mt-1">Please tick if you have more extra information regarding the position.</small>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="toggleOtherNotes" data-bs-toggle="collapse" data-bs-target="#otherNotesWrapper">
+                        <label class="form-check-label" for="toggleOtherNotes">
+                            Add More Description: Other Notes
+                        </label>
+                    </div>
+                    <div class="collapse" id="otherNotesWrapper">
+                        <div class="form-group py-2">
+                            <textarea 
+                                name="otherNotes" 
+                                id="otherNotes" 
+                                class="form-control" 
+                                placeholder="Write any additional notes or remarks here..." 
+                                style="min-height: 150px;"
+                            ></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex justify-content-between">
+                        <div class="button-section">
+                            <button class="btn btn-secondary">Back</button>
+                        </div>
+                        <div class="button-section">
+                            <button class="btn btn-secondary">Save as Draft</button>
+                            <button class="btn btn-primary">Next</button>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!--the third form that will be displayed-->
+                <div id="third-section" class="d-flex flex-column px-4 py-2">
+                    <div class="form-group flex-fill  py-2">
+                        <label for="interviewQuestion">Pre Interview Question</label>
+                        <small class="text-muted d-block mt-1">Ask your applicant three questions.</small>
+                    </div>
+
+                    <div class="d-flex flex-column gap-2">
+                        <div class="form-group flex-fill py-2">
+                            <label for="question1">Question 1</label>
+                            <input type="text" name="question1" id="question1" class="form-control" placeholder="Enter your first question..." required>
+                        </div>
+
+                        <div class="form-group flex-fill py-2">
+                            <label for="question2">Question 2</label>
+                            <input type="text" name="question2" id="question2" class="form-control" placeholder="Enter your second question...">
+                        </div>
+
+                        <div class="form-group flex-fill py-2">
+                            <label for="question3">Question 3</label>
+                            <input type="text" name="question3" id="question3" class="form-control" placeholder="Enter your third question...">
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div class="button-section">
+                            <button class="btn btn-secondary">Back</button>
+                        </div>
+                        <div class="button-section">
+                            <button class="btn btn-secondary">Save as Draft</button>
+                            <button class="btn btn-primary">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--the fourth form that will be displayed-->
+                <div id="fourth-form" class="d-flex flex-column px-4 py-2 gap-2">
+                    <div class="d-flex gap-4 align-items-center">
+                        <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="company-logo img-thumbnail" id="company-logo">
+                        <div class="d-flex flex-column gap-2">
+                            <h4 class="m-0" >Kitchen Helper</h4>
+                            <div class="d-flex gap-2 align-items-end">
+                                <p class="m-0">At McDonald</p>
+                                <span class="d-none job-tag job-tag-category" id="previewJobCategory"></span>
+                                <span class="d-none job-tag job-tag-type" id="previewFullTime">Full-Time</span>
+                                <span class="d-none job-tag job-tag-type" id="previewPartTime">Part-Time</span>
+                                <span class="d-none job-tag job-tag-type" id="previewRemote">Remote</span>
+                            </div>
+                            <div class="d-flex gap-2 align-items-end">
+                                <p class="m-0">Open For Autism</p> 
+                                <span class="job-tag job-tag-open">Level 1</span>
+                                <span class="job-tag job-tag-open">Level 2</span>
+                                <span class="job-tag job-tag-open">Level 3</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 flex-fill">
+                        <!--Column 1-->
+                        <div class="d-flex flex-column" style="flex: 7;">
+                            <h5>Job Description</h5>
+                            <p class="text-decoration-underline">Responsibilities</p>
+                            <p class="m-0"><b>Main Task</b></p>
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam tempore voluptate ducimus qui vero ipsa cum blanditiis eligendi assumenda. Repudiandae iure aut ab, saepe similique nisi odio ex ipsam. Dolorum!</p>
+                            <p class="m-0 d-none" id="previewSubTask"><b>Sub Task</b></p>
+                            <p class="d-none" id="previewSubTaskDesc"></p>
+
+                            <p class="d-none" id="previewRepetitiveTask"><i class="fa-solid fa-check"></i> Repetitive Task</p>
+                            <p class="d-none" id="previewEasyToPerform"><i class="fa-solid fa-check"></i> Easy to Perform</p>
+                            <p class="d-none" id="previewEasyToRemember"><i class="fa-solid fa-check"></i> Easy to Remember</p>
+
+                            <p class="m-0 d-none" id="previewInteractionWithCustomer"><b>Have Interaction with Customer</b></p>
+                            <p class="d-none" id="previewInteractionWithCustomerDesc"></p>
+
+                            <p class="text-decoration-underline">Interviews Approach</p>
+
+                            <p class="m-0 d-none" id="previewVerbal"><b>Verbal</b></p>
+                            <p class="d-none" id="previewVerbalDesc"></p>
+
+                            <p class="m-0 d-none" id="previewNonVerbal"><b>Non-Verbal</b></p>
+                            <p class="d-none" id="previewNonVerbalDesc"></p>
+
+                            <p class="m-0 d-none" id="previewRepresentative"><b>Representative</b></p>
+                            <p class="d-none" id="previewRepresentativeDesc"></p>
+
+                            <p class="d-none" id="previewNoInterview"><i class="fa-solid fa-check"></i> No Interview</p>
+
+                            <p class="text-decoration-underline">Benefits</p>
+
+                            <p class="m-0 d-none" id="previewSpecialTraining"><b>Special Training</b></p>
+                            <p class="d-none" id="previewSpecialTrainingDesc"></p>
+
+                            <p class="m-0 d-none" id="previewTrainingTime"><b>One Time Training | Multiple Time Training</b></p>
+                            <p class="d-none" id="previewTrainingTimeDesc"></p>
+
+                            <p class="m-0 d-none" id="previewWorkBuddy"><b>Work Buddy</b></p>
+                            <p class="d-none" id="previewWorkBuddyDesc"></p>
+
+                            <p class="m-0 d-none" id="previewMentor"><b>Mentor</b></p>
+                            <p class="d-none" id="previewMentorDesc"></p>
+
+                            <p class="d-none" id="previewLessNoisy"><i class="fa-solid fa-check"></i> Less Noisy Working Environment</p>
+                            <p class="d-none" id="previewLessStressful"><i class="fa-solid fa-check"></i> Less Stressful Working Environment</p>
+
+                            <p class="m-0 d-none" id="previewCalmingSpace"><b>Calming Space</b></p>
+                            <p class="d-none" id="previewCalmingSpaceDesc"></p>
+
+                            <p class="m-0 d-none" id="previewShiftArrangement"><b>Fully Flexible | Shift Pool</b></p>
+                            <p class="d-none" id="previewShiftArrangementDesc"></p>
+
+                            <p class="m-0 d-none" id="previewProgressUpdate"><b>Regular Update on Applicant Progress</b></p>
+                            <p class="d-none" id="previewProgressUpdateDesc"></p>
+
+                            <p class="m-0 d-none" id="previewTransportation"><b>Transportation Fully Provided | Transportation Partial Provided Only</b></p>
+                            <p class="d-none" id="previewTransportationDesc"></p>
+
+                            <p class="text-decoration-underline">Further Description</p>
+
+                            <p class="m-0 d-none" id="previewOtherNotes"><b>Other</b></p>
+                            <p class="d-none" id="previewOtherNotesDesc"></p>
+                        </div>
+                        <!--Column 2-->
+                        <div class="" style="flex: 3;">
+                            <div class="d-flex flex-column border border-dark rounded px-1 py-2">
+                                <h6 class="m-0">Salary</h6>
+                                    <p><span>RM1000</span> - <span>RM1500</span></p>
+
+                                    <h6 class="m-0">Location</h6>
+                                    <p><span>Kuantan</span>, <span>Pahang</span></p>
+
+                                    <h6 class="m-0">Question 1</h6>
+                                    <p>Are you gay?</p>
+
+                                    <h6 class="m-0">Question 2</h6>
+                                    <p>Are you gay?</p>
+
+                                    <h6 class="m-0">Question 3</h6>
+                                    <p>Are you gay?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <div class="button-section">
+                            <button class="btn btn-secondary">Back</button>
+                        </div>
+                        <div class="button-section">
+                            <button class="btn btn-secondary">Save as Draft</button>
+                            <button class="btn btn-primary">Publish</button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </form>
+
+    </div>
+
+    
+{% endblock  %}

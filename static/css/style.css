@@ -59,6 +59,7 @@ header .backward-icon:hover {
     font-size: 14px;
     color: #5E6670;
     padding: 10px 0px;
+    border-radius: 0; /* <-- This disables rounded corners */
 }
 
 .top-header-nav-selected, .top-header-nav:hover{
@@ -66,6 +67,7 @@ header .backward-icon:hover {
     font-size: 14px;
     box-shadow: inset 0 -1px 0 #0A65CC;
     padding: 10px 0px;
+    border-radius: 0; /* <-- This disables rounded corners */
 }
 
 .navigation-header-side{
@@ -295,3 +297,34 @@ input[type="radio"]:checked + label.btn-primary {
 .col-status { width: 20%; }
 .col-apps { width: 20%; }
 .col-action { width: 10%; }
+
+.company-logo{
+    width: 120px;
+    height: 120px;
+}
+
+.job-tag{
+    background-color: rgb(187, 185, 185);
+    border: 2px solid rgb(32, 32, 32);
+    border-radius: 10px;
+    color: rgb(32, 32, 32);
+    padding: 5px 10px;
+}
+
+.job-tag-category{
+    background-color: rgb(135, 211, 135);
+    color: rgb(6, 54, 6);
+    border-color: rgb(11, 73, 11) ;
+}
+
+.job-tag-type{
+    background-color: rgb(135, 196, 211);
+    color: rgb(12, 72, 87);
+    border-color: rgb(12, 72, 87);
+}
+
+.job-tag-open{
+    background-color: rgb(233, 224, 144);
+    color: rgb(70, 64, 11);
+    border-color: rgb(70, 64, 11);
+}

@@ -14,7 +14,7 @@ from pathlib import Path
 import pymysql
 pymysql.install_as_MySQLdb()
 import os
-
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +29,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split()
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '::1']
 
 
 # Application definition
@@ -111,7 +111,7 @@ DATABASES = {
         'NAME': config('POSTGRES_DB'),          
         'USER': config('POSTGRES_USER'),
         'PASSWORD': config('POSTGRES_PASSWORD'),                        # Or your actual password if set
-        'HOST': os.environ.get('DB_HOST', 'db'),                   # Use IP instead of localhost
+        'HOST': os.environ.get('DB_HOST', 'localhost'),                   # Use IP instead of localhost
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }

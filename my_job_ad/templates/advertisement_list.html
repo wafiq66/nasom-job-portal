@@ -24,8 +24,52 @@
                     </tr>
                 </thead>
                 <tbody>
+                <!--Can be replaced later with the backend code to list down all the job ad-->
                     <tr>
-                        <td scope="row">Mark</td>
+                        <td scope="row">
+                            <form method="post" action="{% url 'post_job' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline text-decoration-none">Check Assistant</button>
+                            </form>
+                        </td>
+
+                        <td class="text-center text-success">Active</td>
+                        <td class="text-center">25</td>
+                        <td class="text-center">
+                            <div class="dropdown">
+                            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                ☰ 
+                            </button>
+                            <ul class="dropdown-menu">
+
+                                <li>
+                                <form method="post" action="" class="dropdown-item m-0 p-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">View Applications</button>
+                                </form>
+                                </li>
+
+                                <li>
+                                <form method="post" action="{% url 'post_job' %}" class="dropdown-item m-0 p-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">Update</button>
+                                </form>
+                                </li>
+
+                                <li>
+                                <form method="post" action="" class="dropdown-item m-0 p-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-danger">Close Job Ad</button>
+                                </form>
+                                </li>
+
+                            </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td scope="row">Kitchen Cleaner</td>
                         <td class="text-center text-success">Active</td>
                         <td class="text-center">25</td>
                         <td class="text-center">
@@ -42,11 +86,14 @@
                             </div>
                         </td>
                     </tr>
+                <!--Replaced end here-->
                 </tbody>
             </table>
 
         </div>
-        
+        <div class="d-flex justify-content-end ">
+            <a href="{% url 'post_job' %}" class="btn btn-primary mx-3"><i class="fa-solid fa-plus"></i> Post Job Ad</a>
+        </div> 
     </main>
 </div>
 
