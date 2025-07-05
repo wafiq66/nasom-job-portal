@@ -46,6 +46,53 @@ function setupCheckboxPreview(checkboxId, previewId) {
 //these kita call balik function setupRadioPreview tu
     setupRadioPreview('job-category','previewJobCategory')
 
+
+//this function will be the goat, cuz it will add required to the opened text area
+function addRequiredIfChecked(toggleId, textareaId) {
+  const trigger = document.getElementById(toggleId);     // checkbox or radio
+  const target = document.getElementById(textareaId);  // input/textarea/select/etc
+
+  function updateRequired() {
+    if (trigger.checked) {
+      target.setAttribute('required', 'required');
+    } else {
+      target.removeAttribute('required');
+    }
+  }
+
+  trigger.addEventListener('change', updateRequired);
+
+  // Initialize on page load
+  updateRequired();
+}
+
+function addRequiredIfRadioChecked(radioName, wrapperId, mapWrap) {
+  const radios = document.querySelectorAll(`input[name="${radioName}"]`);
+  const wrapper = document.getElementById(wrapperId);
+  const target = wrapper.querySelector('textarea');
+
+  function updateRequired() {
+    const selected = Array.from(radios).find(r => r.checked);
+    if (selected && selected.value && selected.value !== 'none') {
+      target.setAttribute('required', 'required');
+    } else {
+      target.removeAttribute('required');
+    }
+  }
+
+  radios.forEach(radio => {
+    radio.addEventListener('change', updateRequired);
+  });
+
+  // Initialize on load
+  updateRequired();
+
+  // Optional: attach to mapWrap so you can call it from outside if needed
+  mapWrap.updateRequired = updateRequired;
+}
+
+
+
 //function ni untuk sigma ohayo yg power code. function ni digunakan untuk buat preview yg sangat epic
 function setupTextareaTogglePreview(toggleId, previewTitleId, previewTextId, textareaId, wrapperId) {
   const toggle = document.getElementById(toggleId);
@@ -76,7 +123,7 @@ function setupTextareaTogglePreview(toggleId, previewTitleId, previewTextId, tex
   textarea.addEventListener('input', () => {
     previewText.textContent = textarea.value;
   });
-
+  addRequiredIfChecked(toggleId, textareaId);
   // initialize on load
   updatePreview();
 }
@@ -121,11 +168,39 @@ function setupRadioWithTextareaAndFixedPreview({ radioName, wrapperId, previewTi
     previewDesc.textContent = textarea.value;
   });
 
+  addRequiredIfRadioChecked(radioName, wrapperId, labelMap)
   updatePreview();
 }
 
+function setupSimpleTextareaPreview(textareaId, previewDescId) {
+      const textarea = document.getElementById(textareaId);
+      const preview = document.getElementById(previewDescId);
 
+      function update() {
+        const value = textarea.value.trim();
+        if (value) {
+          preview.classList.remove('d-none');
+          preview.textContent = value;
+        } else {
+          preview.classList.add('d-none');
+          preview.textContent = '';
+        }
+      }
 
+      textarea.addEventListener('input', update);
+      update(); // Initialize once
+    }
+
+// ✅ Setup simple textarea preview
+setupSimpleTextareaPreview('jobtitle','previewJobTitle');
+setupSimpleTextareaPreview('state','previewState');
+setupSimpleTextareaPreview('city','previewCity');
+setupSimpleTextareaPreview('min-pay','previewMinSalary');
+setupSimpleTextareaPreview('max-pay','previewMaxSalary');
+setupSimpleTextareaPreview('question1','previewQuestion1');
+setupSimpleTextareaPreview('question2','previewQuestion2');
+setupSimpleTextareaPreview('question3','previewQuestion3');
+setupSimpleTextareaPreview('maintask','previewMainTaskDesc');
 
 // ✅ Setup checkbox-only preview
 setupCheckboxPreview('repetitiveTask', 'previewRepetitiveTask');
@@ -134,7 +209,9 @@ setupCheckboxPreview('easyToRemember', 'previewEasyToRemember');
 setupCheckboxPreview('noInterview', 'previewNoInterview');
 setupCheckboxPreview('lessNoisy', 'previewLessNoisy');
 setupCheckboxPreview('lessStressful', 'previewLessStressful');
-
+setupCheckboxPreview('autism-level-1', 'previewLevel1');
+setupCheckboxPreview('autism-level-2', 'previewLevel2');
+setupCheckboxPreview('autism-level-3-1', 'previewLevel3');
 // ✅ Setup checkbox + textarea preview
 setupTextareaTogglePreview('toggleSubtask', 'previewSubTask', 'previewSubTaskDesc', 'subtask', 'subtaskWrapper');
 setupTextareaTogglePreview('toggleInteractionWithCustomer', 'previewInteractionWithCustomer', 'previewInteractionWithCustomerDesc', 'interactionWithCustomer', 'interactionWithCustomerWrapper');
@@ -185,3 +262,67 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+
+
+  //this function is for the navigation, very long and yeah it is confusing
+  //make sure to use it properly like a sigma
+  const stepMap = {
+  classify: 'first-form',
+  write: 'second-form',
+  pre: 'third-form',
+  review: 'fourth-form'
+};
+
+function goToStep(step) {
+  const current = document.querySelector('.form-section.active');
+  if (current) {
+    const requiredFields = current.querySelectorAll('[required]');
+    let allValid = true;
+
+    requiredFields.forEach(field => {
+      const isRadioOrCheckbox = (field.type === 'radio' || field.type === 'checkbox');
+      if (isRadioOrCheckbox) {
+        const name = field.name;
+        const anyChecked = current.querySelectorAll(`input[name="${name}"]:checked`).length > 0;
+        if (!anyChecked) {
+          allValid = false;
+          field.classList.add('is-invalid');
+        } else {
+          field.classList.remove('is-invalid');
+        }
+      } else if (!field.value.trim()) {
+        field.classList.add('is-invalid');
+        allValid = false;
+      } else {
+        field.classList.remove('is-invalid');
+      }
+    });
+
+    if (!allValid) {
+      alert("Please fill all required fields before continuing.");
+      return;
+    }
+  }
+
+  // Hide all sections
+  document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
+
+  // Reset all nav button styles
+  document.querySelectorAll('.top-header-nav-alt2, .top-header-nav-selected-alt2').forEach(btn => {
+    btn.classList.remove('top-header-nav-selected-alt2');
+    btn.classList.add('top-header-nav-alt2');
+  });
+
+  // Show selected section
+  const targetId = stepMap[step];
+  if (targetId) {
+    document.getElementById(targetId).classList.add('active');
+  }
+
+  // Highlight selected nav button
+  const navBtn = document.getElementById('nav-' + step);
+  if (navBtn) {
+    navBtn.classList.remove('top-header-nav-alt2');
+    navBtn.classList.add('top-header-nav-selected-alt2');
+  }
+}

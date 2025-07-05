@@ -22,29 +22,30 @@
                     <h4>Post Job Advertisement</h4>
                 </div>
 
-                <div class="d-flex gap-5 border-bottom border-secondary border-1 px-3">
-                    <button type="button" onclick="goToStep('classify')" class="btn top-header-nav-selected">Classify</button>
-                    <button type="button" onclick="goToStep('write')" class="btn top-header-nav">Write</button>
-                    <button type="button" onclick="goToStep('pre')" class="btn top-header-nav">Pre Interview Questions</button>
-                    <button type="button" onclick="goToStep('review')" class="btn top-header-nav">Review</button>
+                <div class="d-flex gap-5 border-bottom border-secondary border-1 px-3 ">
+                    <button type="button" onclick="goToStep('classify')" class="btn-none top-header-nav-selected-alt2" id="nav-classify">Classify</button>
+                    <button type="button" onclick="goToStep('write')" class="btn-none top-header-nav-alt2" id="nav-write">Write</button>
+                    <button type="button" onclick="goToStep('pre')" class="btn-none top-header-nav-alt2" id="nav-pre">Pre Interview Questions</button>
+                    <button type="button" onclick="goToStep('review')" class="btn-none top-header-nav-alt2" id="nav-review">Review</button>
                 </div>
 
+
                 <!--the first form that will be displayed-->
-                <div id="first-section" class=" d-flex flex-column px-4">
+                <div id="first-form" class="form-section active flex-column px-4 ">
                     <div class="d-flex">
                         <div class="form-group flex-fill  py-2">
                             <label for="jobtitle">Job Title</label>
-                            <input type="text" name="jobtitle" class="form-control" placeholder="Add Job Title..." required>
+                            <input id="jobtitle" type="text" name="jobtitle" class="form-control" placeholder="Add Job Title..." required>
                         </div>
                     </div>
                     <div class="d-flex gap-2">
                         <div class="form-group flex-fill  py-2">
-                            <label for="jobtitle">State</label>
-                            <input type="text" name="state" class="form-control" placeholder="Add Job Title..." required>
+                            <label for="city">City</label>
+                            <input id='city' type="text" name="city" class="form-control" placeholder="Add Job Title..." required>
                         </div>
                         <div class="form-group flex-fill  py-2">
-                            <label for="jobtitle">City</label>
-                            <input type="text" name="city" class="form-control" placeholder="Add Job Title..." required>
+                            <label for="state">State</label>
+                            <input id="state" type="text" name="state" class="form-control" placeholder="Add Job Title..." required>
                         </div>
                     </div>
                     <div class="form-group flex-fill  py-2">
@@ -100,27 +101,27 @@
                         <div class="d-flex gap-2">
                             <div class="form-group flex-fill  py-2">
                                 <label for="jobtitle">From</label>
-                                <input type="number" name="min-pay" class="form-control" placeholder="1200" id="min-pay">
+                                <input type="number" name="min-pay" class="form-control" placeholder="1200" id="min-pay" required>
                             </div>
                             <div class="form-group flex-fill  py-2">
                                 <label for="jobtitle">To</label>
-                                <input type="number" name="max-pay" class="form-control" placeholder="1500" id="max-pay">
+                                <input type="number" name="max-pay" class="form-control" placeholder="1500" id="max-pay" required>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">
                         <div class="button-section">
-                            <button class="btn btn-secondary">Cancel</button>
+                            <a class="btn btn-secondary" href="{% url 'view_job_table' %}">Cancel</a>
                         </div>
                         <div class="button-section">
                             <button class="btn btn-secondary">Save as Draft</button>
-                            <button class="btn btn-primary">Next</button>
+                            <button class="btn btn-primary" onclick="goToStep('write')">Next</button>
                         </div>
                     </div>
                 </div>
 
                 <!--the second form that will be displayed-->
-                <div id="second-section" class="d-flex flex-column px-4 py-2">
+                <div id="second-form" class="form-section  flex-column px-4 py-2">
                     <div class="form-group flex-fill  py-2">
                         <label for="responsibilities">Responsibilities</label>
                         <small class="text-muted d-block mt-1">Please tick and elaborate the responsibilities of the applicants.</small>
@@ -141,7 +142,7 @@
                     <!-- Textarea hidden by default, shown when checkbox is checked -->
                     <div class="collapse" id="subtaskWrapper">
                         <div class="form-group py-2">
-                            <textarea name="subtask" id="subtask" class="form-control" placeholder="Write your sub task here..." required style="min-height: 150px;"></textarea>
+                            <textarea name="subtask" id="subtask" class="form-control" placeholder="Write your sub task here..." style="min-height: 150px;"></textarea>
                         </div>
                     </div>
 
@@ -176,7 +177,7 @@
                     <!-- Textarea hidden by default, shown when checkbox is checked -->
                     <div class="collapse" id="interactionWithCustomerWrapper">
                         <div class="form-group py-2">
-                            <textarea name="interactionWithCustomer" id="interactionWithCustomer" class="form-control" placeholder="How do you ensure that the customers are aware of your employee is autistic..." required style="min-height: 150px;"></textarea>
+                            <textarea name="interactionWithCustomer" id="interactionWithCustomer" class="form-control" placeholder="How do you ensure that the customers are aware of your employee is autistic..." style="min-height: 150px;"></textarea>
                         </div>
                     </div>
 
@@ -436,18 +437,18 @@
 
                     <div class="d-flex justify-content-between">
                         <div class="button-section">
-                            <button class="btn btn-secondary">Back</button>
+                            <button class="btn btn-secondary" onclick="goToStep('classify')">Back</button>
                         </div>
                         <div class="button-section">
                             <button class="btn btn-secondary">Save as Draft</button>
-                            <button class="btn btn-primary">Next</button>
+                            <button class="btn btn-primary" onclick="goToStep('pre')">Next</button>
                         </div>
                     </div>
                     
                 </div>
 
                 <!--the third form that will be displayed-->
-                <div id="third-section" class="d-flex flex-column px-4 py-2">
+                <div id="third-form" class="form-section  flex-column px-4 py-2">
                     <div class="form-group flex-fill  py-2">
                         <label for="interviewQuestion">Pre Interview Question</label>
                         <small class="text-muted d-block mt-1">Ask your applicant three questions.</small>
@@ -461,32 +462,32 @@
 
                         <div class="form-group flex-fill py-2">
                             <label for="question2">Question 2</label>
-                            <input type="text" name="question2" id="question2" class="form-control" placeholder="Enter your second question...">
+                            <input type="text" name="question2" id="question2" class="form-control" placeholder="Enter your second question..." required>
                         </div>
 
                         <div class="form-group flex-fill py-2">
                             <label for="question3">Question 3</label>
-                            <input type="text" name="question3" id="question3" class="form-control" placeholder="Enter your third question...">
+                            <input type="text" name="question3" id="question3" class="form-control" placeholder="Enter your third question..." required>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-between">
                         <div class="button-section">
-                            <button class="btn btn-secondary">Back</button>
+                            <button class="btn btn-secondary" onclick="goToStep('write')">Back</button>
                         </div>
                         <div class="button-section">
                             <button class="btn btn-secondary">Save as Draft</button>
-                            <button class="btn btn-primary">Next</button>
+                            <button class="btn btn-primary" onclick="goToStep('review')">Next</button>
                         </div>
                     </div>
                 </div>
 
                 <!--the fourth form that will be displayed-->
-                <div id="fourth-form" class="d-flex flex-column px-4 py-2 gap-2">
+                <div id="fourth-form" class="form-section  flex-column px-4 py-2 gap-2">
                     <div class="d-flex gap-4 align-items-center">
                         <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="company-logo img-thumbnail" id="company-logo">
                         <div class="d-flex flex-column gap-2">
-                            <h4 class="m-0" >Kitchen Helper</h4>
+                            <h4 class="m-0" class="d-none" id="previewJobTitle"></h4>
                             <div class="d-flex gap-2 align-items-end">
                                 <p class="m-0">At McDonald</p>
                                 <span class="d-none job-tag job-tag-category" id="previewJobCategory"></span>
@@ -496,9 +497,9 @@
                             </div>
                             <div class="d-flex gap-2 align-items-end">
                                 <p class="m-0">Open For Autism</p> 
-                                <span class="job-tag job-tag-open">Level 1</span>
-                                <span class="job-tag job-tag-open">Level 2</span>
-                                <span class="job-tag job-tag-open">Level 3</span>
+                                <span class="d-none job-tag job-tag-open" id="previewLevel1">Level 1</span>
+                                <span class="d-none job-tag job-tag-open" id="previewLevel2">Level 2</span>
+                                <span class="d-none job-tag job-tag-open" id="previewLevel3">Level 3</span>
                             </div>
                         </div>
                     </div>
@@ -509,7 +510,7 @@
                             <h5>Job Description</h5>
                             <p class="text-decoration-underline">Responsibilities</p>
                             <p class="m-0"><b>Main Task</b></p>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam tempore voluptate ducimus qui vero ipsa cum blanditiis eligendi assumenda. Repudiandae iure aut ab, saepe similique nisi odio ex ipsam. Dolorum!</p>
+                            <p class="d-none" id="previewMainTaskDesc"></p>
                             <p class="m-0 d-none" id="previewSubTask"><b>Sub Task</b></p>
                             <p class="d-none" id="previewSubTaskDesc"></p>
 
@@ -571,26 +572,26 @@
                         <div class="" style="flex: 3;">
                             <div class="d-flex flex-column border border-dark rounded px-1 py-2">
                                 <h6 class="m-0">Salary</h6>
-                                    <p><span>RM1000</span> - <span>RM1500</span></p>
+                                    <p>RM<span class="d-none" id="previewMinSalary"></span> - RM<span class="d-none" id="previewMaxSalary"></span></p>
 
                                     <h6 class="m-0">Location</h6>
-                                    <p><span>Kuantan</span>, <span>Pahang</span></p>
+                                    <p><span class="d-none" id="previewCity"></span>, <span class="d-none" id="previewState"></span></p>
 
                                     <h6 class="m-0">Question 1</h6>
-                                    <p>Are you gay?</p>
+                                    <p id="previewQuestion1"></p>
 
                                     <h6 class="m-0">Question 2</h6>
-                                    <p>Are you gay?</p>
+                                    <p id="previewQuestion2"></p>
 
                                     <h6 class="m-0">Question 3</h6>
-                                    <p>Are you gay?</p>
+                                    <p id="previewQuestion3"></p>
                             </div>
                         </div>
                     </div>
                     
                     <div class="d-flex justify-content-between">
                         <div class="button-section">
-                            <button class="btn btn-secondary">Back</button>
+                            <button class="btn btn-secondary" onclick="goToStep('pre')">Back</button>
                         </div>
                         <div class="button-section">
                             <button class="btn btn-secondary">Save as Draft</button>
