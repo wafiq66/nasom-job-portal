@@ -14,6 +14,25 @@
             <h5>My Job Ads</h5>
         </div> 
         <div class="px-5">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="mx-2 px-3 alert 
+                            {% if message.tags == 'error' %}
+                                alert-danger
+                            {% elif message.tags == 'success' %}
+                                alert-success
+                            {% elif message.tags == 'warning' %}
+                                alert-warning
+                            {% elif message.tags == 'info' %}
+                                alert-info
+                            {% else %}
+                                alert-secondary
+                            {% endif %}" 
+                            role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
@@ -27,7 +46,7 @@
                 <!--Can be replaced later with the backend code to list down all the job ad-->
                     <tr>
                         <td scope="row">
-                            <form method="post" action="{% url 'post_job' %}">
+                            <form method="post" action="{% url 'reload_job' %}">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-link p-0 m-0 align-baseline text-decoration-none">Check Assistant</button>
                             </form>
@@ -50,7 +69,7 @@
                                 </li>
 
                                 <li>
-                                <form method="post" action="{% url 'post_job' %}" class="dropdown-item m-0 p-0">
+                                <form method="post" action="{% url 'reload_job' %}" class="dropdown-item m-0 p-0">
                                     {% csrf_token %}
                                     <button type="submit" class="dropdown-item">Update</button>
                                 </form>
@@ -92,7 +111,7 @@
 
         </div>
         <div class="d-flex justify-content-end ">
-            <a href="{% url 'post_job' %}" class="btn btn-primary mx-3"><i class="fa-solid fa-plus"></i> Post Job Ad</a>
+            <a href="{% url 'reload_job' %}" class="btn btn-primary mx-3"><i class="fa-solid fa-plus"></i> Post Job Ad</a>
         </div> 
     </main>
 </div>

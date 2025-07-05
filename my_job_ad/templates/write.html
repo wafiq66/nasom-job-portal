@@ -13,7 +13,7 @@
 {% block content %}
     <div class="d-flex">
         {% include "sidebars/sidebar2.html" %}
-        <form method="post" action="" class="d-flex flex-column gap-2 w-100">
+        <form method="post" action="{% url 'post_job' %}" class="d-flex flex-column gap-2 w-100">
             {% csrf_token %}
 
             <main class="d-flex flex-column gap-2 py-4 w-100">
@@ -114,8 +114,8 @@
                             <a class="btn btn-secondary" href="{% url 'view_job_table' %}">Cancel</a>
                         </div>
                         <div class="button-section">
-                            <button class="btn btn-secondary">Save as Draft</button>
-                            <button class="btn btn-primary" onclick="goToStep('write')">Next</button>
+                            <button type="submit" class="btn btn-secondary" value="draft" name="action" formnovalidate>Save as Draft</button>
+                            <button type="button" class="btn btn-primary" onclick="goToStep('write')">Next</button>
                         </div>
                     </div>
                 </div>
@@ -437,11 +437,11 @@
 
                     <div class="d-flex justify-content-between">
                         <div class="button-section">
-                            <button class="btn btn-secondary" onclick="goToStep('classify')">Back</button>
+                            <button type="button" class="btn btn-secondary" onclick="goToStep('classify')" >Back</button>
                         </div>
                         <div class="button-section">
-                            <button class="btn btn-secondary">Save as Draft</button>
-                            <button class="btn btn-primary" onclick="goToStep('pre')">Next</button>
+                            <button type="submit" class="btn btn-secondary" value="draft" name="action" formnovalidate>Save as Draft</button>
+                            <button type="button" class="btn btn-primary" onclick="goToStep('pre')">Next</button>
                         </div>
                     </div>
                     
@@ -473,11 +473,11 @@
 
                     <div class="d-flex justify-content-between">
                         <div class="button-section">
-                            <button class="btn btn-secondary" onclick="goToStep('write')">Back</button>
+                            <button type="button" class="btn btn-secondary" onclick="goToStep('write')" formnovalidate>Back</button>
                         </div>
                         <div class="button-section">
-                            <button class="btn btn-secondary">Save as Draft</button>
-                            <button class="btn btn-primary" onclick="goToStep('review')">Next</button>
+                            <button type="submit" class="btn btn-secondary" value="draft" name="action" formnovalidate>Save as Draft</button>
+                            <button type="button" class="btn btn-primary" onclick="goToStep('review')">Next</button>
                         </div>
                     </div>
                 </div>
@@ -594,8 +594,8 @@
                             <button class="btn btn-secondary" onclick="goToStep('pre')">Back</button>
                         </div>
                         <div class="button-section">
-                            <button class="btn btn-secondary">Save as Draft</button>
-                            <button class="btn btn-primary">Publish</button>
+                            <button type="submit" class="btn btn-secondary" value="draft" name="action" formnovalidate>Save as Draft</button>
+                            <button type="submit" class="btn btn-primary" value="publish" name="action">Publish</button>
                         </div>
                     </div>
                 </div>
