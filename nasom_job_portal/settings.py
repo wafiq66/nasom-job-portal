@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     "login_page", #page
     "landing_page", #page
     "profile_user", #page
-    "my_job_ad", #page
+    "my_job_ad", #page - this one is more to the employer
+    "my_job_list", #page - this one is more to the applicant
+    "manage_applicant",#page
     "application_user", #model
     "document", #model
     "education_vocation_training",#model

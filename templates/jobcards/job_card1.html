@@ -1,0 +1,29 @@
+{% load static %}
+<div class="jobcard-wrapper">
+  <div class="jobcard-title">Clerk</div>
+
+  <div class="jobcard-tags">
+    <span class="jobcard-tag jobcard-tag-part-time">PART TIME</span>
+    <span class="jobcard-tag jobcard-tag-suitable">SUITABLE FOR APPLICANT WITH IMMEDIATE AVAILABILITY</span>
+    <span class="jobcard-tag jobcard-tag-job-type">PROFESSIONAL JOB</span>
+  </div>
+
+  <div class="jobcard-salary">Salary: RM 800 - RM 1,000</div>
+
+  <div class="jobcard-company-info">
+    <div class="jobcard-company-details">
+      <div class="jobcard-company-logo m-2">
+        <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="jobcard-logo-img">
+      </div>
+      <div>
+        <div class="jobcard-company-name">Twitter Inc.</div>
+        <div class="jobcard-company-location">
+          <i class="fas fa-map-marker-alt"></i> Petaling Jaya, Selangor
+        </div>
+      </div>
+    </div>
+    <a href="{% url 'view_job_ad' %}" class="jobcard-next-btn">
+      <i class="fa-sharp fa-solid fa-circle-chevron-right"></i>
+    </a>
+  </div>
+</div>

@@ -31,9 +31,7 @@
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="{% url 'employer_profile' %}">Company Profile</a>
             <a class="dropdown-item" href="{% url 'view_job_table' %}">My Job Ads</a>
-            <a class="dropdown-item" href="#">Saved Applicant</a>
             <a class="dropdown-item" href="#">Manage Applicant</a>
-            <a class="dropdown-item" href="#">Setting</a>
             <a href="{% url 'landing_applicant' %}" class="text-primary dropdown-item">Switch To Applicant Account</a>
             <form class="dropdown-item" method="post" action="{% url 'logout' %}" style="margin: 0;">
                 {% csrf_token %}

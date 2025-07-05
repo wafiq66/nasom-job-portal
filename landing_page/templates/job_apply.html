@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Job Hiring Portal{% endblock %}
+
+{% block header %}
+        {% include "headers/header2.html" %}
+{% endblock %}
+
+{% block footer %}
+        {% include "footers/footer2.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="d-flex flex-column align-items-center">
+    {% include "search/search1.html" %}
+    <div class="w-75">
+        <div class="d-flex flex-column  px-4 py-2 gap-2">
+            <div class="d-flex align-items-center justify-content-between gap-1 py-2 border-bottom border-secondary">
+                <div class="d-flex align-items-center gap-1">
+                    <a href="javascript:history.back()" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center back-btn">
+                        <i class="bi bi-arrow-left text-dark"></i>
+                    </a>
+                    <h6 class="m-0 p-0">Back</h6>
+                </div>
+                <i class="fa-sharp fa-solid fa-bookmark" style="font-size: 27px; cursor: pointer;"></i>
+            </div>
+            
+            <div class="d-flex gap-4 align-items-center">
+                <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="company-logo img-thumbnail" id="company-logo">
+                <div class="d-flex flex-column gap-2">
+                    <h4 class="m-0" class="" id="noteJobTitle">Clerk</h4>
+                    <div class="d-flex gap-2 align-items-end">
+                        <p class="m-0">At Twitter Inc.</p>
+                        <span class=" job-tag job-tag-category" id="noteJobCategory">Professional Job</span>
+                        <span class=" job-tag job-tag-type" id="noteFullTime">Full-Time</span>
+                        <span class=" job-tag job-tag-type" id="notePartTime">Part-Time</span>
+                        <span class=" job-tag job-tag-type" id="noteRemote">Remote</span>
+                    </div>
+                    <div class="d-flex gap-2 align-items-end">
+                        <p class="m-0">Open For Autism</p> 
+                        <span class=" job-tag job-tag-open" id="noteLevel1">Level 1</span>
+                        <span class=" job-tag job-tag-open" id="noteLevel2">Level 2</span>
+                        <span class=" job-tag job-tag-open" id="noteLevel3">Level 3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 flex-fill">
+                <!--Column 1-->
+                <div class="d-flex flex-column" style="flex: 6;">
+                    
+                    <h5>Job Description</h5>
+                    <p class="text-decoration-underline">Responsibilities</p>
+
+                    <p class="m-0"><b>Main Task</b></p>
+                    <p class="" id="noteMainTaskDesc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet nemo, repellendus unde beatae velit illo fuga iste maiores? Quam impedit molestiae, porro incidunt error possimus eius expedita minus. Consequuntur, itaque?</p>
+
+                    <p class="m-0 " id="noteSubTask"><b>Sub Task</b></p>
+                    <p class="" id="noteSubTaskDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, architecto fugit. Harum aliquam, animi voluptas dolorem id, iusto magni doloribus accusamus quo quidem non asperiores, aliquid laboriosam mollitia atque a.</p>
+
+                    <p class="" id="noteRepetitiveTask"><i class="fa-solid fa-check"></i> Repetitive Task</p>
+                    <p class="" id="noteEasyToPerform"><i class="fa-solid fa-check"></i> Easy to Perform</p>
+                    <p class="" id="noteEasyToRemember"><i class="fa-solid fa-check"></i> Easy to Remember</p>
+
+                    <p class="m-0 " id="noteInteractionWithCustomer"><b>Have Interaction with Customer</b></p>
+                    <p class="" id="noteInteractionWithCustomerDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi quis asperiores obcaecati doloremque excepturi quibusdam autem doloribus odio atque voluptas eius sit dolor, quod vitae blanditiis, dignissimos, veniam est? Molestias.</p>
+
+                    <p class="text-decoration-underline">Interviews Approach</p>
+
+                    <p class="m-0 " id="noteVerbal"><b>Verbal</b></p>
+                    <p class="" id="noteVerbalDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, ullam voluptate debitis inventore consectetur reiciendis ratione fugiat quasi cum blanditiis esse architecto exercitationem sed, aut corrupti eaque ab modi? Eum.</p>
+
+                    <p class="m-0 " id="noteNonVerbal"><b>Non-Verbal</b></p>
+                    <p class="" id="noteNonVerbalDesc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odio voluptate culpa quam fuga ea nulla facere ab, reprehenderit officiis explicabo modi maxime, nesciunt dolorem iste tempore? Enim exercitationem possimus obcaecati!</p>
+
+                    <p class="m-0 " id="noteRepresentative"><b>Representative</b></p>
+                    <p class="" id="noteRepresentativeDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, voluptatem aspernatur eveniet totam nobis nemo rerum consequatur maxime labore. Eligendi distinctio, quis nihil accusantium sapiente porro nemo unde iste dignissimos!</p>
+
+                    <p class="" id="noteNoInterview"><i class="fa-solid fa-check"></i> No Interview</p>
+
+                    <p class="text-decoration-underline">Benefits</p>
+
+                    <p class="m-0 " id="noteSpecialTraining"><b>Special Training</b></p>
+                    <p class="" id="noteSpecialTrainingDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus placeat, accusantium voluptatum officiis asperiores quibusdam explicabo ratione cumque ducimus saepe ex quis doloremque facere? Molestias minus beatae est odio. Ipsam!</p>
+
+                    <p class="m-0 " id="noteTrainingTime"><b>One Time Training | Multiple Time Training</b></p>
+                    <p class="" id="noteTrainingTimeDesc">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Adipisci, sunt reprehenderit fuga dolorem aliquam maxime ab assumenda corrupti minima non pariatur laudantium, rem illo cum nihil voluptatum ratione officia id!</p>
+
+                    <p class="m-0 " id="noteWorkBuddy"><b>Work Buddy</b></p>
+                    <p class="" id="noteWorkBuddyDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui voluptatibus quia obcaecati quos, labore harum iusto porro nisi optio pariatur similique nobis soluta? Est possimus optio voluptatem iure expedita? Quo!</p>
+
+                    <p class="m-0 " id="noteMentor"><b>Mentor</b></p>
+                    <p class="" id="noteMentorDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore magni, perferendis dicta eveniet facere atque voluptate quis aspernatur doloribus est. Doloremque voluptas a magni ad maiores architecto excepturi dolores aliquam.</p>
+
+                    <p class="" id="noteLessNoisy"><i class="fa-solid fa-check"></i> Less Noisy Working Environment</p>
+                    <p class="" id="noteLessStressful"><i class="fa-solid fa-check"></i> Less Stressful Working Environment</p>
+
+                    <p class="m-0 " id="noteCalmingSpace"><b>Calming Space</b></p>
+                    <p class="" id="noteCalmingSpaceDesc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus fuga consequuntur qui debitis ipsum dicta, aperiam perferendis in beatae amet veniam, corporis ratione velit. Molestiae nesciunt amet aut possimus culpa.</p>
+
+                    <p class="m-0 " id="noteShiftArrangement"><b>Fully Flexible | Shift Pool</b></p>
+                    <p class="" id="noteShiftArrangementDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea at aperiam recusandae, itaque quae reprehenderit quasi assumenda maxime excepturi, voluptatum officia illum maiores rem ad nam vero a cumque libero!</p>
+
+                    <p class="m-0 " id="noteProgressUpdate"><b>Regular Update on Applicant Progress</b></p>
+                    <p class="" id="noteProgressUpdateDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo libero ipsa consectetur vitae quisquam vero, nam, iusto, eaque sunt ipsum quasi officia suscipit dolorem aliquid iste sapiente quo saepe architecto!</p>
+
+                    <p class="m-0 " id="noteTransportation"><b>Transportation Fully Provided | Transportation Partial Provided Only</b></p>
+                    <p class="" id="noteTransportationDesc">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officia sequi enim dolorum accusantium pariatur inventore aperiam, earum asperiores unde consequuntur eveniet dolor explicabo maiores deleniti accusamus beatae omnis nesciunt harum.</p>
+
+                    <p class="text-decoration-underline">Further Description</p>
+
+                    <p class="m-0 " id="noteOtherNotes"><b>Other</b></p>
+                    <p class="" id="noteOtherNotesDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo aperiam odit maxime qui id illum provident dolore assumenda delectus. Quod consectetur repellendus molestias debitis praesentium dolor unde ab culpa corporis?</p>
+                </div>
+                <!--Column 2-->
+                <div class="" style="flex: 4;">
+                    <div class="d-flex flex-column border border-dark rounded px-1 py-2">
+                        <h6 class="m-0">Salary</h6>
+                            <p>RM<span class="" id="noteMinSalary">800</span> - RM<span class="" id="noteMaxSalary">1000</span></p>
+
+                            <h6 class="m-0">Location</h6>
+                            <p><span class="" id="noteCity">Petaling Jaya</span>, <span class="" id="noteState">Selangor</span></p>
+                    </div>
+                    <br>
+                    <form class="d-flex flex-column border border-dark rounded px-1 py-2">
+                        <div class="p-2 mb-2 bg-success text-white rounded">Application Form</div>
+                        <div class="form-group flex-fill py-2">
+                            <label for="answer1">Answer 1</label>
+                            <small class="text-muted d-block">Do you think you can work together?</small>
+                            <input type="text" name="answer1" id="answer1" class="form-control" placeholder="Enter your answer..." required>
+                        </div>
+                        <div class="form-group flex-fill py-2">
+                            <label for="answer2">Answer 2</label>
+                            <small class="text-muted d-block">How much pressure can you handle?</small>
+                            <input type="text" name="answer2" id="answer2" class="form-control" placeholder="Enter your answer..." required>
+                        </div>
+                        <div class="form-group flex-fill py-2">
+                            <label for="answer3">Answer 3</label>
+                            <small class="text-muted d-block">Do you can handle high pitch sound?</small>
+                            <input type="text" name="answer3" id="answer3" class="form-control" placeholder="Enter your answer..." required>
+                        </div>
+                        <div class="form-group flex-fill py-2">
+                            <label for="resume">Select Resume</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>(no resume)</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Submit Application</button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</main>
+{% endblock  %}

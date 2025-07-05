@@ -1,0 +1,23 @@
+{% load static %}
+<div class="jobcard-wrapper">
+  <input type="hidden" name="job_id" value="123">
+
+  <div class="jobcard-title">Clerk</div>
+
+  <div class="jobcard-date">Date Applied: 7 Jun 2023</div>
+  <div class="jobcard-salary">Salary: RM 800 - RM 1,000</div>
+
+  <div class="jobcard-company-info">
+    <div class="jobcard-company-details">
+      <div class="jobcard-company-logo m-2">
+        <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="jobcard-logo-img">
+      </div>
+      <div>
+        <div class="jobcard-company-name">Twitter Inc.</div>
+        <div class="jobcard-company-location">
+          <i class="fas fa-map-marker-alt"></i> Petaling Jaya, Selangor
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

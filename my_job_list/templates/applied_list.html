@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Job Hiring Portal{% endblock %}
+
+{% block header %}
+        {% include "headers/header2.html" %}
+{% endblock %}
+
+{% block footer %}
+        {% include "footers/footer2.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    {% include "sidebars/sidebar1.html" %}
+    <main class="d-flex flex-column gap-2  w-100">
+        <div class="d-flex text-light bg-dark px-4 py-3">
+            <h5>Applied Jobs</h5>
+        </div> 
+        
+        <div id="lower-layout" class="row row-cols-1 row-cols-md-2 g-3 m-2">
+                <div class="col">
+                        {% include "jobcards/job_card2.html" %}
+                </div>
+                <div class="col">
+                        {% include "jobcards/job_card2.html" %}
+                </div>
+                <div class="col">
+                        {% include "jobcards/job_card2.html" %}
+                </div>
+                <div class="col">
+                        {% include "jobcards/job_card2.html" %}
+                </div>
+        <!-- Add more items as needed -->
+        </div>
+    </main>
+</div>
+{% endblock  %}

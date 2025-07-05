@@ -11,28 +11,10 @@
     {% include "sidebars/sidebar2.html" %}
     <main class="d-flex flex-column gap-2  w-100">
         <div class="d-flex text-light bg-dark px-4 py-3">
-            <h5>My Job Ads</h5>
+            <h5>My Applicants</h5>
         </div> 
         <div class="px-5">
-            {% if messages %}
-                {% for message in messages %}
-                <div class="mx-2 px-3 alert 
-                            {% if message.tags == 'error' %}
-                                alert-danger
-                            {% elif message.tags == 'success' %}
-                                alert-success
-                            {% elif message.tags == 'warning' %}
-                                alert-warning
-                            {% elif message.tags == 'info' %}
-                                alert-info
-                            {% else %}
-                                alert-secondary
-                            {% endif %}" 
-                            role="alert">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            {% endif %}
+            
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
@@ -82,25 +64,6 @@
                                 </form>
                                 </li>
 
-                            </ul>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td scope="row">Kitchen Cleaner</td>
-                        <td class="text-center text-success">Active</td>
-                        <td class="text-center">25</td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                ☰ 
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
                             </ul>
                             </div>
                         </td>

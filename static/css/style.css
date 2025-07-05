@@ -354,3 +354,193 @@ input[type="radio"]:checked + label.btn-primary {
       border: 1px solid red;
       background-color: #ffe6e6;
     }
+
+/*This is for the goat search form*/
+/* Demo styles */
+        .my-custom-search {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .my-custom-search:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .my-custom-search:focus-within {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .my-custom-search label {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-right: 1px solid #e1e5e9;
+            color: #6c757d;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .my-custom-search:focus-within label {
+            background: #e3f2fd;
+            color: #007bff;
+        }
+
+        .my-custom-search input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #333;
+            background: transparent;
+        }
+
+        .my-custom-search input::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        .my-custom-search input:focus {
+            color: #007bff;
+        }
+
+        .demo-section {
+            margin-bottom: 10px;
+        }
+
+        .demo-title {
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+.jobcard-wrapper {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.jobcard-wrapper:hover {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.jobcard-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.jobcard-tags {
+  margin-bottom: 12px;
+}
+
+.jobcard-tag {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 4px;
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+
+.jobcard-tag-part-time {
+  background: #e8f5e8;
+  color: #2d5a2d;
+}
+
+.jobcard-tag-suitable {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.jobcard-tag-job-type {
+  background: #e3f2fd;
+  color: #0d6efd;
+}
+
+.jobcard-salary {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.jobcard-company-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jobcard-company-details {
+  display: flex;
+  align-items: center;
+}
+
+.jobcard-company-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.jobcard-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.jobcard-company-name {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.jobcard-company-location {
+  color: #666;
+  font-size: 13px;
+}
+
+.jobcard-next-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.jobcard-next-btn:hover {
+  color: #007bff;
+}
+
+.jobcard-next-btn.active {
+  color: #ffc107;
+}
+
+.jobcard-date {
+  color: #0d6efd; /* Bootstrap primary blue */
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+
+.bg-dark-blue{
+    background-color: #001F59;
+}

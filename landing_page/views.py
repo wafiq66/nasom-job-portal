@@ -9,3 +9,6 @@ def landing_applicant(request):
 
 def landing_employer(request):
     return render(request,"landing_employer.html")
+
+def view_job_ad(request):
+    return render(request,'job_apply.html')
