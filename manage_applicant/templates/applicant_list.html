@@ -54,31 +54,14 @@
             </div>
         </div>
         <!-- Applicant cards grid layout -->
-        <div id="applicant-layout" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 px-4">
-            <div class="col" data-name="Sarah Johnson" data-position="Software Developer" data-status="new" data-location="Kuala Lumpur" data-skills="JavaScript,React,Python,Django">{% include "applicantcards/applicant_card1.html" with name="Sarah Johnson" position="Software Developer" status_label="New Application" status_class="new-status" location="Kuala Lumpur" applied="2 days ago" %}</div>
-            <div class="col" data-name="Michael Chen" data-position="Data Analyst" data-status="shortlisted" data-location="Petaling Jaya" data-skills="Python,SQL,Tableau,R">{% include "applicantcards/applicant_card1.html" with name="Michael Chen" position="Data Analyst" status_label="Shortlisted" status_class="shortlisted-status" location="Petaling Jaya" applied="1 week ago" %}</div>
-            <div class="col" data-name="Emma Rodriguez" data-position="Marketing Assistant" data-status="review" data-location="Subang Jaya" data-skills="Social Media,Content Creation,Google Analytics,Canva">{% include "applicantcards/applicant_card1.html" with name="Emma Rodriguez" position="Marketing Assistant" status_label="Under Review" status_class="review-status" location="Subang Jaya" applied="3 days ago" %}</div>
-            <div class="col" data-name="David Lee" data-position="Software Developer" data-status="rejected" data-location="Kuala Lumpur" data-skills="Java,Spring,MySQL,Docker">{% include "applicantcards/applicant_card1.html" with name="David Lee" position="Software Developer" status_label="Rejected" status_class="rejected-status" location="Kuala Lumpur" applied="5 days ago" %}</div>
-            <div class="col" data-name="Lisa Wong" data-position="Data Analyst" data-status="new" data-location="Petaling Jaya" data-skills="Python,Pandas,Matplotlib,Scikit-learn">{% include "applicantcards/applicant_card1.html" with name="Lisa Wong" position="Data Analyst" status_label="New Application" status_class="new-status" location="Petaling Jaya" applied="1 day ago" %}</div>
-        </div>
-        <!-- Pagination section -->
-        <div class="d-flex justify-content-between align-items-center px-4 py-3 bg-white rounded shadow-sm mt-3">
-            <div class="text-muted" id="results-count">
-                Showing 5 of 5 applicants
+        <div class="container-fluid px-4">
+            <div id="applicant-layout" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="col" data-name="Sarah Johnson" data-position="Software Developer" data-status="new" data-location="Kuala Lumpur" data-skills="JavaScript,React,Python,Django">{% include "applicantcards/applicant_card1.html" with name="Sarah Johnson" position="Software Developer" status_label="New Application" status_class="new-status" location="Kuala Lumpur" applied="2 days ago" %}</div>
+                <div class="col" data-name="Michael Chen" data-position="Data Analyst" data-status="shortlisted" data-location="Petaling Jaya" data-skills="Python,SQL,Tableau,R">{% include "applicantcards/applicant_card1.html" with name="Michael Chen" position="Data Analyst" status_label="Shortlisted" status_class="shortlisted-status" location="Petaling Jaya" applied="1 week ago" %}</div>
+                <div class="col" data-name="Emma Rodriguez" data-position="Marketing Assistant" data-status="review" data-location="Subang Jaya" data-skills="Social Media,Content Creation,Google Analytics,Canva">{% include "applicantcards/applicant_card1.html" with name="Emma Rodriguez" position="Marketing Assistant" status_label="Under Review" status_class="review-status" location="Subang Jaya" applied="3 days ago" %}</div>
+                <div class="col" data-name="David Lee" data-position="Software Developer" data-status="rejected" data-location="Kuala Lumpur" data-skills="Java,Spring,MySQL,Docker">{% include "applicantcards/applicant_card1.html" with name="David Lee" position="Software Developer" status_label="Rejected" status_class="rejected-status" location="Kuala Lumpur" applied="5 days ago" %}</div>
+                <div class="col" data-name="Lisa Wong" data-position="Data Analyst" data-status="new" data-location="Petaling Jaya" data-skills="Python,Pandas,Matplotlib,Scikit-learn">{% include "applicantcards/applicant_card1.html" with name="Lisa Wong" position="Data Analyst" status_label="New Application" status_class="new-status" location="Petaling Jaya" applied="1 day ago" %}</div>
             </div>
-            <nav aria-label="Applicant pagination">
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </main>
 </div>

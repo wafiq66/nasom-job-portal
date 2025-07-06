@@ -1,19 +1,22 @@
-<nav class="sidebar d-flex flex-column justify-content-between px-3 py-4 gap-5">
-    <div class="upper-part d-flex flex-column gap-3">
-        <h6>Employer Dashboard</h6>
-        <div class="sidebar-navigation d-flex flex-column">
-            <a href="{% url 'employer_profile' %}" class="sidebar-navigation-element">Company Profile</a>
-            <a href="{% url 'view_job_table' %}" class="sidebar-navigation-element">My Job Ads</a>
-            <a href="{% url 'applicant_list' %}" class="sidebar-navigation-element">Manage Applicant</a>
+{% load static %}
+<nav class="sidebar d-flex flex-column justify-content-between px-3 py-4 gap-4 bg-white shadow rounded-3" style="min-width:220px; min-height:100vh;">
+    <div class="upper-part d-flex flex-column gap-4">
+        <!-- Logo/Icon -->
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <h6 class="fw-bold mb-0">Employer Dashboard</h6>
+        </div>
+        <div class="sidebar-navigation d-flex flex-column gap-1">
+            <a href="{% url 'employer_profile' %}" class="sidebar-navigation-element {% if request.resolver_match.url_name == 'employer_profile' %}sidebar-navigation-element-selected{% endif %}">Company Profile</a>
+            <a href="{% url 'view_job_table' %}" class="sidebar-navigation-element {% if request.resolver_match.url_name == 'view_job_table' %}sidebar-navigation-element-selected{% endif %}">My Job Ads</a>
+            <a href="{% url 'applicant_list' %}" class="sidebar-navigation-element {% if request.resolver_match.url_name == 'applicant_list' %}sidebar-navigation-element-selected{% endif %}">Manage Applicant</a>
         </div>
     </div>
-    <div class="d-flex flex-column">
+    <hr class="my-2">
+    <div class="d-flex flex-column gap-2">
         <a href="{% url 'landing_applicant' %}" class="bottom-side-nav-element">Switch To Applicant Account</a>
         <form class="bottom-side-nav-element" method="post" action="{% url 'logout' %}" style="margin: 0;">
             {% csrf_token %}
-            <button type="submit" class=" text-danger" style="border: none; background: none; padding: 0;">
-                Log Out
-            </button>
+            <button type="submit" class="btn btn-outline-danger w-100 py-2" style="border-radius:8px;">Log Out</button>
         </form>
     </div>
 </nav>
