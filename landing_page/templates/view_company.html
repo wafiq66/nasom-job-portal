@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Search Companies | Job Hiring Portal{% endblock %}
+
+{% block header %}
+    {% include "headers/header2.html" %}
+{% endblock %}
+
+{% block footer %}
+    {% include "footers/footer2.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column min-vh-100 bg-light">
+    <main class="w-100 d-flex flex-column gap-4 py-4">
+        <!-- Back Button -->
+        <div class="px-4 mb-3">
+            <a href="javascript:history.back()" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center back-btn me-2" style="width:40px; height:40px;">
+                <i class="bi bi-arrow-left text-dark"></i>
+            </a>
+        </div>
+        <!-- Company Info Card -->
+        <div class="px-4 mb-2">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-4 d-flex gap-4 align-items-start">
+                    <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="company-logo" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">
+                    <div class="flex-fill">
+                        <h2 class="mb-1">TechCorp Solutions</h2>
+                        <p class="text-muted mb-2">Kuala Lumpur</p>
+                        <p class="mb-3">Leading technology company specializing in software development and digital solutions. We focus on innovation and employee growth.</p>
+                        <!-- Optional: Website/Contact -->
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Listings for this Company -->
+        <div class="px-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Open Jobs at TechCorp Solutions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        <div class="col">
+                            {% include "jobcards/job_card1.html" with title="Software Engineer" job_type="FULL TIME" suitable="SUITABLE FOR AUTISM LEVEL 1" category="PROFESSIONAL JOB" salary="RM 3,000 - RM 5,000" company_name="TechCorp Solutions" location="Kuala Lumpur" logo="images/no-image.png" %}
+                        </div>
+                        <div class="col">
+                            {% include "jobcards/job_card1.html" with title="UI/UX Designer" job_type="CONTRACT" suitable="SUITABLE FOR AUTISM LEVEL 2" category="CREATIVE JOB" salary="RM 2,500 - RM 4,000" company_name="TechCorp Solutions" location="Kuala Lumpur" logo="images/no-image.png" %}
+                        </div>
+                        <div class="col">
+                            {% include "jobcards/job_card1.html" with title="Project Manager" job_type="FULL TIME" suitable="SUITABLE FOR AUTISM LEVEL 1" category="MANAGEMENT JOB" salary="RM 5,000 - RM 8,000" company_name="TechCorp Solutions" location="Remote" logo="images/no-image.png" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+

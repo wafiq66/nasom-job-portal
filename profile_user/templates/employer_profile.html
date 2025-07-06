@@ -1,95 +1,176 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Job Hiring Portal{% endblock %}
+{% block title %}Company Profile | Job Hiring Portal{% endblock %}
 
 {% block header %}
-        {% include "headers/header3.html" %}
+    {% include "headers/header3.html" %}
 {% endblock %}
 
 {% block content %}
 <div class="d-flex">
     {% include "sidebars/sidebar2.html" %}
-    <main class="d-flex flex-column gap-2  w-100">
-        <div class="d-flex text-light bg-dark px-4 py-3">
-            <h5>Company Profile</h5>
-        </div>
-        {% if messages %}
-            {% for message in messages %}
-            <div class="mx-2 px-3 alert 
-                        {% if message.tags == 'error' %}
-                            alert-danger
-                        {% elif message.tags == 'success' %}
-                            alert-success
-                        {% elif message.tags == 'warning' %}
-                            alert-warning
-                        {% elif message.tags == 'info' %}
-                            alert-info
-                        {% else %}
-                            alert-secondary
-                        {% endif %}" 
-                        role="alert">
-                {{ message }}
-            </div>
-            {% endfor %}
-        {% endif %}
+    <main class="w-100 d-flex flex-column gap-4 py-4">
+        <!-- Header Section -->
         <div class="px-4">
-            <h6>Company Logo</h6>
+            <div class="d-flex align-items-center gap-3">
+                <div>
+                    <h3 class="mb-1">Company Profile</h3>
+                    <p class="text-muted mb-0">Manage your company information and branding</p>
+                </div>
+            </div>
         </div>
+
+        <!-- Messages Section -->
+        {% if messages %}
+            <div class="px-4">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="fa fa-info-circle me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Profile Form Section -->
         <form action="{% url 'update_employer_profile' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="d-flex justify-content-between px-4 gap-2">
-                <div class="d-flex flex-column gap-2">
-                    {% if request.user.company_logo %}
-                    <img src="{{ request.user.company_logo.url }}" alt="Profile Picture" class="logo-img" id="companyLogoPreview">
-                    {% else %}
-                    <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="logo-img" id="companyLogoPreview">
-                    {% endif %}
-
-                    <input type="file" 
-                        name="logo_image" 
-                        accept="image/*" 
-                        class="file-input form-control" 
-                        id="profileImageInput" 
-                        onchange="previewLogo(event)"
-                        style="width: 300px;">
-
-                </div>
-                <div class="flex-fill">
-                    <div class="form-group">
-                        <label for="company_name">Company Name</label>
-                        <input type="text" name="company_name" class="form-control" value="{{ request.user.company_name|default_if_none:'' }}" placeholder="Please specify...">
-                    </div>
-                    <div class="form-group">
-                        <label for="main_location">Main Address</label>
-                        <input type="text" name="main_location" class="form-control" value="{{ request.user.company_address|default_if_none:'' }}" placeholder="Please specify...">
-                    </div>
-                    <div class="form-group">
-                        <label for="company_description">Company Description</label>
-                        <textarea class="form-control" id="company_description" name="company_description" rows="5" placeholder="Describe more about your company...">{{ request.user.company_description|default_if_none:'' }}</textarea>
-                    </div>
-                    <div class="d-flex justify-content-between gap-2">
-                        <div class="form-group flex-fill">
-                            <label for="company_email">Company Email</label>
-                            <input type="email" name="company_email" class="form-control" value="{{ request.user.company_email|default_if_none:'' }}" placeholder="Please specify...">
+            <div class="px-4">
+                <div class="row g-4">
+                    <!-- Logo Upload Card -->
+                    <div class="col-lg-4">
+                        <div class="job-form-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-image me-2"></i>Company Logo
+                                </h5>
+                                <small class="text-muted">Upload your company logo for branding</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-column align-items-center gap-3">
+                                    <!-- Logo Preview -->
+                                    <div class="position-relative">
+                                        {% if request.user.company_logo %}
+                                            <img src="{{ request.user.company_logo.url }}" alt="Company Logo" class="company-logo" id="companyLogoPreview">
+                                        {% else %}
+                                            <img src="{% static 'images/no-image.png' %}" alt="Default Logo" class="company-logo" id="companyLogoPreview">
+                                        {% endif %}
+                                        <div class="position-absolute top-0 end-0">
+                                            <div class="bg-success text-white rounded-circle p-1" style="width: 24px; height: 24px; display: none;" id="uploadSuccess">
+                                                <i class="fa fa-check" style="font-size: 12px;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- File Input -->
+                                    <div class="w-100">
+                                        <label for="profileImageInput" class="form-label">Upload Logo</label>
+                                        <input type="file" 
+                                            name="logo_image" 
+                                            accept="image/*" 
+                                            class="form-control" 
+                                            id="profileImageInput" 
+                                            onchange="previewLogo(event)">
+                                        <div class="form-text">Recommended size: 300x300px. Max file size: 5MB</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group flex-fill">
-                            <label for="company_phone_number">Company Phone Number</label>
-                            <input type="tel" name="company_phone_number" class="form-control" value="{{ request.user.company_phone_number|default_if_none:'' }}" placeholder="Please specify...">
+                    </div>
+
+                    <!-- Company Details Card -->
+                    <div class="col-lg-8">
+                        <div class="job-form-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-info-circle me-2"></i>Company Information
+                                </h5>
+                                <small class="text-muted">Update your company details and description</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="company_name" class="form-label">Company Name *</label>
+                                        <input type="text" 
+                                            name="company_name" 
+                                            class="form-control" 
+                                            value="{{ request.user.company_name|default_if_none:'' }}" 
+                                            placeholder="Enter your company name"
+                                            required>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <label for="main_location" class="form-label">Company Address *</label>
+                                        <input type="text" 
+                                            name="main_location" 
+                                            class="form-control" 
+                                            value="{{ request.user.company_address|default_if_none:'' }}" 
+                                            placeholder="Enter your company address"
+                                            required>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <label for="company_description" class="form-label">Company Description</label>
+                                        <textarea class="form-control" 
+                                            id="company_description" 
+                                            name="company_description" 
+                                            rows="6" 
+                                            placeholder="Describe your company, mission, values, and what makes you unique...">{{ request.user.company_description|default_if_none:'' }}</textarea>
+                                        <div class="form-text">Tell potential applicants about your company culture and values</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end align-items-end px-4 my-2">
-                <input type="submit" value="Save" class="btn btn-primary btn-primary-extend">
+
+            <!-- Save Button Section -->
+            <div class="px-4 mt-4">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fa fa-save me-2"></i>Save Changes
+                    </button>
+                </div>
             </div>
         </form>
-        
+
+        <!-- Company Preview Card -->
+        <div class="px-4">
+            <div class="job-form-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fa fa-eye me-2"></i>Company Preview
+                    </h5>
+                    <small class="text-muted">How your company will appear to applicants</small>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-3 text-center">
+                            <img src="{{ request.user.company_logo.url|default:'/static/images/no-image.png' }}" 
+                                alt="Company Logo" 
+                                class="company-logo mb-3" 
+                                id="previewLogo">
+                            <h6 class="mb-1" id="previewCompanyName">{{ request.user.company_name|default:"Your Company Name" }}</h6>
+                            <p class="text-muted small mb-0" id="previewCompanyAddress">{{ request.user.company_address|default:"Company Address" }}</p>
+                        </div>
+                        <div class="col-md-9">
+                            <h6>About Us</h6>
+                            <p class="text-muted" id="previewCompanyDescription">
+                                {{ request.user.company_description|default:"Your company description will appear here. This helps applicants understand your company culture, values, and what makes you unique." }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 
 <script>
 function previewLogo(event) {
-    console.log("📸 previewProfile triggered");
+    console.log("📸 previewLogo triggered");
     
     // Prevent any form submission
     event.preventDefault();
@@ -97,6 +178,8 @@ function previewLogo(event) {
 
     const input = event.target;
     const preview = document.getElementById("companyLogoPreview");
+    const previewLogo = document.getElementById("previewLogo");
+    const uploadSuccess = document.getElementById("uploadSuccess");
 
     console.log("🔍 Input element:", input);
     console.log("🔍 Preview element:", preview);
@@ -112,6 +195,12 @@ function previewLogo(event) {
         const file = input.files[0];
         console.log("📁 Selected file:", file.name, file.type, file.size);
 
+        // Check file size (5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+            alert("File size too large! Please select a file smaller than 5MB.");
+            return;
+        }
+
         // Check if it's actually an image
         if (!file.type.startsWith('image/')) {
             console.error("❌ Selected file is not an image");
@@ -124,21 +213,21 @@ function previewLogo(event) {
         reader.onload = function(e) {
             console.log("📷 FileReader loaded successfully");
             
-            // Remove any existing border
-            preview.style.border = "";
-            
-            // Update the image source
+            // Update both preview images
             preview.src = e.target.result;
+            if (previewLogo) {
+                previewLogo.src = e.target.result;
+            }
             
-            // Add a green border to show it worked
-            preview.style.border = "3px solid green";
+            // Show success indicator
+            if (uploadSuccess) {
+                uploadSuccess.style.display = 'block';
+                setTimeout(() => {
+                    uploadSuccess.style.display = 'none';
+                }, 2000);
+            }
             
             console.log("✅ Preview updated successfully!");
-            
-            // Remove the green border after 2 seconds
-            setTimeout(() => {
-                preview.style.border = "";
-            }, 2000);
         };
 
         reader.onerror = function() {
@@ -152,11 +241,40 @@ function previewLogo(event) {
         alert("No file selected!");
     }
 }
+
+// Update preview when form fields change
+document.addEventListener('DOMContentLoaded', function() {
+    const companyNameInput = document.querySelector('input[name="company_name"]');
+    const companyAddressInput = document.querySelector('input[name="main_location"]');
+    const companyDescriptionInput = document.querySelector('#company_description');
+    
+    const previewCompanyName = document.getElementById('previewCompanyName');
+    const previewCompanyAddress = document.getElementById('previewCompanyAddress');
+    const previewCompanyDescription = document.getElementById('previewCompanyDescription');
+    
+    if (companyNameInput && previewCompanyName) {
+        companyNameInput.addEventListener('input', function() {
+            previewCompanyName.textContent = this.value || 'Your Company Name';
+        });
+    }
+    
+    if (companyAddressInput && previewCompanyAddress) {
+        companyAddressInput.addEventListener('input', function() {
+            previewCompanyAddress.textContent = this.value || 'Company Address';
+        });
+    }
+    
+    if (companyDescriptionInput && previewCompanyDescription) {
+        companyDescriptionInput.addEventListener('input', function() {
+            previewCompanyDescription.textContent = this.value || 'Your company description will appear here. This helps applicants understand your company culture, values, and what makes you unique.';
+        });
+    }
+});
 </script>
 
 {% endblock %}
 
 {% block footer %}
-        {% include "footers/footer2.html" %}
+    {% include "footers/footer2.html" %}
 {% endblock %}
 

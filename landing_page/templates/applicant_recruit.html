@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Applicant Profile | Job Hiring Portal{% endblock %}
+
+{% block header %}
+    {% include "headers/header3.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <main class="w-100 d-flex flex-column gap-4 py-4 bg-light min-vh-100">
+        <div class="px-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <a href="javascript:history.back()" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center back-btn me-2" style="flex-shrink:0;">
+                    <i class="bi bi-arrow-left text-dark"></i>
+                </a>
+                <div class="flex-grow-1">
+                    {% include "search/search2.html" %}
+                </div>
+            </div>
+        </div>
+        <div class="w-100">
+            <div class="d-flex flex-column gap-4">
+                
+                <!-- Applicant Info Card -->
+                <div class="px-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex gap-4 align-items-start">
+                                <img src="{% static 'images/no-image.png' %}" alt="Applicant Photo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #e3e3e3;">
+                                <div class="d-flex flex-column gap-2 flex-fill">
+                                    <h4 class="m-0">John Smith</h4>
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <i class="fas fa-map-marker-alt text-muted"></i>
+                                        <p class="m-0 text-muted">Petaling Jaya, Selangor</p>
+                                    </div>
+                                    <div class="applicant-recruit-bio bg-light p-3 rounded">I am a dedicated individual with strong attention to detail and excellent organizational skills. I enjoy working in structured environments and have a passion for data entry and administrative tasks.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-4 px-4">
+                    <!--Column 1-->
+                    <div class="d-flex flex-column" style="flex: 6;">
+                        
+                        <!-- Skills Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="fas fa-tools me-2 text-primary"></i>Skills</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="applicant-skill-tag">Data Entry</span>
+                                    <span class="applicant-skill-tag">Microsoft Excel</span>
+                                    <span class="applicant-skill-tag">Administrative Tasks</span>
+                                    <span class="applicant-skill-tag">File Organization</span>
+                                    <span class="applicant-skill-tag">Customer Service</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordion for detailed sections -->
+                        <div class="accordion" id="applicantRecruitAccordion">
+                            <!-- Education Card -->
+                            <div class="accordion-item shadow-sm mb-3">
+                                <h2 class="accordion-header" id="educationHeading">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#educationCollapse" aria-expanded="true" aria-controls="educationCollapse">
+                                        <i class="fas fa-graduation-cap me-2 text-primary"></i>Education & Training
+                                    </button>
+                                </h2>
+                                <div id="educationCollapse" class="accordion-collapse collapse show" aria-labelledby="educationHeading" data-bs-parent="#applicantRecruitAccordion">
+                                    <div class="accordion-body">
+                                        <div class="applicant-recruit-edu mb-3 p-3 bg-light rounded">
+                                            <strong>Diploma in Business Administration</strong> at Taylor's College<br>
+                                            <span class="text-muted small">2018 - 2020</span>
+                                        </div>
+                                        <div class="applicant-recruit-edu mb-3 p-3 bg-light rounded">
+                                            <strong>Certificate in Office Management</strong> at Skills Training Institute<br>
+                                            <span class="text-muted small">2019 - 2020</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Work History Card -->
+                            <div class="accordion-item shadow-sm mb-3">
+                                <h2 class="accordion-header" id="workHistoryHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#workHistoryCollapse" aria-expanded="false" aria-controls="workHistoryCollapse">
+                                        <i class="fas fa-briefcase me-2 text-primary"></i>Work History
+                                    </button>
+                                </h2>
+                                <div id="workHistoryCollapse" class="accordion-collapse collapse" aria-labelledby="workHistoryHeading" data-bs-parent="#applicantRecruitAccordion">
+                                    <div class="accordion-body">
+                                        <div class="applicant-recruit-job mb-3 p-3 bg-light rounded">
+                                            <strong>Administrative Assistant</strong> at ABC Company<br>
+                                            <span class="text-muted small">2020 - 2022</span>
+                                        </div>
+                                        <div class="applicant-recruit-job mb-3 p-3 bg-light rounded">
+                                            <strong>Data Entry Clerk</strong> at XYZ Corporation<br>
+                                            <span class="text-muted small">2018 - 2020</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Personal Interests Card -->
+                            <div class="accordion-item shadow-sm mb-3">
+                                <h2 class="accordion-header" id="interestsHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#interestsCollapse" aria-expanded="false" aria-controls="interestsCollapse">
+                                        <i class="fas fa-heart me-2 text-primary"></i>Personal Interests
+                                    </button>
+                                </h2>
+                                <div id="interestsCollapse" class="accordion-collapse collapse" aria-labelledby="interestsHeading" data-bs-parent="#applicantRecruitAccordion">
+                                    <div class="accordion-body">
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <span class="applicant-skill-tag">Puzzle Solving</span>
+                                            <span class="applicant-skill-tag">Reading</span>
+                                            <span class="applicant-skill-tag">Organizing</span>
+                                            <span class="applicant-skill-tag">Quiet Activities</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Work Attitude Card -->
+                            <div class="accordion-item shadow-sm mb-3">
+                                <h2 class="accordion-header" id="workAttitudeHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#workAttitudeCollapse" aria-expanded="false" aria-controls="workAttitudeCollapse">
+                                        <i class="fas fa-briefcase me-2 text-primary"></i>Work Attitude
+                                    </button>
+                                </h2>
+                                <div id="workAttitudeCollapse" class="accordion-collapse collapse" aria-labelledby="workAttitudeHeading" data-bs-parent="#applicantRecruitAccordion">
+                                    <div class="accordion-body">
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <span class="applicant-skill-tag">Detail-Oriented</span>
+                                            <span class="applicant-skill-tag">Structured Environment</span>
+                                            <span class="applicant-skill-tag">Routine-Based</span>
+                                            <span class="applicant-skill-tag">Visual Learner</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Communication Style Card -->
+                            <div class="accordion-item shadow-sm">
+                                <h2 class="accordion-header" id="communicationHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#communicationCollapse" aria-expanded="false" aria-controls="communicationCollapse">
+                                        <i class="fas fa-comments me-2 text-primary"></i>Communication Style
+                                    </button>
+                                </h2>
+                                <div id="communicationCollapse" class="accordion-collapse collapse" aria-labelledby="communicationHeading" data-bs-parent="#applicantRecruitAccordion">
+                                    <div class="accordion-body">
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <span class="applicant-skill-tag">Written Communication</span>
+                                            <span class="applicant-skill-tag">Direct Communication</span>
+                                            <span class="applicant-skill-tag">Visual Aids</span>
+                                            <span class="applicant-skill-tag">Structured Conversations</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!--Column 2-->
+                    <div class="" style="flex: 4;">
+                        <!-- Location Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h6 class="mb-0"><i class="fas fa-map-marker-alt me-2 text-primary"></i>Location</h6>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-0">Petaling Jaya, Selangor</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Call to Apply Form -->
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-success text-white">
+                                <h6 class="mb-0"><i class="fas fa-phone me-2"></i>Call to Apply Form</h6>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group mb-3">
+                                        <label for="job_position" class="form-label">Job Position</label>
+                                        <select name="job_position" id="job_position" class="form-control" required>
+                                            <option value="" disabled selected>Select Job Position</option>
+                                            <option value="clerk">Clerk</option>
+                                            <option value="data_entry">Data Entry Clerk</option>
+                                            <option value="admin_assistant">Administrative Assistant</option>
+                                            <option value="receptionist">Receptionist</option>
+                                            <option value="file_clerk">File Clerk</option>
+                                            <option value="office_assistant">Office Assistant</option>
+                                            <option value="customer_service">Customer Service Representative</option>
+                                            <option value="inventory_clerk">Inventory Clerk</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-success">Send Invitation</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include "footers/footer2.html" %}
+{% endblock %}
+
+<style>
+.applicant-recruit-main {
+    background: #f7f9fb;
+    min-height: 100vh;
+}
+.applicant-recruit-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.applicant-recruit-header h3 {
+    font-weight: 700;
+    color: #222;
+}
+.applicant-recruit-bio {
+    font-size: 16px;
+    color: #444;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 8px;
+}
+.applicant-recruit-section {
+    margin-top: 18px;
+}
+.applicant-recruit-edu, .applicant-recruit-job {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 8px 14px;
+}
+.applicant-recruit-offer {
+    background: #eaf6ea;
+    border: 1px solid #b6e2b6;
+    border-radius: 10px;
+    padding: 18px 18px 10px 18px;
+    margin-top: 24px;
+}
+</style>

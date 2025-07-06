@@ -1,243 +1,347 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Job Hiring Portal{% endblock %}
+{% block title %}Background Information | Job Hiring Portal{% endblock %}
 
 {% block header %}
-        {% include "headers/header2.html" %}
+    {% include "headers/header2.html" %}
 {% endblock %}
 
 {% block content %}
 <div class="d-flex">
     {% include "sidebars/sidebar1.html" %}
-    <main class="d-flex flex-column gap-2  py-4 w-100">
-        <div class="px-3">
-            <h4>Profile</h4>
-        </div>
-        <div class="d-flex gap-5 border-bottom border-secondary border-1 px-3">
-            <a href="{% url 'applicant_profile'%}" class="top-header-nav">Personal</a>
-            <a href="{% url 'applicant_background' %}" class="top-header-nav-selected">Background Info</a>
-            <a href="{% url 'applicant_autistic_profile' %}" class="top-header-nav">Autism Profile</a>
-            <a href="" class="top-header-nav">Verification</a>
-        </div>
-
-
-        <!--For Career History-->
-        <form method="post" action="{% url 'applicant_background_career' %}" class="px-5 py-2 d-flex flex-column">
-            {%csrf_token%}
-            <div>
-                <h5>Career History</h5>
-            </div>
-            <div class="d-flex gap-2">
-                <div class="form-group flex-fill">
-                    <label for="jobtitle">Job Title</label>
-                    <input type="text" name="jobtitle" class="form-control" placeholder="Add Job Title..." required>
-                </div>
-                <div class="form-group flex-fill">
-                    <label for="companyname">Company Name</label>
-                    <input type="text" name="companyname" class="form-control" placeholder="Add Company..." required>
-                </div>
-            </div>
-            <div class="d-flex gap-2 align-items-end">
-                <div class="form-group flex-fill">
-                    <label for="startdate">Start Month & Year</label>
-                    <input type="month" name="startdate" class="form-control" required>
-                </div>
-                <div class="form-group flex-fill">
-                    <label for="enddate">End Month & Year</label>
-                    <input type="month" name="enddate" class="form-control">
-                </div>
+    <main class="w-100 d-flex flex-column gap-4 py-4">
+        <!-- Header Section -->
+        <div class="px-4">
+            <div class="d-flex align-items-center gap-3">
                 <div>
-                    <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <h3 class="mb-1">Background Information</h3>
+                    <p class="text-muted mb-0">Manage your career history, education, and skills</p>
                 </div>
             </div>
-        </form>
+        </div>
 
-        {% for career in work_histories %}
-        <div class="mx-5 px-4 py-2 border border-dark rounded career-entry">
-            <!-- Read-Only Block -->
-            <div class="d-flex justify-content-between read-only">
-                <h4>{{ career.job_title }}</h4>
-                <div>
-                    <button type="button" class="btn btn-warning edit-btn">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    <form method="POST" action="{% url 'delete_career' career.id %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fa-solid fa-trash"></i>
+        <!-- Navigation Tabs -->
+        <div class="px-4">
+            <div class="d-flex gap-5 border-bottom border-secondary border-1">
+                <a href="{% url 'applicant_profile'%}" class="top-header-nav">Personal</a>
+                <a href="{% url 'applicant_background' %}" class="top-header-nav-selected">Background Info</a>
+                <a href="{% url 'applicant_autistic_profile' %}" class="top-header-nav">Autism Profile</a>
+                <a href="{% url 'applicant_verification_request' %}" class="top-header-nav">Verification</a>
+            </div>
+        </div>
+
+        <!-- Career History Section -->
+        <div class="px-4">
+            <div class="accordion" id="backgroundAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="careerHistoryHeading">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#careerHistoryCollapse" aria-expanded="true" aria-controls="careerHistoryCollapse">
+                            <i class="fa fa-briefcase me-2"></i> Career History
                         </button>
-                    </form>
-                </div>
-            </div>
-            <p>{{ career.company_name }}</p>
-            <p>
-                {{career.display_range}}
-            </p>
+                    </h2>
+                    <div id="careerHistoryCollapse" class="accordion-collapse collapse show" aria-labelledby="careerHistoryHeading" data-bs-parent="#backgroundAccordion">
+                        <div class="accordion-body">
+                            <small class="text-muted">Add your work experience</small>
+                            <!-- Career History Form -->
+                            <form method="post" action="{% url 'applicant_background_career' %}" class="mb-4">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="jobtitle" class="form-label">Job Title *</label>
+                                        <input type="text" name="jobtitle" class="form-control" placeholder="Add Job Title..." required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="companyname" class="form-label">Company Name *</label>
+                                        <input type="text" name="companyname" class="form-control" placeholder="Add Company..." required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label for="startdate" class="form-label">Start Month & Year *</label>
+                                        <input type="month" name="startdate" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label for="enddate" class="form-label">End Month & Year</label>
+                                        <input type="month" name="enddate" class="form-control">
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
 
-            <!-- Editable Form Block -->
-            <form method="POST" action="{% url 'update_career' career.id %}" class="flex-column filled-form allow-edit" style="display: none;">
-                {% csrf_token %}
-                <div class="d-flex justify-content-end gap-2">
-                    <button type="submit" class="btn btn-success save-btn">
-                        <i class="fa-solid fa-check"></i>
-                    </button>
+                            <!-- Career History List as Accordion -->
+                            <div class="accordion" id="careerHistoryEntries">
+                                {% for career in work_histories %}
+                                <div class="accordion-item mb-2">
+                                    <h2 class="accordion-header" id="careerEntryHeading{{ career.id }}">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#careerEntryCollapse{{ career.id }}" aria-expanded="false" aria-controls="careerEntryCollapse{{ career.id }}">
+                                            <span class="fw-bold">{{ career.job_title }}</span>
+                                            <span class="text-muted ms-2">{{ career.company_name }}</span>
+                                            <span class="text-muted ms-2">{{ career.display_range }}</span>
+                                        </button>
+                                    </h2>
+                                    <div id="careerEntryCollapse{{ career.id }}" class="accordion-collapse collapse" aria-labelledby="careerEntryHeading{{ career.id }}" data-bs-parent="#careerHistoryEntries">
+                                        <div class="accordion-body">
+                                            <!-- Read-Only Block -->
+                                            <div class="d-flex justify-content-end gap-2 mb-2">
+                                                <button type="button" class="btn btn-sm btn-outline-warning edit-btn">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                                <form method="POST" action="{% url 'delete_career' career.id %}" class="d-inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div class="read-only">
+                                                <div class="row g-2 mb-2">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Job Title</label>
+                                                        <div class="form-control-plaintext">{{ career.job_title }}</div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Company Name</label>
+                                                        <div class="form-control-plaintext">{{ career.company_name }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="row g-2">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Start Month & Year</label>
+                                                        <div class="form-control-plaintext">{{ career.start_month_input }}</div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">End Month & Year</label>
+                                                        <div class="form-control-plaintext">{{ career.end_month_input }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Editable Form Block -->
+                                            <form method="POST" action="{% url 'update_career' career.id %}" class="allow-edit mt-3" style="display: none;">
+                                                {% csrf_token %}
+                                                <div class="row g-3">
+                                                    <div class="col-md-6">
+                                                        <label for="jobtitle" class="form-label">Job Title *</label>
+                                                        <input type="text" name="jobtitle" class="form-control" value="{{ career.job_title }}" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="companyname" class="form-label">Company Name *</label>
+                                                        <input type="text" name="companyname" class="form-control" value="{{ career.company_name }}" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="startdate" class="form-label">Start Month & Year *</label>
+                                                        <input type="month" name="startdate" class="form-control" value="{{ career.start_month_input }}" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="enddate" class="form-label">End Month & Year</label>
+                                                        <input type="month" name="enddate" class="form-control" value="{{ career.end_month_input }}">
+                                                    </div>
+                                                    <div class="col-12 mt-4 text-end pe-2">
+                                                        <button type="submit" class="btn btn-success save-btn">
+                                                            <i class="fa-solid fa-check"></i> Save
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="text-center py-4">
+                                    <i class="fa fa-briefcase text-muted" style="font-size: 3rem;"></i>
+                                    <p class="text-muted mt-2">No career history added yet.</p>
+                                    <small class="text-muted">Add your first work experience above!</small>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex gap-2">
-                    <div class="form-group flex-fill">
-                        <label for="jobtitle">Job Title</label>
-                        <input type="text" name="jobtitle" class="form-control" value="{{ career.job_title }}" required>
-                    </div>
-                    <div class="form-group flex-fill">
-                        <label for="companyname">Company Name</label>
-                        <input type="text" name="companyname" class="form-control" value="{{ career.company_name }}" required>
-                    </div>
-                </div>
-                <div class="d-flex gap-2 align-items-end">
-                    <div class="form-group flex-fill">
-                        <label for="startdate">Start Month & Year</label>
-                        <input type="month" name="startdate" class="form-control" value="{{ career.start_month_input }}" required>
-                    </div>
-                    <div class="form-group flex-fill">
-                        <label for="enddate">End Month & Year</label>
-                        <input type="month" name="enddate" class="form-control" value="{{ career.end_month_input }}">
-                    </div>
-                </div>
-            </form>
-        </div>
-        {% empty %}
-        {% endfor %}
 
-
-        
-        <!--For Education and etc-->
-        <form action="{% url 'applicant_education' %}" method="post" class="px-5 py-2 d-flex flex-column">
-            {% csrf_token%}
-            <div>
-                <h5>Education/Vocational Training</h5>
-            </div>
-            <div class="d-flex gap-2">
-                <div class="form-group flex-fill">
-                    <label for="course">Course/Qualification/Training</label>
-                    <input type="text" name="course" class="form-control" placeholder="Add Course/Qualification/Training..." required>
-                </div>
-            </div>
-            <div class="d-flex gap-2">
-                <div class="form-group flex-fill">
-                    <label for="institution">Institution</label>
-                    <input type="text" name="institution" class="form-control" placeholder="Add Institution..." required>
-                </div>
-            </div>
-            <div class="d-flex gap-2 align-items-end">
-                <div class="form-group flex-fill">
-                    <label for="startdate">Start Month & Year</label>
-                    <input type="month" name="startdate" class="form-control" required>
-                </div>
-                <div class="form-group flex-fill">
-                    <label for="enddate">End Month & Year</label>
-                    <input type="month" name="enddate" class="form-control">
-                </div>
-                <div>
-                    <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                </div>
-            </div>
-        </form>
-
-        <!-- Added Education History Here -->
-        {% for edu in education_histories %}
-        <div class="mx-5 px-4 py-2 border border-dark rounded career-entry">
-            <!-- Read-Only Block -->
-            <div class="d-flex justify-content-between read-only">
-                <h4>{{ edu.course_title }}</h4>
-                <div>
-                    <button type="button" class="btn btn-warning edit-btn">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    <form method="POST" action="{% url 'delete_education' edu.id %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fa-solid fa-trash"></i>
+                <!-- Education Section as Accordion -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="educationHeading">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#educationCollapse" aria-expanded="false" aria-controls="educationCollapse">
+                            <i class="fa fa-graduation-cap me-2"></i> Education & Training
                         </button>
-                    </form>
+                    </h2>
+                    <div id="educationCollapse" class="accordion-collapse collapse" aria-labelledby="educationHeading" data-bs-parent="#backgroundAccordion">
+                        <div class="accordion-body">
+                            <small class="text-muted">Add your educational background and training</small>
+                            <!-- Education Form -->
+                            <form action="{% url 'applicant_education' %}" method="post" class="mb-4">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="course" class="form-label">Course/Qualification/Training *</label>
+                                        <input type="text" name="course" class="form-control" placeholder="Add Course/Qualification/Training..." required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="institution" class="form-label">Institution *</label>
+                                        <input type="text" name="institution" class="form-control" placeholder="Add Institution..." required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label for="startdate" class="form-label">Start Month & Year *</label>
+                                        <input type="month" name="startdate" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label for="enddate" class="form-label">End Month & Year</label>
+                                        <input type="month" name="enddate" class="form-control">
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Education History List as Accordion -->
+                            <div class="accordion" id="educationEntries">
+                                {% for edu in education_histories %}
+                                <div class="accordion-item mb-2">
+                                    <h2 class="accordion-header" id="eduEntryHeading{{ edu.id }}">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#eduEntryCollapse{{ edu.id }}" aria-expanded="false" aria-controls="eduEntryCollapse{{ edu.id }}">
+                                            <span class="fw-bold">{{ edu.course_title }}</span>
+                                            <span class="text-muted ms-2">{{ edu.institution }}</span>
+                                            <span class="text-muted ms-2">{{ edu.display_range }}</span>
+                                        </button>
+                                    </h2>
+                                    <div id="eduEntryCollapse{{ edu.id }}" class="accordion-collapse collapse" aria-labelledby="eduEntryHeading{{ edu.id }}" data-bs-parent="#educationEntries">
+                                        <div class="accordion-body">
+                                            <div class="d-flex justify-content-end gap-2 mb-2">
+                                                <button type="button" class="btn btn-sm btn-outline-warning edit-btn">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                                <form method="POST" action="{% url 'delete_education' edu.id %}" class="d-inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div class="read-only">
+                                                <div class="row g-2 mb-2">
+                                                    <div class="col-12">
+                                                        <label class="form-label">Course/Qualification/Training</label>
+                                                        <div class="form-control-plaintext">{{ edu.course_title }}</div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label class="form-label">Institution</label>
+                                                        <div class="form-control-plaintext">{{ edu.institution }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="row g-2">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Start Month & Year</label>
+                                                        <div class="form-control-plaintext">{{ edu.start_month_input }}</div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">End Month & Year</label>
+                                                        <div class="form-control-plaintext">{{ edu.end_month_input }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Editable Form Block -->
+                                            <form method="POST" action="{% url 'update_education' edu.id %}" class="allow-edit mt-3" style="display: none;">
+                                                {% csrf_token %}
+                                                <div class="row g-3">
+                                                    <div class="col-12">
+                                                        <label for="course" class="form-label">Course/Qualification/Training *</label>
+                                                        <input type="text" name="course" class="form-control" value="{{ edu.course_title }}" required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="institution" class="form-label">Institution *</label>
+                                                        <input type="text" name="institution" class="form-control" value="{{ edu.institution }}" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="startdate" class="form-label">Start Month & Year *</label>
+                                                        <input type="month" name="startdate" class="form-control" value="{{ edu.start_month_input }}" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="enddate" class="form-label">End Month & Year</label>
+                                                        <input type="month" name="enddate" class="form-control" value="{{ edu.end_month_input }}">
+                                                    </div>
+                                                    <div class="col-12 mt-4 text-end pe-2">
+                                                        <button type="submit" class="btn btn-success save-btn">
+                                                            <i class="fa-solid fa-check"></i> Save
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="text-center py-4">
+                                    <i class="fa fa-graduation-cap text-muted" style="font-size: 3rem;"></i>
+                                    <p class="text-muted mt-2">No education history added yet.</p>
+                                    <small class="text-muted">Add your first education/training above!</small>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Section as Accordion -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="skillsHeading">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#skillsCollapse" aria-expanded="false" aria-controls="skillsCollapse">
+                            <i class="fa fa-tools me-2"></i> Skills
+                        </button>
+                    </h2>
+                    <div id="skillsCollapse" class="accordion-collapse collapse" aria-labelledby="skillsHeading" data-bs-parent="#backgroundAccordion">
+                        <div class="accordion-body">
+                            <small class="text-muted">Add your professional skills</small>
+                            <!-- Skills Form -->
+                            <form action="{% url 'applicant_skill' %}" method="POST" class="mb-4">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                    <div class="col-md-10">
+                                        <label for="skill" class="form-label">Skill</label>
+                                        <input type="text" name="skill" class="form-control" placeholder="Add Skill..." required>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Skills Display -->
+                            <div class="skill-contain border rounded p-3">
+                                {% for skill in skills %}
+                                <form action="{% url 'delete_skill' skill.id %}" method="POST" class="skill-form d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="skill_id" value="{{ skill.id }}">
+                                    <div class="skill-tag">
+                                        <span>{{ skill.skill }}</span>
+                                        <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
+                                    </div>
+                                </form>
+                                {% empty %}
+                                <div class="text-center py-3">
+                                    <i class="fa fa-tools text-muted" style="font-size: 2rem;"></i>
+                                    <p class="text-muted mt-2 mb-0">No skills added yet.</p>
+                                    <small class="text-muted">Add your first skill above!</small>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <p>{{ edu.institution }}</p>
-            <p>{{ edu.display_range }}</p>
-
-            <!-- Editable Form Block -->
-            <form method="POST" action="{% url 'update_education' edu.id %}" class="flex-column filled-form allow-edit" style="display: none;">
-                {% csrf_token %}
-                <div class="d-flex justify-content-end gap-2">
-                    <button type="submit" class="btn btn-success save-btn">
-                        <i class="fa-solid fa-check"></i>
-                    </button>
-                </div>
-                <div class="d-flex gap-2">
-                    <div class="form-group flex-fill">
-                        <label for="course">Course/Qualification/Training</label>
-                        <input type="text" name="course" class="form-control" value="{{ edu.course_title }}" required>
-                    </div>
-                </div>
-                <div class="d-flex gap-2">
-                    <div class="form-group flex-fill">
-                        <label for="institution">Institution</label>
-                        <input type="text" name="institution" class="form-control" value="{{ edu.institution }}" required>
-                    </div>
-                </div>
-                <div class="d-flex gap-2 align-items-end">
-                    <div class="form-group flex-fill">
-                        <label for="startdate">Start Month & Year</label>
-                        <input type="month" name="startdate" class="form-control" value="{{ edu.start_month_input }}" required>
-                    </div>
-                    <div class="form-group flex-fill">
-                        <label for="enddate">End Month & Year</label>
-                        <input type="month" name="enddate" class="form-control" value="{{ edu.end_month_input }}">
-                    </div>
-                </div>
-            </form>
         </div>
-        {% empty %}
-        {% endfor %}
-
-
-        <!-- Skill ADD Form -->
-        <form action="{% url 'applicant_skill' %}" method="POST" class="px-5 py-2 d-flex flex-column gap-2">
-            {% csrf_token %}
-            <div>
-                <h5>Skills</h5>
-            </div>
-            <div class="d-flex gap-2 align-items-end">
-                <div class="form-group flex-fill">
-                    <label for="skill">Skill</label>
-                    <input type="text" name="skill" class="form-control" placeholder="Add Skill..." required>
-                </div>
-                <div>
-                    <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                </div>
-            </div>
-        </form>
-
-        <!-- Skill TAG Display -->
-        <div class="skill-contain border border-dark rounded mx-5">
-            {% for skill in skills %}
-            <form action="{% url 'delete_skill' skill.id %}" method="POST" class="skill-form">
-                {% csrf_token %}
-                <input type="hidden" name="skill_id" value="{{ skill.id }}">
-                <div class="skill-tag">
-                    <span>{{ skill.skill }}</span>
-                    <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
-                </div>
-            </form>
-            {% endfor %}
-        </div>
-
     </main>
 </div>
-
 
 <script>
 document.querySelectorAll('.edit-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        const entry = btn.closest('.career-entry');
+        const entry = btn.closest('.accordion-item');
         const readOnly = entry.querySelector('.read-only');
         const form = entry.querySelector('.allow-edit');
 
@@ -258,10 +362,9 @@ document.querySelectorAll('.edit-btn').forEach(btn => {
 });
 </script>
 
-
 {% endblock %}
 
 {% block footer %}
-        {% include "footers/footer2.html" %}
+    {% include "footers/footer2.html" %}
 {% endblock %}
 

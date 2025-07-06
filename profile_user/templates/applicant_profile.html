@@ -1,185 +1,230 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Job Hiring Portal{% endblock %}
+{% block title %}My Profile | Job Hiring Portal{% endblock %}
 
 {% block header %}
-        {% include "headers/header2.html" %}
+    {% include "headers/header2.html" %}
 {% endblock %}
 
 {% block content %}
 <div class="d-flex">
     {% include "sidebars/sidebar1.html" %}
-    <main class="d-flex flex-column gap-2  py-4 w-100">
-        <div class="px-3">
-            <h4>Profile</h4>
+    <main class="w-100 d-flex flex-column gap-4 py-4">
+        <!-- Header Section -->
+        <div class="px-4">
+            <div class="d-flex align-items-center gap-3">
+                <div>
+                    <h3 class="mb-1">My Profile</h3>
+                    <p class="text-muted mb-0">Manage your personal information and documents</p>
+                </div>
+            </div>
         </div>
-        <div class="d-flex gap-5 border-bottom border-secondary border-1 px-3">
-            <a href="{% url 'applicant_profile'%}" class="top-header-nav-selected">Personal</a>
-            <a href="{% url 'applicant_background' %}" class="top-header-nav">Background Info</a>
-            <a href="{% url 'applicant_autistic_profile' %}" class="top-header-nav">Autism Profile</a>
-            <a href="" class="top-header-nav">Verification</a>
+
+        <!-- Navigation Tabs -->
+        <div class="px-4">
+            <div class="d-flex gap-5 border-bottom border-secondary border-1">
+                <a href="{% url 'applicant_profile'%}" class="top-header-nav-selected">Personal</a>
+                <a href="{% url 'applicant_background' %}" class="top-header-nav">Background Info</a>
+                <a href="{% url 'applicant_autistic_profile' %}" class="top-header-nav">Autism Profile</a>
+                <a href="{% url 'applicant_verification_request' %}" class="top-header-nav">Verification</a>
+            </div>
         </div>
-        <div class="px-3">
-            <h4>Basic Information</h4>
-        </div>
+
+        <!-- Messages Section -->
         {% if messages %}
-            {% for message in messages %}
-            <div class="mx-2 px-3 alert 
-                        {% if message.tags == 'error' %}
-                            alert-danger
-                        {% elif message.tags == 'success' %}
-                            alert-success
-                        {% elif message.tags == 'warning' %}
-                            alert-warning
-                        {% elif message.tags == 'info' %}
-                            alert-info
-                        {% else %}
-                            alert-secondary
-                        {% endif %}" 
-                        role="alert">
-                {{ message }}
+            <div class="px-4">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="fa fa-info-circle me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         {% endif %}
-        <form class="d-flex gap-2 px-3" method="post" action="{% url 'update_profile' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <!--Bahagian gambar dengan gender-->
-            <div class="d-flex flex-column gap-2">
-                <p>Profile Picture</p>
-                {% if request.user.profile_image %}
-                <img src="{{ request.user.profile_image.url }}" alt="Profile Picture" class="profile-img" id="profilePreview">
-                {% else %}
-                <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="profile-img" id="profilePreview">
-                {% endif %}
 
-                <input type="file" 
-                    name="profile_image" 
-                    accept="image/*" 
-                    class="file-input form-control" 
-                    id="profileImageInput" 
-                    onchange="previewProfile(event)">
+        <!-- Profile Form Section -->
+        <div class="px-4">
+            <form method="post" action="{% url 'update_profile' %}" enctype="multipart/form-data" id="profile-form">
+                {% csrf_token %}
+                <div class="row g-4">
+                    <!-- Profile Picture Card -->
+                    <div class="col-lg-4">
+                        <div class="job-form-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-camera me-2"></i>Profile Picture
+                                </h5>
+                                <small class="text-muted">Upload your profile photo</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-column align-items-center gap-3">
+                                    <!-- Profile Picture Preview -->
+                                    <div class="position-relative">
+                                        {% if request.user.profile_image %}
+                                            <img src="{{ request.user.profile_image.url }}" alt="Profile Picture" class="profile-img" id="profilePreview" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%;">
+                                        {% else %}
+                                            <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="profile-img" id="profilePreview" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%;">
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <!-- File Input -->
+                                    <div class="w-100">
+                                        <label for="profileImageInput" class="form-label">Upload Photo</label>
+                                        <input type="file" 
+                                            name="profile_image" 
+                                            accept="image/*" 
+                                            class="form-control" 
+                                            id="profileImageInput" 
+                                            onchange="previewProfile(event)">
+                                        <div class="form-text">Recommended size: 400x400px. Max file size: 5MB</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <select name="gender" class="form-control">
-                        <option value="" disabled selected hidden>Select Gender</option>
-                        <option value="male" {% if request.user.gender == 'male' %}selected{% endif %}>Male</option>
-                        <option value="female" {% if request.user.gender == 'female' %}selected{% endif %}>Female</option>
-                    </select>
-                </div>
-            </div>
-            <!--Bahagian personal information-->
-            <div class="d-flex flex-column gap-2">
-                <div class="d-flex gap-1">
-                    <!--Name applicant-->
-                    <div class="form-group">
-                        <label for="firstname">First Name</label>
-                        <input type="text" name="firstname" class="form-control" value="{{ request.user.first_name|default_if_none:'' }}" placeholder="Please specify...">
+                    <!-- Personal Information Card -->
+                    <div class="col-lg-8">
+                        <div class="job-form-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-info-circle me-2"></i>Personal Information
+                                </h5>
+                                <small class="text-muted">Update your basic information</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="firstname" class="form-label">First Name *</label>
+                                        <input type="text" name="firstname" class="form-control" value="{{ request.user.first_name|default_if_none:'' }}" placeholder="Enter your first name" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lastname" class="form-label">Last Name *</label>
+                                        <input type="text" name="lastname" class="form-control" value="{{ request.user.last_name|default_if_none:'' }}" placeholder="Enter your last name" required>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select name="gender" class="form-select">
+                                            <option value="" disabled selected hidden>Select Gender</option>
+                                            <option value="male" {% if request.user.gender == 'male' %}selected{% endif %}>Male</option>
+                                            <option value="female" {% if request.user.gender == 'female' %}selected{% endif %}>Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="phonenumber" class="form-label">Phone Number</label>
+                                        <input type="tel" name="phonenumber" class="form-control" value="{{ request.user.phone_number|default_if_none:'' }}" placeholder="Enter your phone number">
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="city" class="form-label">City</label>
+                                        <input type="text" name="city" class="form-control" value="{{ request.user.city|default_if_none:'' }}" placeholder="Enter your city">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="state" class="form-label">State</label>
+                                        <input type="text" name="state" class="form-control" value="{{ request.user.state|default_if_none:'' }}" placeholder="Enter your state">
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" name="email" class="form-control" value="{{ request.user.email|default_if_none:'' }}" placeholder="Enter your email">
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <label for="biography" class="form-label">Biography</label>
+                                        <textarea class="form-control" id="biography" name="biography" rows="4" placeholder="Describe your personality, what you're good at, and what you care about...">{{ request.user.biography|default_if_none:'' }}</textarea>
+                                        <div class="form-text">Tell potential employers about yourself</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex justify-content-end p-3">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-save me-2"></i>Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="lastname">Last Name</label>
-                        <input type="text" name="lastname" class="form-control" value="{{ request.user.last_name|default_if_none:'' }}" placeholder="Please specify...">
-                    </div>
                 </div>
-                <div class="pt-2">
-                    <p><b>Home Location</b></p>
-                </div>
-                <div class="d-flex gap-1">
-                    <!--Alamat-->
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" name="city" class="form-control" value="{{ request.user.city|default_if_none:'' }}" placeholder="Please specify...">
-                    </div>
-                    <div class="form-group">
-                        <label for="state">State</label>
-                        <input type="text" name="state" class="form-control" value="{{ request.user.state|default_if_none:'' }}" placeholder="Please specify...">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="phonenumber">Phone Number</label>
-                    <input type="tel" name="phonenumber" class="form-control" value="{{ request.user.phone_number|default_if_none:'' }}" placeholder="Please specify...">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" class="form-control" value="{{ request.user.email|default_if_none:'' }}" placeholder="Please specify...">
-                </div>
-                <div class="form-group">
-                    <label for="Biography">Biography</label>
-                    <textarea class="form-control" id="biography" name="biography" rows="4" placeholder="Describe your personality, what you’re good at, and what you care about...">{{ request.user.biography|default_if_none:'' }}</textarea>
-                </div>
-                <div class="d-flex justify-content-end align-items-end">
-                    <input type="submit" value="Save" class="btn btn-primary btn-primary-extend">
-                </div>
-            </div>
-        </form>
-        <br>
-        <div class="px-3">
-            <h4>Resumes</h4>
+            </form>
         </div>
 
-        <!--Resume upload-->
-        <form id="uploadForm" method="POST" action="{% url 'upload_resume' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="px-3">
-                <label for="formFile" class="form-label">Upload your new resume</label>
-                <input 
-                class="form-control" 
-                type="file" 
-                id="resumeFile" 
-                name="document_file" 
-                accept=".pdf,.doc,.docx,image/*" 
-                onchange="document.getElementById('uploadForm').submit()"
-                required
-                >
-                
-                <!-- Optional hidden input if you want to preset document_type -->
-                <input type="hidden" name="document_type" value="resume">
-            </div>
-        </form>
-        <div class="px-3">
-            <ul class="list-group">
-                {% for resume in resumes %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    
-                    <!-- Able to update the resume -->
-                    <form action="{% url 'manage_resume' %}" method="POST" class="d-flex align-items-center justify-content-between w-100" style="gap: 0.5rem;">
-                    {% csrf_token %}
-
-                    <input 
-                        type="text" 
-                        name="document_name" 
-                        value="{{ resume.document_name }}" 
-                        class="form-control form-control-sm"
-                        style="width: 500px;"
-                    >
-                    <div>
-                        <!-- Hidden input to identify the resume -->
-                        <input type="hidden" name="resume_id" value="{{ resume.id }}">
-
-                        <!-- View button (not part of form) -->
-                        <a href="{{ resume.document_file.url }}" target="_blank" class="btn btn-sm btn-primary">
-                            View
-                        </a>
-
-                        <!-- Edit button -->
-                        <button type="submit" name="action" value="edit" class="btn btn-sm btn-warning">
-                            Rename
-                        </button>
-
-                        <!-- Delete button -->
-                        <button type="submit" name="action" value="delete" class="btn btn-sm btn-danger">
-                            Delete
-                        </button>
-                    </div>
+        <!-- Resumes Section -->
+        <div class="px-4">
+            <div class="job-form-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fa fa-file-text me-2"></i>Resumes
+                    </h5>
+                    <small class="text-muted">Manage your resume documents</small>
+                </div>
+                <div class="card-body">
+                    <!-- Resume Upload Form -->
+                    <form id="uploadForm" method="POST" action="{% url 'upload_resume' %}" enctype="multipart/form-data" class="mb-4">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="resumeFile" class="form-label">Upload New Resume</label>
+                                <input class="form-control" 
+                                    type="file" 
+                                    id="resumeFile" 
+                                    name="document_file" 
+                                    accept=".pdf,.doc,.docx,image/*" 
+                                    onchange="document.getElementById('uploadForm').submit()"
+                                    required>
+                                <div class="form-text">Supported formats: PDF, DOC, DOCX, Images</div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="document_type" value="resume">
                     </form>
 
-                </li>
-                {% empty %}
-                <li class="list-group-item">You haven't uploaded any resumes yet.</li>
-                {% endfor %}
-            </ul>
+                    <!-- Resume List -->
+                    <div class="resume-list">
+                        {% for resume in resumes %}
+                        <div class="resume-item border rounded p-3 mb-3">
+                            <form action="{% url 'manage_resume' %}" method="POST" class="d-flex align-items-center justify-content-between resume-form" data-resume-id="{{ resume.id }}">
+                                {% csrf_token %}
+                                <div class="d-flex align-items-center gap-3 flex-fill">
+                                    <i class="fa fa-file-text text-primary" style="font-size: 1.5rem;"></i>
+                                    <!-- Filename display -->
+                                    <span class="resume-filename" id="filename-{{ resume.id }}">{{ resume.document_name }}</span>
+                                    <!-- Inline edit input, hidden by default -->
+                                    <input type="text" name="document_name" value="{{ resume.document_name }}" class="form-control d-none resume-edit-input" style="max-width: 400px;" id="edit-input-{{ resume.id }}">
+                                    <input type="hidden" name="resume_id" value="{{ resume.id }}">
+                                </div>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <a href="{{ resume.document_file.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-eye me-1"></i>View
+                                    </a>
+                                    <!-- Rename/Save/Cancel buttons -->
+                                    <button type="button" class="btn btn-sm btn-outline-warning resume-rename-btn" data-resume-id="{{ resume.id }}">
+                                        <i class="fa fa-edit me-1"></i>Rename
+                                    </button>
+                                    <button type="submit" name="action" value="edit" class="btn btn-sm btn-success d-none resume-save-btn" data-resume-id="{{ resume.id }}">
+                                        <i class="fa fa-save me-1"></i>Save
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-secondary d-none resume-cancel-btn" data-resume-id="{{ resume.id }}">
+                                        <i class="fa fa-times me-1"></i>Cancel
+                                    </button>
+                                    <button type="submit" name="action" value="delete" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa fa-trash me-1"></i>Delete
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-4">
+                            <i class="fa fa-file-text text-muted" style="font-size: 3rem;"></i>
+                            <p class="text-muted mt-2">You haven't uploaded any resumes yet.</p>
+                            <small class="text-muted">Upload your first resume to get started!</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-
     </main>
 </div>
 
@@ -208,6 +253,12 @@ function previewProfile(event) {
         const file = input.files[0];
         console.log("📁 Selected file:", file.name, file.type, file.size);
 
+        // Check file size (5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+            alert("File size too large! Please select a file smaller than 5MB.");
+            return;
+        }
+
         // Check if it's actually an image
         if (!file.type.startsWith('image/')) {
             console.error("❌ Selected file is not an image");
@@ -220,21 +271,10 @@ function previewProfile(event) {
         reader.onload = function(e) {
             console.log("📷 FileReader loaded successfully");
             
-            // Remove any existing border
-            preview.style.border = "";
-            
             // Update the image source
             preview.src = e.target.result;
             
-            // Add a green border to show it worked
-            preview.style.border = "3px solid green";
-            
             console.log("✅ Preview updated successfully!");
-            
-            // Remove the green border after 2 seconds
-            setTimeout(() => {
-                preview.style.border = "";
-            }, 2000);
         };
 
         reader.onerror = function() {
@@ -248,12 +288,47 @@ function previewProfile(event) {
         alert("No file selected!");
     }
 }
-</script>
 
+// Resume Rename Inline Edit Functionality
+function setupResumeRename() {
+    document.querySelectorAll('.resume-rename-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var id = btn.getAttribute('data-resume-id');
+            document.getElementById('filename-' + id).classList.add('d-none');
+            document.getElementById('edit-input-' + id).classList.remove('d-none');
+            btn.classList.add('d-none');
+            document.querySelector('.resume-save-btn[data-resume-id="' + id + '"]').classList.remove('d-none');
+            document.querySelector('.resume-cancel-btn[data-resume-id="' + id + '"]').classList.remove('d-none');
+            document.getElementById('edit-input-' + id).focus();
+        });
+    });
+    document.querySelectorAll('.resume-cancel-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var id = btn.getAttribute('data-resume-id');
+            document.getElementById('filename-' + id).classList.remove('d-none');
+            document.getElementById('edit-input-' + id).classList.add('d-none');
+            btn.classList.add('d-none');
+            document.querySelector('.resume-save-btn[data-resume-id="' + id + '"]').classList.add('d-none');
+            document.querySelector('.resume-rename-btn[data-resume-id="' + id + '"]').classList.remove('d-none');
+        });
+    });
+    // Optional: Add Enter key to submit
+    document.querySelectorAll('.resume-edit-input').forEach(function(input) {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                var id = input.id.replace('edit-input-', '');
+                document.querySelector('.resume-save-btn[data-resume-id="' + id + '"]').click();
+            }
+        });
+    });
+}
+document.addEventListener('DOMContentLoaded', setupResumeRename);
+</script>
 
 {% endblock %}
 
 {% block footer %}
-        {% include "footers/footer2.html" %}
+    {% include "footers/footer2.html" %}
 {% endblock %}
 

@@ -29,6 +29,7 @@ urlpatterns = [
     path('',include('my_job_ad.urls')),
     path('',include('my_job_list.urls')),
     path('',include('manage_applicant.urls')),
+    path('',include('verify_applicant.urls')),
     path('logout/', auth_views.LogoutView.as_view(next_page='landing_applicant'), name='logout'),
 ]
 

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Applicant Verification Form{% endblock %}
+{% block header %}
+    {% include "headers/header4.html" %}
+{% endblock %}
+{% block content %}
+<div class="verify-applicant-bg py-4">
+  <div class="verify-applicant-row">
+    <!-- Left: Applicant Info -->
+    <div class="verify-applicant-col applicant-info-col">
+      <div class="verify-applicant-card">
+        <div class="verify-applicant-details-card mb-3">
+          <div class="d-flex align-items-center">
+            <div class="d-flex flex-column align-items-center me-3">
+              <img src="{% if applicant_photo %}{{ applicant_photo }}{% else %}{% static 'images/no-image.png' %}{% endif %}" alt="Applicant Photo" class="verify-applicant-photo-lg mb-2">
+            </div>
+            <div class="verify-applicant-details-grid">
+            <div class="verify-applicant-detail-label">Name</div>
+              <div class="verify-applicant-detail-value"><b>Alicia Sardor</b></div>
+              <div class="verify-applicant-detail-label">City</div>
+              <div class="verify-applicant-detail-value">Shah Alam</div>
+              <div class="verify-applicant-detail-label">State</div>
+              <div class="verify-applicant-detail-value">Selangor</div>
+              <div class="verify-applicant-detail-label">Phone Number</div>
+              <div class="verify-applicant-detail-value">010-678 4564</div>
+              <div class="verify-applicant-detail-label">Email</div>
+              <div class="verify-applicant-detail-value">aliciasardor@gmail.com</div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="fw-semibold mb-1">Message From The Applicant:</div>
+          <textarea class="form-control verify-applicant-message" rows="4" readonly>I kindly request your verification of my involvement with your organization as part of my job application. Your confirmation of my ability to work would be greatly appreciated. Thank you.</textarea>
+        </div>
+        <div>
+          <div class="fw-semibold mb-1">Attachment:</div>
+          <div class="verify-applicant-attachment-row">
+            <div class="verify-applicant-attachment-icon">
+              <i class="fa fa-file-text-o verify-applicant-pdf-icon" aria-hidden="true"></i>
+            </div>
+            <div class="verify-applicant-attachment-name">
+              <a href="#" class="text-decoration-none" download>Training_Letter.pdf</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: Verification Form -->
+    <div class="verify-applicant-col verification-form-col">
+      <div class="verify-applicant-card">
+        <div class="fw-bold mb-3">Verification</div>
+        <form method="post">
+          {% csrf_token %}
+          <div class="verify-applicant-form-row mb-3">
+            <div class="verify-applicant-form-group">
+              <label class="form-label small mb-1">Verified By:</label>
+              <input type="text" name="verifier_name" class="form-control verify-applicant-input" placeholder="Enter your name">
+            </div>
+            <div class="verify-applicant-form-group">
+              <label class="form-label small mb-1">Position:</label>
+              <input type="text" name="verifier_position" class="form-control verify-applicant-input" placeholder="Enter your position">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small mb-1">Message For Applicants:</label>
+            <div class="small text-muted mb-1 verify-applicant-note">Please Note That Your Message May Be Viewed By The Employer If The Applicant Is Verified.</div>
+            <textarea name="verifier_message" class="form-control verify-applicant-message" rows="5" placeholder="Please ensure your message described the applicant's experience with the NGO..."></textarea>
+          </div>
+          <div class="d-flex justify-content-end gap-3">
+            <button type="submit" name="action" value="reject" class="btn btn-danger px-4">Reject</button>
+            <button type="submit" name="action" value="verify" class="btn btn-primary px-4">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block footer %}
+    {% include "footers/footer3.html" %}
+{% endblock %}

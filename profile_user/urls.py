@@ -37,4 +37,9 @@ urlpatterns = [
     path('employer/profile', views.employer_profile,name='employer_profile'),
     path('employer/profile/update', views.update_employer_profile,name='update_employer_profile'),
 
+    #Section page to view applicant verification request
+    path('applicant/profile/verification/request', views.applicant_verification_request,name='applicant_verification_request'),
+
+    #Section page to view change password form
+    path('applicant/profile/change/password', views.change_password, name='change_password'),
 ]

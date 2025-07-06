@@ -13,7 +13,8 @@ from skill.models import Skill
 import os
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-
+from django.conf import settings
+import pandas as pd
 # Create your views here.
 
 #PROFILE INFORMATION
@@ -398,3 +399,24 @@ def update_employer_profile(request):
         return redirect('employer_profile')
     return render(request,'employer_profile.html')
 
+#for applicant verification request
+@login_required
+def applicant_verification_request(request):
+    file_path = os.path.join(settings.BASE_DIR, 'data', 'ngolist.xlsx')
+    df = pd.read_excel(file_path)
+
+    # Get both name and email
+    ngo_list = []
+    for _, row in df.iterrows():
+        name = row.iloc[0]
+        email = row.iloc[1]
+        if pd.notna(name) and pd.notna(email):
+            ngo_list.append({'name': name, 'email': email})
+    if request.method == 'POST':
+        return redirect('applicant_verification_request')
+    return render(request, 'applicant_verification_request.html', {'ngo_list': ngo_list})
+
+#for change password form
+@login_required
+def change_password(request):
+    return render(request, 'account_password_change.html')

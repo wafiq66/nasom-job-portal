@@ -44,11 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "register_page", #page
     "login_page", #page
-    "landing_page", #page
+    "landing_page", #page - at here there is the search page for job positing and candidate search.also include a page to apply for a job and send invitation to the applicant.
     "profile_user", #page
     "my_job_ad", #page - this one is more to the employer
     "my_job_list", #page - this one is more to the applicant
     "manage_applicant",#page
+    "verify_applicant",#page
     "application_user", #model
     "document", #model
     "education_vocation_training",#model

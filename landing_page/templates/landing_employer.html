@@ -7,7 +7,36 @@
 {% endblock %}
 
 {% block content %}
-hello bitches
+        {% include "search/search2.html" %}
+        <div class="container mb-5">
+                        <div id="lower-layout" class="row row-cols-1 row-cols-md-2 g-3">
+                                <div class="col">
+                                        {% include "applicantcards/applicant_card2.html" with name="Sarah Johnson" location="Kuala Lumpur" biography="A passionate developer with a love for learning new technologies and building impactful software." profile_url="/applicant/profile/1/" %}
+                                </div>
+                                <div class="col">
+                                        {% include "applicantcards/applicant_card2.html" with name="Michael Chen" location="Petaling Jaya" biography="Data enthusiast skilled in Python and analytics, eager to contribute to data-driven teams." profile_url="/applicant/profile/2/" %}
+                                </div>
+                                <div class="col">
+                                        {% include "applicantcards/applicant_card2.html" with name="Emma Rodriguez" location="Subang Jaya" biography="Creative marketer with experience in social media and content creation." profile_url="/applicant/profile/3/" %}
+                                </div>
+                                <div class="col">
+                                        {% include "applicantcards/applicant_card2.html" with name="David Lee" location="Kuala Lumpur" biography="Experienced backend developer with a strong background in Java and cloud infrastructure." profile_url="/applicant/profile/4/" %}
+                                </div>
+                                <div class="col">
+                                        {% include "applicantcards/applicant_card2.html" with name="Lisa Wong" location="Petaling Jaya" biography="Recent graduate with a passion for data science and machine learning." profile_url="/applicant/profile/5/" %}
+                                </div>
+                                <div class="col">
+                                        {% include "applicantcards/applicant_card2.html" with name="Aiman Rahman" location="Penang" biography="UI/UX designer focused on creating user-friendly and accessible digital experiences." profile_url="/applicant/profile/6/" %}
+                                </div>
+                                <div class="col">
+                                        {% include "applicantcards/applicant_card2.html" with name="Nurul Izzah" location="Johor" biography="HR executive with a strong interest in talent development and organizational growth." profile_url="/applicant/profile/7/" %}
+                                </div>
+                                <div class="col">
+                                        {% include "applicantcards/applicant_card2.html" with name="Syafiq Abdullah" location="Selangor" biography="Energetic marketing assistant with a knack for campaign management and teamwork." profile_url="/applicant/profile/8/" %}
+                                </div>
+                        <!-- Add more items as needed -->
+                        </div>
+                </div>
 {% endblock %}
 
 {% block footer %}

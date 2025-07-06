@@ -1,13 +1,13 @@
 {% load static %}
 <div class="d-flex top-header">
 {% if user.is_authenticated %}
-    <a href="{% url 'landing_employer' %}" class="top-header-nav">Home</a>
-    <a href="" class="top-header-nav">Find Employee</a>
-    <a href="" class="top-header-nav">Hiring Advice</a>
+    <a href="{% url 'employer_profile' %}" class="top-header-nav">Home</a>
+    <a href="{% url 'landing_employer' %}" class="top-header-nav">Find Employee</a>
+    <a href="{% url 'hiring_advice' %}" class="top-header-nav">Hiring Advice</a>
 {% else%}
-    <a href="" class="top-header-nav">Home</a>
-    <a href="" class="top-header-nav">Find Job</a>
-    <a href="" class="top-header-nav">Hiring Advice</a>
+    <a href="{% url 'landing_applicant' %}" class="top-header-nav">Home</a>
+    <a href="{% url 'landing_applicant' %}" class="top-header-nav">Find Job</a>
+    <a href="{% url 'hiring_advice' %}" class="top-header-nav">Hiring Advice</a>
     <a href="" class="top-header-nav">Companies</a>
 {% endif %}
 </div>
@@ -31,7 +31,7 @@
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="{% url 'employer_profile' %}">Company Profile</a>
             <a class="dropdown-item" href="{% url 'view_job_table' %}">My Job Ads</a>
-            <a class="dropdown-item" href="#">Manage Applicant</a>
+            <a class="dropdown-item" href="{% url 'applicant_list' %}">Manage Applicant</a>
             <a href="{% url 'landing_applicant' %}" class="text-primary dropdown-item">Switch To Applicant Account</a>
             <form class="dropdown-item" method="post" action="{% url 'logout' %}" style="margin: 0;">
                 {% csrf_token %}

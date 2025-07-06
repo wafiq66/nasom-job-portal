@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verification Request | Job Hiring Portal{% endblock %}
+
+{% block header %}
+    {% include "headers/header2.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    {% include "sidebars/sidebar1.html" %}
+    <main class="w-100 d-flex flex-column gap-4 py-4">
+        <!-- Header Section -->
+        <div class="px-4">
+            <div class="d-flex align-items-center gap-3">
+                <div>
+                    <h3 class="mb-1">Verification Request</h3>
+                    <p class="text-muted mb-0">Get verified by NGOs to enhance your profile</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="px-4">
+            <div class="d-flex gap-5 border-bottom border-secondary border-1">
+                <a href="{% url 'applicant_profile'%}" class="top-header-nav">Personal</a>
+                <a href="{% url 'applicant_background' %}" class="top-header-nav">Background Info</a>
+                <a href="{% url 'applicant_autistic_profile' %}" class="top-header-nav">Autism Profile</a>
+                <a href="{% url 'applicant_verification_request' %}" class="top-header-nav-selected">Verification</a>
+            </div>
+        </div>
+
+        <!-- Verification Form Section -->
+        <div class="px-4">
+            <div class="job-form-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fa fa-certificate me-2"></i>NGO Verification
+                    </h5>
+                    <small class="text-muted">NGO Verification is proof of your ability to work. It helps your profile stand out to potential employers.</small>
+                </div>
+                <div class="card-body">
+                    <!-- Status Section -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="fw-bold">Status:</span>
+                            <span class="verification-status">Not Verified</span>
+                        </div>
+                    </div>
+
+                    <!-- Verification Form -->
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <!-- NGO Selection -->
+                            <div class="col-12">
+                                <label for="ngo" class="form-label">Send to:</label>
+                                <select id="ngo" name="ngo" class="form-select">
+                                    <option value="" disabled selected hidden>Select NGO</option>
+                                    {% for ngo in ngo_list %}
+                                        <option value="{{ ngo.email }}" data-name="{{ ngo.name }}">{{ ngo.name }}</option>
+                                    {% endfor %}
+                                    <option value="other">Other</option>
+                                </select>
+                                <input type="hidden" id="ngo_selected_name" name="ngo_selected_name">
+                                <input type="hidden" id="ngo_selected_email" name="ngo_selected_email">
+                            </div>
+
+                            <!-- Other NGO Fields -->
+                            <div id="other-ngo-fields" class="col-12 d-none">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="other_ngo_name" class="form-label">Organization Name</label>
+                                        <input type="text" id="other_ngo_name" name="other_ngo_name" class="form-control" placeholder="Enter organization name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="other_ngo_email" class="form-label">Organization Email</label>
+                                        <input type="email" id="other_ngo_email" name="other_ngo_email" class="form-control" placeholder="Enter organization email">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Message Section -->
+                            <div class="col-12">
+                                <label for="short_message" class="form-label">Short Message:</label>
+                                <div class="form-text mb-2">
+                                    Kindly keep the message short and formal. It will be forwarded to the relevant NGO for verification.
+                                </div>
+                                <textarea id="short_message" name="short_message" class="form-control" rows="5" placeholder="Please ensure your message described the applicant's experience with the NGO..."></textarea>
+                            </div>
+
+                            <!-- File Upload Section -->
+                            <div class="col-12">
+                                <label class="form-label">Attachment:</label>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="d-flex flex-column gap-2">
+                                            <label class="btn btn-outline-secondary d-flex align-items-center gap-2">
+                                                <i class="fa fa-upload"></i> Upload
+                                                <input type="file" name="verification_file" accept=".pdf,.doc,.docx,image/*" class="verification-file-input" id="verification-upload-input">
+                                            </label>
+                                            <button type="submit" name="delete_file" value="1" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="verification-file-preview empty" id="verification-file-preview">
+                                            <img src="" alt="Preview" class="preview-img d-none" id="verification-preview-img">
+                                            <i class="fa fa-file-o verification-file-icon" id="verification-file-icon"></i>
+                                            <div class="verification-file-name" id="verification-file-name">No file uploaded</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fa fa-paper-plane me-2"></i>Submit Request
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+const ngoSelect = document.getElementById('ngo');
+const otherFields = document.getElementById('other-ngo-fields');
+const otherName = document.getElementById('other_ngo_name');
+const otherEmail = document.getElementById('other_ngo_email');
+const hiddenName = document.getElementById('ngo_selected_name');
+const hiddenEmail = document.getElementById('ngo_selected_email');
+
+ngoSelect.addEventListener('change', function() {
+  if (ngoSelect.value === 'other') {
+    otherFields.classList.remove('d-none');
+    otherName.required = true;
+    otherEmail.required = true;
+    hiddenName.value = '';
+    hiddenEmail.value = '';
+  } else {
+    otherFields.classList.add('d-none');
+    otherName.required = false;
+    otherEmail.required = false;
+    // Fill hidden fields from selected option
+    const selected = ngoSelect.options[ngoSelect.selectedIndex];
+    hiddenName.value = selected.getAttribute('data-name') || '';
+    hiddenEmail.value = ngoSelect.value || '';
+    // Optionally clear custom fields
+    otherName.value = '';
+    otherEmail.value = '';
+  }
+});
+
+// --- File Upload Preview ---
+const uploadInput = document.getElementById('verification-upload-input');
+const preview = document.getElementById('verification-file-preview');
+const previewImg = document.getElementById('verification-preview-img');
+const fileIcon = document.getElementById('verification-file-icon');
+const fileName = document.getElementById('verification-file-name');
+const deleteBtn = document.querySelector('button[name="delete_file"]');
+
+function showFilePreview(file) {
+    if (!file) {
+        preview.classList.remove('has-file');
+        previewImg.classList.add('d-none');
+        fileIcon.className = 'fa fa-file-o verification-file-icon';
+        fileIcon.classList.remove('d-none');
+        fileName.textContent = 'No file uploaded';
+        return;
+    }
+    preview.classList.add('has-file');
+    fileName.textContent = file.name;
+    if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            previewImg.classList.remove('d-none');
+            fileIcon.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+    } else {
+        previewImg.classList.add('d-none');
+        fileIcon.classList.remove('d-none');
+        if (file.type === 'application/pdf') {
+            fileIcon.className = 'fa fa-file-pdf-o verification-file-icon';
+        } else if (file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+            fileIcon.className = 'fa fa-file-word-o verification-file-icon';
+        } else {
+            fileIcon.className = 'fa fa-file-o verification-file-icon';
+        }
+    }
+}
+
+if (uploadInput) {
+    uploadInput.addEventListener('change', function() {
+        const file = uploadInput.files && uploadInput.files[0];
+        showFilePreview(file);
+    });
+}
+if (deleteBtn) {
+    deleteBtn.addEventListener('click', function(e) {
+        // Prevent form submit if JS is handling
+        e.preventDefault();
+        uploadInput.value = '';
+        showFilePreview(null);
+    });
+}
+</script>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footers/footer2.html" %}
+{% endblock %}
+

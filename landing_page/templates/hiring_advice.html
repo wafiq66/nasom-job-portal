@@ -1,0 +1,398 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Hiring Advice | Job Hiring Portal{% endblock %}
+{% block header %}
+    {% include "headers/header3.html" %}
+{% endblock %}
+{% block content %}
+<div class="d-flex">
+    <main class="w-100 d-flex flex-column gap-4 py-4">
+        <!-- Header Section -->
+        <div class="px-4">
+            <h2 class="mb-3">Hiring Advice for Employers</h2>
+            <p class="text-muted">Learn how to create inclusive job advertisements and effectively hire autistic applicants</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="px-4">
+            <div class="d-flex gap-4 border-bottom border-secondary border-1">
+                <button type="button" onclick="showSection('autism-intro')" class="btn-none top-header-nav-selected-alt2" id="nav-autism-intro">Autism Overview</button>
+                <button type="button" onclick="showSection('autism-levels')" class="btn-none top-header-nav-alt2" id="nav-autism-levels">Autism Levels</button>
+                <button type="button" onclick="showSection('job-ad-guide')" class="btn-none top-header-nav-alt2" id="nav-job-ad-guide">Job Ad Guide</button>
+                <button type="button" onclick="showSection('hiring-tips')" class="btn-none top-header-nav-alt2" id="nav-hiring-tips">Hiring Tips</button>
+            </div>
+        </div>
+
+        <!-- Autism Introduction Section -->
+        <div id="autism-intro" class="advice-section active px-4">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h4 class="card-title mb-3">Understanding Autism</h4>
+                            <p class="card-text">Autism Spectrum Disorder (ASD) is a neurodevelopmental condition that affects how people communicate, interact, and process information. Each autistic individual has unique strengths and challenges.</p>
+                            
+                            <h5 class="mt-4 mb-3">Key Characteristics</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start gap-2">
+                                        <i class="fa fa-lightbulb-o text-primary mt-1"></i>
+                                        <div>
+                                            <h6 class="mb-1">Unique Strengths</h6>
+                                            <small class="text-muted">Attention to detail, pattern recognition, reliability, honesty, and specialized interests</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start gap-2">
+                                        <i class="fa fa-users text-primary mt-1"></i>
+                                        <div>
+                                            <h6 class="mb-1">Communication</h6>
+                                            <small class="text-muted">May prefer direct, clear communication and written instructions</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start gap-2">
+                                        <i class="fa fa-cog text-primary mt-1"></i>
+                                        <div>
+                                            <h6 class="mb-1">Sensory Processing</h6>
+                                            <small class="text-muted">May be sensitive to lights, sounds, textures, or other sensory inputs</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start gap-2">
+                                        <i class="fa fa-calendar text-primary mt-1"></i>
+                                        <div>
+                                            <h6 class="mb-1">Routine & Structure</h6>
+                                            <small class="text-muted">Often thrive with predictable schedules and clear expectations</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Why Hire Autistic Employees?</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fa fa-check me-2"></i>Diverse perspectives</li>
+                                <li class="mb-2"><i class="fa fa-check me-2"></i>High attention to detail</li>
+                                <li class="mb-2"><i class="fa fa-check me-2"></i>Reliability and consistency</li>
+                                <li class="mb-2"><i class="fa fa-check me-2"></i>Specialized knowledge</li>
+                                <li class="mb-2"><i class="fa fa-check me-2"></i>Honest communication</li>
+                                <li class="mb-2"><i class="fa fa-check me-2"></i>Strong work ethic</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Autism Levels Section -->
+        <div id="autism-levels" class="advice-section px-4">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Understanding Autism Levels</h4>
+                            <p class="card-text mb-4">Autism is categorized into three levels based on the amount of support needed. Understanding these levels helps create appropriate job opportunities.</p>
+                            
+                            <div class="row g-4">
+                                <div class="col-md-4">
+                                    <div class="card border-primary h-100">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="mb-0">Level 1 - Requiring Support</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6>Characteristics:</h6>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-arrow-right text-primary me-2"></i>Can work independently</li>
+                                                <li><i class="fa fa-arrow-right text-primary me-2"></i>May need minor accommodations</li>
+                                                <li><i class="fa fa-arrow-right text-primary me-2"></i>Good communication skills</li>
+                                                <li><i class="fa fa-arrow-right text-primary me-2"></i>Can handle social interactions</li>
+                                            </ul>
+                                            <h6 class="mt-3">Suitable Jobs:</h6>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Data entry</li>
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Software development</li>
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Quality assurance</li>
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Research roles</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="card border-warning h-100">
+                                        <div class="card-header bg-warning text-dark">
+                                            <h5 class="mb-0">Level 2 - Requiring Substantial Support</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6>Characteristics:</h6>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-arrow-right text-warning me-2"></i>Needs moderate support</li>
+                                                <li><i class="fa fa-arrow-right text-warning me-2"></i>May have communication challenges</li>
+                                                <li><i class="fa fa-arrow-right text-warning me-2"></i>Benefits from structured environments</li>
+                                                <li><i class="fa fa-arrow-right text-warning me-2"></i>May need social support</li>
+                                            </ul>
+                                            <h6 class="mt-3">Suitable Jobs:</h6>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Assembly work</li>
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Packaging</li>
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Sorting tasks</li>
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Repetitive tasks</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="card border-danger h-100">
+                                        <div class="card-header bg-danger text-white">
+                                            <h5 class="mb-0">Level 3 - Requiring Very Substantial Support</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6>Characteristics:</h6>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-arrow-right text-danger me-2"></i>Needs significant support</li>
+                                                <li><i class="fa fa-arrow-right text-danger me-2"></i>Limited verbal communication</li>
+                                                <li><i class="fa fa-arrow-right text-danger me-2"></i>May have sensory sensitivities</li>
+                                                <li><i class="fa fa-arrow-right text-danger me-2"></i>Requires specialized support</li>
+                                            </ul>
+                                            <h6 class="mt-3">Suitable Jobs:</h6>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Simple repetitive tasks</li>
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Assembly line work</li>
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Cleaning tasks</li>
+                                                <li><i class="fa fa-briefcase text-success me-2"></i>Supported employment</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Ad Guide Section -->
+        <div id="job-ad-guide" class="advice-section px-4">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Creating Inclusive Job Advertisements</h4>
+                            <p class="card-text">Use our job posting form to create comprehensive and inclusive job advertisements that attract autistic applicants.</p>
+                            
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <h5 class="mb-3">Essential Job Ad Components</h5>
+                                    <div class="accordion" id="jobAdAccordion">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                                    Job Classification
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#jobAdAccordion">
+                                                <div class="accordion-body">
+                                                    <ul class="list-unstyled">
+                                                        <li><strong>Professional Jobs:</strong> Require higher education, complex problem-solving</li>
+                                                        <li><strong>Semi-Skilled Jobs:</strong> Moderate training, routine tasks with some variety</li>
+                                                        <li><strong>Simple Jobs:</strong> Basic training, repetitive tasks, clear instructions</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                                    Autism Level Support
+                                                </button>
+                                            </h2>
+                                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#jobAdAccordion">
+                                                <div class="accordion-body">
+                                                    <ul class="list-unstyled">
+                                                        <li><strong>Level 1:</strong> Minimal support needed, independent work</li>
+                                                        <li><strong>Level 2:</strong> Moderate support, structured environment</li>
+                                                        <li><strong>Level 3:</strong> Significant support, specialized assistance</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                                    Work Environment Details
+                                                </button>
+                                            </h2>
+                                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#jobAdAccordion">
+                                                <div class="accordion-body">
+                                                    <ul class="list-unstyled">
+                                                        <li><strong>Noise Levels:</strong> Specify if quiet environment is available</li>
+                                                        <li><strong>Lighting:</strong> Mention if adjustable lighting is provided</li>
+                                                        <li><strong>Space:</strong> Describe workspace and privacy options</li>
+                                                        <li><strong>Flexibility:</strong> Explain schedule and work arrangement options</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <h5 class="mb-3">Interview & Support Information</h5>
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6>Interview Accommodations:</h6>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-check text-success me-2"></i>Written questions in advance</li>
+                                                <li><i class="fa fa-check text-success me-2"></i>Quiet interview space</li>
+                                                <li><i class="fa fa-check text-success me-2"></i>Support person present</li>
+                                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Extra time for responses</li>
+                                            </ul>
+                                            
+                                            <h6 class="mt-3">Workplace Support:</h6>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-check text-success me-2"></i>Mentor or work buddy</li>
+                                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Regular progress updates</li>
+                                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Clear communication channels</li>
+                                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Flexible work arrangements</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hiring Tips Section -->
+        <div id="hiring-tips" class="advice-section px-4">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Best Practices for Hiring Autistic Employees</h4>
+                            
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <h5 class="text-primary">During Recruitment</h5>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Use clear, direct language in job ads</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Provide detailed job descriptions</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Offer multiple application methods</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Give advance notice for interviews</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-primary me-2"></i>Provide interview questions beforehand</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h5 class="text-success">During Interview</h5>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-success me-2"></i>Create a quiet, comfortable environment</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-success me-2"></i>Allow extra time for responses</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-success me-2"></i>Ask specific, direct questions</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-success me-2"></i>Focus on skills and abilities</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-success me-2"></i>Be patient and understanding</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h5 class="text-warning">Onboarding</h5>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-warning me-2"></i>Provide written instructions</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-warning me-2"></i>Assign a mentor or buddy</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-warning me-2"></i>Create a structured training plan</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-warning me-2"></i>Establish clear expectations</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-warning me-2"></i>Provide regular feedback</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h5 class="text-info">Ongoing Support</h5>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-info me-2"></i>Maintain open communication</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-info me-2"></i>Provide regular check-ins</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-info me-2"></i>Offer flexibility when possible</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-info me-2"></i>Recognize and celebrate achievements</li>
+                                        <li class="mb-2"><i class="fa fa-arrow-right text-info me-2"></i>Create an inclusive workplace culture</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card shadow-sm bg-gradient-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Ready to Post a Job?</h5>
+                            <p class="card-text">Use our comprehensive job posting form to create inclusive job advertisements that attract autistic talent.</p>
+                            <a href="{% url 'post_job' %}" class="btn btn-light">Create Job Ad</a>
+                        </div>
+                    </div>
+                    
+                    <div class="card shadow-sm mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Key Benefits</h5>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fa fa-users text-primary me-2"></i>
+                                <span>Diverse workforce</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fa fa-lightbulb-o text-warning me-2"></i>
+                                <span>Innovative perspectives</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fa fa-heart text-danger me-2"></i>
+                                <span>Inclusive culture</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fa fa-star text-success me-2"></i>
+                                <span>Loyal employees</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+
+<script>
+function showSection(sectionName) {
+    // Hide all sections
+    document.querySelectorAll('.advice-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Remove active class from all nav buttons
+    document.querySelectorAll('.top-header-nav-selected-alt2, .top-header-nav-alt2').forEach(btn => {
+        btn.classList.remove('top-header-nav-selected-alt2');
+        btn.classList.add('top-header-nav-alt2');
+    });
+    
+    // Show selected section
+    document.getElementById(sectionName).classList.add('active');
+    
+    // Add active class to selected nav button
+    document.getElementById('nav-' + sectionName).classList.remove('top-header-nav-alt2');
+    document.getElementById('nav-' + sectionName).classList.add('top-header-nav-selected-alt2');
+}
+</script>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footers/footer2.html" %}
+{% endblock %}

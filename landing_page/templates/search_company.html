@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Search Companies | Job Hiring Portal{% endblock %}
+
+{% block header %}
+    {% include "headers/header2.html" %}
+{% endblock %}
+
+{% block footer %}
+    {% include "footers/footer2.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column min-vh-100 bg-light">
+    <main class="w-100 d-flex flex-column gap-4 py-4">
+        <!-- Header section with title and search -->
+        <div class="px-4 mb-2">
+            <div class="d-flex align-items-center gap-3">
+                <div>
+                    <h3 class="mb-1">Search Companies</h3>
+                    <p class="text-muted mb-0">Find and explore companies that match your interests</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="px-4">
+            {% include "search/search3.html" %}
+        </div>
+
+        
+
+        <!-- Company Cards Grid -->
+        <div id="company-layout" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 px-4">
+            <!-- Company Card 1 -->
+            <div class="col" data-name="TechCorp Solutions">
+                <div class="card company-card shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="company-logo" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                            <div class="flex-fill">
+                                <h5 class="mb-1">TechCorp Solutions</h5>
+                                <p class="text-muted mb-2">Kuala Lumpur</p>
+                            </div>
+                        </div>
+                        <p class="company-description mb-3">Leading technology company specializing in software development and digital solutions. We focus on innovation and employee growth.</p>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'view_company' %}" class="btn btn-primary btn-sm flex-fill">View Company</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Card 2 -->
+            <div class="col" data-name="HealthFirst Medical">
+                <div class="card company-card shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="company-logo" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                            <div class="flex-fill">
+                                <h5 class="mb-1">HealthFirst Medical</h5>
+                                <p class="text-muted mb-2">Petaling Jaya</p>
+                            </div>
+                        </div>
+                        <p class="company-description mb-3">Premier healthcare provider committed to excellence in patient care and medical innovation. Join our mission to improve lives.</p>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'view_company' %}" class="btn btn-primary btn-sm flex-fill">View Company</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Card 3 -->
+            <div class="col" data-name="FinancePro Bank">
+                <div class="card company-card shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="company-logo" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                            <div class="flex-fill">
+                                <h5 class="mb-1">FinancePro Bank</h5>
+                                <p class="text-muted mb-2">Subang Jaya</p>
+                            </div>
+                        </div>
+                        <p class="company-description mb-3">Established financial institution providing comprehensive banking services and career opportunities in the financial sector.</p>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'view_company' %}" class="btn btn-primary btn-sm flex-fill">View Company</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+

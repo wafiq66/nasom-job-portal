@@ -13,26 +13,31 @@
 {% block content %}
 <div class="d-flex">
     {% include "sidebars/sidebar1.html" %}
-    <main class="d-flex flex-column gap-2  w-100">
-        <div class="d-flex text-light bg-dark px-4 py-3">
-            <h5>Applied Jobs</h5>
-        </div> 
-        
-        <div id="lower-layout" class="row row-cols-1 row-cols-md-2 g-3 m-2">
-                <div class="col">
-                        {% include "jobcards/job_card2.html" %}
+    <main class="w-100 d-flex flex-column gap-4 py-4 bg-light">
+        <!-- Header Section -->
+        <div class="px-4 mb-2">
+            <div class="d-flex align-items-center gap-3">
+                <div>
+                    <h3 class="mb-1">Applied Jobs</h3>
+                    <p class="text-muted mb-0">Jobs you have applied for</p>
                 </div>
-                <div class="col">
-                        {% include "jobcards/job_card2.html" %}
-                </div>
-                <div class="col">
-                        {% include "jobcards/job_card2.html" %}
-                </div>
-                <div class="col">
-                        {% include "jobcards/job_card2.html" %}
-                </div>
-        <!-- Add more items as needed -->
+            </div>
+        </div>
+        <!-- Job Cards Grid (Static Preview) -->
+        <div id="lower-layout" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 px-4">
+            {# Example: Normal status #}
+            <div class="col">
+                {% include "jobcards/job_card2.html" with status="Under Review" %}
+            </div>
+            {# Example: Shortlisted #}
+            <div class="col">
+                {% include "jobcards/job_card2.html" with status="Shortlisted" %}
+            </div>
+            {# Example: Called by Employer, clickable badge #}
+            <div class="col">
+                {% include "jobcards/job_card2.html" with status="Called by Employer" job_ad_url="/view/job" %}
+            </div>
         </div>
     </main>
 </div>
-{% endblock  %}
+{% endblock %}

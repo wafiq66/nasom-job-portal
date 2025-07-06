@@ -1,0 +1,48 @@
+{% load static %}
+<div class="applicant-card">
+    <div class="applicant-header">
+        <div class="applicant-photo">
+            <img src="{% if photo_url %}{{ photo_url }}{% else %}{% static 'images/no-image.png' %}{% endif %}" alt="Applicant Photo" class="applicant-img">
+        </div>
+        <div class="applicant-basic-info">
+            <h6 class="applicant-name mb-1">{{ name }}</h6>
+            <span class="applicant-position text-muted">{{ position }}</span>
+            <div class="applicant-status {{ status_class|default:'new-status' }}">{{ status_label|default:'New Application' }}</div>
+        </div>
+        <div class="applicant-actions">
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    {% if actions %}
+                        {% for action in actions %}
+                        <li>
+                            <a class="dropdown-item {{ action.class }}" href="{{ action.url }}">
+                                <i class="{{ action.icon }} me-2"></i>{{ action.label }}
+                            </a>
+                        </li>
+                        {% if not forloop.last and action.divider %}<li><hr class="dropdown-divider"></li>{% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <li><a class="dropdown-item" href="{% url 'applicant_manage' %}"><i class="fas fa-eye me-2"></i>View Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Download Resume</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-success" href="#"><i class="fas fa-check me-2"></i>Shortlist</a></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times me-2"></i>Reject</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="applicant-details">
+        <div class="detail-row">
+            <span class="detail-label"><i class="fas fa-map-marker-alt me-2"></i>Location:</span>
+            <span class="detail-value">{{ location }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label"><i class="fas fa-calendar me-2"></i>Applied:</span>
+            <span class="detail-value">{{ applied }}</span>
+        </div>
+    </div>
+</div>

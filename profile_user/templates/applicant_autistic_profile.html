@@ -1,163 +1,188 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Job Hiring Portal{% endblock %}
+{% block title %}Autism Profile | Job Hiring Portal{% endblock %}
 
 {% block header %}
-        {% include "headers/header2.html" %}
+    {% include "headers/header2.html" %}
 {% endblock %}
 
 {% block content %}
 <div class="d-flex">
     {% include "sidebars/sidebar1.html" %}
-    <main class="d-flex flex-column gap-2  py-4 w-100">
-        <div class="px-3">
-            <h4>Profile</h4>
-        </div>
-        <div class="d-flex gap-5 border-bottom border-secondary border-1 px-3">
-            <a href="{% url 'applicant_profile'%}" class="top-header-nav">Personal</a>
-            <a href="{% url 'applicant_background' %}" class="top-header-nav">Background Info</a>
-            <a href="{% url 'applicant_autistic_profile' %}" class="top-header-nav-selected">Autism Profile</a>
-            <a href="" class="top-header-nav">Verification</a>
-        </div>
-
-        <!-- Work Attitude ADD Form -->
-        <form action="{% url 'applicant_work_attitude' %}" method="POST" class="px-5 py-2 d-flex flex-column gap-2">
-            {% csrf_token %}
-            <div>
-                <h5>Work Attitude</h5>
-            </div>
-            <div class="d-flex gap-2 align-items-end">
-                <div class="form-group flex-fill">
-                    <input type="text" name="workattitude" class="form-control" placeholder="Add Work Attitude..." required>
-                </div>
+    <main class="w-100 d-flex flex-column gap-4 py-4">
+        <!-- Header Section -->
+        <div class="px-4">
+            <div class="d-flex align-items-center gap-3">
                 <div>
-                    <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <h3 class="mb-1">Autism Profile</h3>
+                    <p class="text-muted mb-0">Share your work preferences and communication style</p>
                 </div>
             </div>
-        </form>
-
-        <!-- Work Attitude TAG Display -->
-        <div class="skill-contain border border-dark rounded mx-5">
-            {% for work_attitude in work_attitudes %}
-            <form action="{% url 'delete_work_attitude' work_attitude.id %}" method="POST" class="skill-form">
-                {% csrf_token %}
-                <input type="hidden" name="skill_id" value="{{ work_attitude.id }}">
-                <div class="skill-tag">
-                    <span>{{ work_attitude.work_attitude }}</span>
-                    <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
-                </div>
-            </form>
-            {% endfor %}
         </div>
 
-        <!-- Communication Style ADD Form -->
-        <form action="{% url 'applicant_communication_style' %}" method="POST" class="px-5 py-2 d-flex flex-column gap-2">
-            {% csrf_token %}
-            <div>
-                <h5>Communication Style</h5>
+        <!-- Navigation Tabs -->
+        <div class="px-4">
+            <div class="d-flex gap-5 border-bottom border-secondary border-1">
+                <a href="{% url 'applicant_profile'%}" class="top-header-nav">Personal</a>
+                <a href="{% url 'applicant_background' %}" class="top-header-nav">Background Info</a>
+                <a href="{% url 'applicant_autistic_profile' %}" class="top-header-nav-selected">Autism Profile</a>
+                <a href="{% url 'applicant_verification_request' %}" class="top-header-nav">Verification</a>
             </div>
-            <div class="d-flex gap-2 align-items-end">
-                <div class="form-group flex-fill">
-                    <input type="text" name="communicationstyle" class="form-control" placeholder="Add Communication Style..." required>
-                </div>
-                <div>
-                    <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                </div>
-            </div>
-        </form>
-
-        <!-- Communication Style TAG Display -->
-        <div class="skill-contain border border-dark rounded mx-5">
-            {% for com in communication_styles %}
-            <form action="{% url 'delete_communication_style' com.id %}" method="POST" class="skill-form">
-                {% csrf_token %}
-                <input type="hidden" name="com_id" value="{{ com.id }}">
-                <div class="skill-tag">
-                    <span>{{ com.communication_style }}</span>
-                    <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
-                </div>
-            </form>
-            {% endfor %}
         </div>
 
-        <!-- Personal Interest ADD Form -->
-        <form action="{% url 'applicant_personal_interest' %}" method="POST" class="px-5 py-2 d-flex flex-column gap-2">
-            {% csrf_token %}
-            <div>
-                <h5>Personal Interest</h5>
+        <!-- Three Sections Side by Side -->
+        <div class="px-4">
+            <div class="row g-4">
+                <!-- Work Attitude Section -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="job-form-card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fa fa-thumbs-up me-2"></i>Work Attitude
+                            </h5>
+                            <small class="text-muted">Describe your approach to work</small>
+                        </div>
+                        <div class="card-body pb-3">
+                            <!-- Work Attitude Form -->
+                            <form action="{% url 'applicant_work_attitude' %}" method="POST" class="mb-2">
+                                {% csrf_token %}
+                                <label for="workattitude" class="form-label mb-1">Add Work Attitude</label>
+                                <div class="d-flex gap-2 align-items-center mb-2">
+                                    <input type="text" name="workattitude" class="form-control" placeholder="Add Work Attitude..." required>
+                                    <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; border-radius: 50%;">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <!-- Work Attitude Tags -->
+                            <div class="skill-contain border rounded p-2" style="min-height: 60px;">
+                                {% for work_attitude in work_attitudes %}
+                                <form action="{% url 'delete_work_attitude' work_attitude.id %}" method="POST" class="skill-form d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="skill_id" value="{{ work_attitude.id }}">
+                                    <div class="skill-tag">
+                                        <span>{{ work_attitude.work_attitude }}</span>
+                                        <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
+                                    </div>
+                                </form>
+                                {% empty %}
+                                <div class="text-center py-2">
+                                    <i class="fa fa-thumbs-up text-muted" style="font-size: 1.3rem;"></i>
+                                    <p class="text-muted mt-2 mb-0" style="font-size: 0.95rem;">No work attitudes added yet.</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Communication Style Section -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="job-form-card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fa fa-comments me-2"></i>Communication Style
+                            </h5>
+                            <small class="text-muted">Describe how you prefer to communicate</small>
+                        </div>
+                        <div class="card-body pb-3">
+                            <!-- Communication Style Form -->
+                            <form action="{% url 'applicant_communication_style' %}" method="POST" class="mb-2">
+                                {% csrf_token %}
+                                <label for="communicationstyle" class="form-label mb-1">Add Communication Style</label>
+                                <div class="d-flex gap-2 align-items-center mb-2">
+                                    <input type="text" name="communicationstyle" class="form-control" placeholder="Add Communication Style..." required>
+                                    <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; border-radius: 50%;">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <!-- Communication Style Tags -->
+                            <div class="skill-contain border rounded p-2" style="min-height: 60px;">
+                                {% for com in communication_styles %}
+                                <form action="{% url 'delete_communication_style' com.id %}" method="POST" class="skill-form d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="com_id" value="{{ com.id }}">
+                                    <div class="skill-tag">
+                                        <span>{{ com.communication_style }}</span>
+                                        <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
+                                    </div>
+                                </form>
+                                {% empty %}
+                                <div class="text-center py-2">
+                                    <i class="fa fa-comments text-muted" style="font-size: 1.3rem;"></i>
+                                    <p class="text-muted mt-2 mb-0" style="font-size: 0.95rem;">No communication styles added yet.</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Personal Interest Section -->
+                <div class="col-lg-4 col-md-12 col-12">
+                    <div class="job-form-card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fa fa-star me-2"></i>Personal Interests
+                            </h5>
+                            <small class="text-muted">Share your hobbies and interests</small>
+                        </div>
+                        <div class="card-body pb-3">
+                            <!-- Personal Interest Form -->
+                            <form action="{% url 'applicant_personal_interest' %}" method="POST" class="mb-2">
+                                {% csrf_token %}
+                                <label for="personalinterest" class="form-label mb-1">Add Personal Interest</label>
+                                <div class="d-flex gap-2 align-items-center mb-2">
+                                    <input type="text" name="personalinterest" class="form-control" placeholder="Add Personal Interest..." required>
+                                    <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; border-radius: 50%;">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <!-- Personal Interest Tags -->
+                            <div class="skill-contain border rounded p-2" style="min-height: 60px;">
+                                {% for pi in personal_interests %}
+                                <form action="{% url 'delete_personal_interest' pi.id %}" method="POST" class="skill-form d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="interest_id" value="{{ pi.id }}">
+                                    <div class="skill-tag">
+                                        <span>{{ pi.personal_interest }}</span>
+                                        <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
+                                    </div>
+                                </form>
+                                {% empty %}
+                                <div class="text-center py-2">
+                                    <i class="fa fa-star text-muted" style="font-size: 1.3rem;"></i>
+                                    <p class="text-muted mt-2 mb-0" style="font-size: 0.95rem;">No personal interests added yet.</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="d-flex gap-2 align-items-end">
-                <div class="form-group flex-fill">
-                    <input type="text" name="personalinterest" class="form-control" placeholder="Add Personal Interest..." required>
-                </div>
-                <div>
-                    <button type="submit" class="btn-icon"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                </div>
-            </div>
-        </form>
-
-        <!-- Personal Interest TAG Display -->
-        <div class="skill-contain border border-dark rounded mx-5">
-            {% for pi in personal_interests %}
-            <form action="{% url 'delete_personal_interest' pi.id %}" method="POST" class="skill-form">
-                {% csrf_token %}
-                <input type="hidden" name="interest_id" value="{{ pi.id }}">
-                <div class="skill-tag">
-                    <span>{{ pi.personal_interest }}</span>
-                    <button type="submit" class="remove-btn"><i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
-                </div>
-            </form>
-            {% endfor %}
         </div>
-
-
     </main>
 </div>
 
-
 <script>
-document.querySelectorAll('.edit-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const entry = btn.closest('.career-entry');
-        const readOnly = entry.querySelector('.read-only');
-        const form = entry.querySelector('.allow-edit');
-
-        const isEditing = form.style.display === 'flex';
-
-        if (isEditing) {
-            // Hide edit form, show read-only
-            form.style.display = 'none';
-            form.classList.remove('d-flex');
-            readOnly.style.display = 'flex';
-        } else {
-            // Show edit form, hide read-only
-            readOnly.style.display = 'none';
-            form.style.display = 'flex';
-            form.classList.add('d-flex');
-        }
-    });
+// Save scroll position before page unload
+window.addEventListener("beforeunload", function () {
+    localStorage.setItem("scrollY", window.scrollY);
 });
 
- // Save scroll position before page unload
-    window.addEventListener("beforeunload", function () {
-        localStorage.setItem("scrollY", window.scrollY);
-    });
-
-    // Restore scroll position on page load
-    window.addEventListener("load", function () {
-        const scrollY = localStorage.getItem("scrollY");
-        if (scrollY !== null) {
-            window.scrollTo(0, parseInt(scrollY));
-            localStorage.removeItem("scrollY"); // Clear it after scroll
-        }
-    });
-    
+// Restore scroll position on page load
+window.addEventListener("load", function () {
+    const scrollY = localStorage.getItem("scrollY");
+    if (scrollY !== null) {
+        window.scrollTo(0, parseInt(scrollY));
+        localStorage.removeItem("scrollY"); // Clear it after scroll
+    }
+});
 </script>
-
 
 {% endblock %}
 
 {% block footer %}
-        {% include "footers/footer2.html" %}
+    {% include "footers/footer2.html" %}
 {% endblock %}
 
