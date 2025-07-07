@@ -14,7 +14,8 @@ from pathlib import Path
 import pymysql
 pymysql.install_as_MySQLdb()
 import os
-import json
+from dotenv import load_dotenv
+load_dotenv()  # this will read from .e
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,9 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = json.loads(os.getenv("DJANGO_ALLOWED_HOSTS", "[]"))
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
+
 
 
 # Application definition
@@ -110,11 +112,11 @@ WSGI_APPLICATION = 'nasom_job_portal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # Postgresql also uses this
-        'NAME': config('POSTGRES_DB'),          
-        'USER': config('POSTGRES_USER'),
-        'PASSWORD': config('POSTGRES_PASSWORD'),                        # Or your actual password if set
-        'HOST': os.environ.get('DB_HOST', 'localhost'),                   # Use IP instead of localhost
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'nasom_job_portal'),
+        'USER': os.environ.get('POSTGRES_USER', 'your_default_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'your_default_password'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
@@ -175,13 +177,3 @@ JAZZMIN_SETTINGS = {
     "order_with_respect_to": ["auth", "jobs", "users"],
 }
 
-# --- Security settings for production ---
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 31536000  # 1 year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
