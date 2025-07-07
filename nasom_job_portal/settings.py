@@ -14,8 +14,6 @@ from pathlib import Path
 import pymysql
 pymysql.install_as_MySQLdb()
 import os
-from dotenv import load_dotenv
-load_dotenv()  # this will read from .e
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +28,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="").split(",")
 
 
 
@@ -67,6 +65,7 @@ AUTH_USER_MODEL = 'application_user.ApplicationUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -103,6 +102,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')  # Global static folder
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 WSGI_APPLICATION = 'nasom_job_portal.wsgi.application'
 
@@ -113,11 +114,11 @@ WSGI_APPLICATION = 'nasom_job_portal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'nasom_job_portal'),
-        'USER': os.environ.get('POSTGRES_USER', 'your_default_user'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'your_default_password'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'NAME': config('POSTGRES_DB'),
+        'USER': config('POSTGRES_USER'),
+        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', cast=int),
     }
 }
 
