@@ -35,24 +35,40 @@
                 <div class="card-body">
                     <div class="row g-4">
                         <div class="col-md-3 text-center">
-                            <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="company-logo mb-3" id="company-logo" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px;">
+                            {% if job_ad.user.company_logo.url %}
+                                <img src="{{ job_ad.user.company_logo.url }}" alt="Company Logo" class="company-logo mb-3" id="company-logo" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px;">
+                            {% else %}
+                                <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="company-logo mb-3" id="company-logo" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px;">
+                            {% endif %}
                         </div>
                         <div class="col-md-9">
-                            <h4 class="mb-2" id="noteJobTitle">Clerk</h4>
-                            <p class="text-muted mb-3">At Twitter Inc.</p>
+                            <h4 class="mb-2" id="noteJobTitle">{{job_ad.job_title}}</h4>
+                            <p class="text-muted mb-3">At {{job_ad.user.company_name}}</p>
                             
                             <div class="d-flex flex-wrap gap-2 mb-3">
-                                <span class="job-tag job-tag-category" id="noteJobCategory">Professional Job</span>
-                                <span class="job-tag job-tag-type" id="noteFullTime">Full-Time</span>
-                                <span class="job-tag job-tag-type" id="notePartTime">Part-Time</span>
-                                <span class="job-tag job-tag-type" id="noteRemote">Remote</span>
+                                <span class="job-tag job-tag-category" id="noteJobCategory">{{job_ad.get_job_category_display}}</span>
+                                {% if job_ad.can_full_time %}
+                                    <span class="job-tag job-tag-type" id="noteFullTime">Full-Time</span>
+                                {% endif %}
+                                {% if job_ad.can_part_time %}
+                                    <span class="job-tag job-tag-type" id="notePartTime">Part-Time</span>
+                                {% endif %}
+                                {% if job_ad.can_remote %}
+                                    <span class="job-tag job-tag-type" id="noteRemote">Remote</span>
+                                {% endif %}
             </div>
             
                             <div class="d-flex flex-wrap gap-2">
                                 <span class="text-muted">Open For Autism:</span>
-                                <span class="job-tag job-tag-open" id="noteLevel1">Level 1</span>
-                                <span class="job-tag job-tag-open" id="noteLevel2">Level 2</span>
-                                <span class="job-tag job-tag-open" id="noteLevel3">Level 3</span>
+                                {% if job_ad.for_level_one %}
+                                    <span class="job-tag job-tag-open" id="noteLevel1">Level 1</span>
+                                {% endif %}
+                                {% if job_ad.for_level_two %}
+                                    <span class="job-tag job-tag-open" id="noteLevel2">Level 2</span>
+                                {% endif %}
+                                {% if job_ad.for_level_three %}
+                                    <span class="job-tag job-tag-open" id="noteLevel3">Level 3</span>
+                                {% endif %}
                             </div>
                     </div>
                     </div>
@@ -86,28 +102,31 @@
                                         <div class="accordion-body">
                                             <div class="mb-3">
                                                 <strong>Main Task</strong>
-                                                <p class="mb-0 mt-2" id="noteMainTaskDesc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet nemo, repellendus unde beatae velit illo fuga iste maiores? Quam impedit molestiae, porro incidunt error possimus eius expedita minus. Consequuntur, itaque?</p>
+                                                <p class="mb-0 mt-2" id="noteMainTaskDesc">{{job_ad.main_task_desc}}</p>
                                             </div>
-
+                                            {% if job_ad.sub_task_status %}
                                             <div class="mb-3" id="noteSubTask">
                                                 <strong>Sub Task</strong>
-                                                <p class="mb-0 mt-2" id="noteSubTaskDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, architecto fugit. Harum aliquam, animi voluptas dolorem id, iusto magni doloribus accusamus quo quidem non asperiores, aliquid laboriosam mollitia atque a.</p>
+                                                <p class="mb-0 mt-2" id="noteSubTaskDesc">{{job_ad.sub_task_desc}}</p>
                                             </div>
-
+                                            {% endif %}
                                             <div class="mb-3">
-                                                <p class="mb-1" id="noteRepetitiveTask"><i class="fa-solid fa-check text-success me-2"></i>Repetitive Task</p>
-                                                <p class="mb-1" id="noteEasyToPerform"><i class="fa-solid fa-check text-success me-2"></i>Easy to Perform</p>
-                                                <p class="mb-1" id="noteEasyToRemember"><i class="fa-solid fa-check text-success me-2"></i>Easy to Remember</p>
+                                                {% if job_ad.repetitive_task_status %}<p class="mb-1" id="noteRepetitiveTask"><i class="fa-solid fa-check text-success me-2"></i>Repetitive Task</p>{% endif %}
+                                                {% if job_ad.easy_to_perform_status %}<p class="mb-1" id="noteEasyToPerform"><i class="fa-solid fa-check text-success me-2"></i>Easy to Perform</p>{% endif %}
+                                                {% if job_ad.easy_to_remember_status %}<p class="mb-1" id="noteEasyToRemember"><i class="fa-solid fa-check text-success me-2"></i>Easy to Remember</p>{% endif %}
                                             </div>
 
+                                            {% if job_ad.interaction_with_cust_status %}
                                             <div class="mb-3" id="noteInteractionWithCustomer">
                                                 <strong>Have Interaction with Customer</strong>
-                                                <p class="mb-0 mt-2" id="noteInteractionWithCustomerDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi quis asperiores obcaecati doloremque excepturi quibusdam autem doloribus odio atque voluptas eius sit dolor, quod vitae blanditiis, dignissimos, veniam est? Molestias.</p>
+                                                <p class="mb-0 mt-2" id="noteInteractionWithCustomerDesc">{{job_ad.interaction_with_cust_desc}}</p>
                                             </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
 
+                                {% if  job_ad.has_any_interview_option %}
                                 <!-- Interviews Approach Section -->
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="interviewsHeader">
@@ -117,27 +136,33 @@
                                     </h2>
                                     <div id="interviewsCollapse" class="accordion-collapse collapse" aria-labelledby="interviewsHeader" data-bs-parent="#jobDescriptionAccordion">
                                         <div class="accordion-body">
+                                            {% if job_ad.verbal_interview_status %}
                                             <div class="mb-3" id="noteVerbal">
                                                 <strong>Verbal</strong>
-                                                <p class="mb-0 mt-2" id="noteVerbalDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, ullam voluptate debitis inventore consectetur reiciendis ratione fugiat quasi cum blanditiis esse architecto exercitationem sed, aut corrupti eaque ab modi? Eum.</p>
+                                                <p class="mb-0 mt-2" id="noteVerbalDesc">{{job_ad.verbal_interview_desc}}</p>
                                             </div>
-
+                                            {% endif %}
+                                            {% if job_ad.nonverbal_interview_status %}
                                             <div class="mb-3" id="noteNonVerbal">
                                                 <strong>Non-Verbal</strong>
-                                                <p class="mb-0 mt-2" id="noteNonVerbalDesc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odio voluptate culpa quam fuga ea nulla facere ab, reprehenderit officiis explicabo modi maxime, nesciunt dolorem iste tempore? Enim exercitationem possimus obcaecati!</p>
+                                                <p class="mb-0 mt-2" id="noteNonVerbalDesc">{{job_ad.nonverbal_interview_desc}}</p>
                                             </div>
-
+                                            {% endif %}
+                                            {% if job_ad.representative_interview_status %}
                                             <div class="mb-3" id="noteRepresentative">
                                                 <strong>Representative</strong>
-                                                <p class="mb-0 mt-2" id="noteRepresentativeDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, voluptatem aspernatur eveniet totam nobis nemo rerum consequatur maxime labore. Eligendi distinctio, quis nihil accusantium sapiente porro nemo unde iste dignissimos!</p>
+                                                <p class="mb-0 mt-2" id="noteRepresentativeDesc">{{job_ad.representative_interview_desc}}</p>
                                             </div>
-
-                                            <p class="mb-0" id="noteNoInterview"><i class="fa-solid fa-check text-success me-2"></i>No Interview</p>
+                                            {% endif %} 
+                                            {% if job_ad.no_interview_status %}<p class="mb-0" id="noteNoInterview"><i class="fa-solid fa-check text-success me-2"></i>No Interview</p>
+                                            {% endif %} 
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
 
                                 <!-- Benefits Section -->
+                                {% if  job_ad.has_any_benefit_status %}
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="benefitsHeader">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#benefitsCollapse" aria-expanded="false" aria-controls="benefitsCollapse">
@@ -146,55 +171,83 @@
                                     </h2>
                                     <div id="benefitsCollapse" class="accordion-collapse collapse" aria-labelledby="benefitsHeader" data-bs-parent="#jobDescriptionAccordion">
                                         <div class="accordion-body">
+
+                                            {% if job_ad.special_training_status %}
                                             <div class="mb-3" id="noteSpecialTraining">
                                                 <strong>Special Training</strong>
-                                                <p class="mb-0 mt-2" id="noteSpecialTrainingDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus placeat, accusantium voluptatum officiis asperiores quibusdam explicabo ratione cumque ducimus saepe ex quis doloremque facere? Molestias minus beatae est odio. Ipsam!</p>
+                                                <p class="mb-0 mt-2" id="noteSpecialTrainingDesc">{{job_ad.special_training_desc}}</p>
                                             </div>
+                                            {% endif %} 
 
                                             <div class="mb-3" id="noteTrainingTime">
-                                                <strong>One Time Training | Multiple Time Training</strong>
-                                                <p class="mb-0 mt-2" id="noteTrainingTimeDesc">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Adipisci, sunt reprehenderit fuga dolorem aliquam maxime ab assumenda corrupti minima non pariatur laudantium, rem illo cum nihil voluptatum ratione officia id!</p>
+                                            {% if job_ad.one_training_status %}
+                                                <strong>One Time Training</strong>
+                                                <p class="mb-0 mt-2" id="noteTrainingTimeDesc">{{job_ad.time_training_desc}}</p>
+                                            {% elif job_ad.multiple_training_status %}
+                                                <strong>Multiple Time Training</strong>
+                                                <p class="mb-0 mt-2" id="noteTrainingTimeDesc">{{job_ad.time_training_desc}}</p>
+                                            {% endif %}
                                             </div>
 
+                                            {% if job_ad.work_buddy_status %}
                                             <div class="mb-3" id="noteWorkBuddy">
                                                 <strong>Work Buddy</strong>
-                                                <p class="mb-0 mt-2" id="noteWorkBuddyDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui voluptatibus quia obcaecati quos, labore harum iusto porro nisi optio pariatur similique nobis soluta? Est possimus optio voluptatem iure expedita? Quo!</p>
+                                                <p class="mb-0 mt-2" id="noteWorkBuddyDesc">{{job_ad.work_buddy_desc}}</p>
                                             </div>
+                                            {% endif %}
 
+                                            {% if job_ad.mentor_status %}
                                             <div class="mb-3" id="noteMentor">
                                                 <strong>Mentor</strong>
-                                                <p class="mb-0 mt-2" id="noteMentorDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore magni, perferendis dicta eveniet facere atque voluptate quis aspernatur doloribus est. Doloremque voluptas a magni ad maiores architecto excepturi dolores aliquam.</p>
+                                                <p class="mb-0 mt-2" id="noteMentorDesc">{{job_ad.mentor_desc}}</p>
                                             </div>
+                                            {% endif %}
 
                                             <div class="mb-3">
-                                                <p class="mb-1" id="noteLessNoisy"><i class="fa-solid fa-check text-success me-2"></i>Less Noisy Working Environment</p>
-                                                <p class="mb-1" id="noteLessStressful"><i class="fa-solid fa-check text-success me-2"></i>Less Stressful Working Environment</p>
+                                                {% if job_ad.less_noisy_env_status %}<p class="mb-1" id="noteLessNoisy"><i class="fa-solid fa-check text-success me-2"></i>Less Noisy Working Environment</p>{% endif %}
+                                                {% if job_ad.less_stressful_env_status %}<p class="mb-1" id="noteLessStressful"><i class="fa-solid fa-check text-success me-2"></i>Less Stressful Working Environment</p>{% endif %}
                                             </div>
 
+                                            {% if job_ad.calming_space_status %}
                                             <div class="mb-3" id="noteCalmingSpace">
                                                 <strong>Calming Space</strong>
-                                                <p class="mb-0 mt-2" id="noteCalmingSpaceDesc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus fuga consequuntur qui debitis ipsum dicta, aperiam perferendis in beatae amet veniam, corporis ratione velit. Molestiae nesciunt amet aut possimus culpa.</p>
+                                                <p class="mb-0 mt-2" id="noteCalmingSpaceDesc">{{job_ad.calming_space_desc}}</p>
                                             </div>
+                                            {% endif %}
 
                                             <div class="mb-3" id="noteShiftArrangement">
-                                                <strong>Fully Flexible | Shift Pool</strong>
-                                                <p class="mb-0 mt-2" id="noteShiftArrangementDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea at aperiam recusandae, itaque quae reprehenderit quasi assumenda maxime excepturi, voluptatum officia illum maiores rem ad nam vero a cumque libero!</p>
+                                            {% if job_ad.full_flexible_status %}
+                                                <strong>Fully Flexible</strong>
+                                                <p class="mb-0 mt-2" id="noteShiftArrangementDesc">{{job_ad.shift_flexible_desc}}</p>
+                                            {% elif job_ad.shift_pool_status %}
+                                                <strong>Shift Pool</strong>
+                                                <p class="mb-0 mt-2" id="noteShiftArrangementDesc">{{job_ad.shift_flexible_desc}}</p>
+                                            {% endif %}
                                             </div>
 
+                                            {% if job_ad.regular_update_status %}
                                             <div class="mb-3" id="noteProgressUpdate">
                                                 <strong>Regular Update on Applicant Progress</strong>
-                                                <p class="mb-0 mt-2" id="noteProgressUpdateDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo libero ipsa consectetur vitae quisquam vero, nam, iusto, eaque sunt ipsum quasi officia suscipit dolorem aliquid iste sapiente quo saepe architecto!</p>
+                                                <p class="mb-0 mt-2" id="noteProgressUpdateDesc">{{job_ad.regular_update_desc}}</p>
                                             </div>
+                                            {% endif %}
 
                                             <div class="mb-3" id="noteTransportation">
-                                                <strong>Transportation Fully Provided | Transportation Partial Provided Only</strong>
-                                                <p class="mb-0 mt-2" id="noteTransportationDesc">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officia sequi enim dolorum accusantium pariatur inventore aperiam, earum asperiores unde consequuntur eveniet dolor explicabo maiores deleniti accusamus beatae omnis nesciunt harum.</p>
+                                                {% if job_ad.full_transport_status %}
+                                                    <strong>Transportation Fully Provided</strong>
+                                                    <p class="mb-0 mt-2" id="noteTransportationDesc">{{job_ad.transport_desc}}</p>
+                                                {% elif job_ad.partial_transport_status %}
+                                                    <strong>Transportation Partial Provided</strong>
+                                                    <p class="mb-0 mt-2" id="noteTransportationDesc">{{job_ad.transport_desc}}</p>
+                                                {% endif %}
+                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+                                {% endif %}
                                 <!-- Further Description Section -->
+                                {% if job_ad.other_status %}
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="furtherDescHeader">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#furtherDescCollapse" aria-expanded="false" aria-controls="furtherDescCollapse">
@@ -205,11 +258,12 @@
                                         <div class="accordion-body">
                                             <div class="mb-3" id="noteOtherNotes">
                                                 <strong>Other</strong>
-                                                <p class="mb-0 mt-2" id="noteOtherNotesDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo aperiam odit maxime qui id illum provident dolore assumenda delectus. Quod consectetur repellendus molestias debitis praesentium dolor unde ab culpa corporis?</p>
+                                                <p class="mb-0 mt-2" id="noteOtherNotesDesc">{{job_ad.other_desc}}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -227,11 +281,11 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <h6 class="text-primary mb-2">Salary</h6>
-                                <p class="mb-0">RM<span id="noteMinSalary">800</span> - RM<span id="noteMaxSalary">1000</span></p>
+                                <p class="mb-0">RM<span id="noteMinSalary">{{job_ad.minimum_salary}}</span> - RM<span id="noteMaxSalary">{{job_ad.maximum_salary}}</span></p>
                             </div>
                             <div>
                                 <h6 class="text-primary mb-2">Location</h6>
-                                <p class="mb-0"><span id="noteCity">Petaling Jaya</span>, <span id="noteState">Selangor</span></p>
+                                <p class="mb-0"><span id="noteCity">{{job_ad.get_city}}</span>, <span id="noteState">{{job_ad.get_state}}</span></p>
                             </div>
                         </div>
                     </div>
@@ -248,31 +302,31 @@
                             <form class="d-flex flex-column gap-3">
                                 <div class="form-group">
                                     <label for="answer1" class="form-label">Answer 1</label>
-                                    <small class="text-muted d-block mb-2">Do you think you can work together?</small>
+                                    <small class="text-muted d-block mb-2">{{job_ad.get_question_one}}</small>
                                     <input type="text" name="answer1" id="answer1" class="form-control" placeholder="Enter your answer..." required>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="answer2" class="form-label">Answer 2</label>
-                                    <small class="text-muted d-block mb-2">How much pressure can you handle?</small>
+                                    <small class="text-muted d-block mb-2">{{job_ad.get_question_two}}</small>
                             <input type="text" name="answer2" id="answer2" class="form-control" placeholder="Enter your answer..." required>
                         </div>
                                 
                                 <div class="form-group">
                                     <label for="answer3" class="form-label">Answer 3</label>
-                                    <small class="text-muted d-block mb-2">Do you can handle high pitch sound?</small>
+                                    <small class="text-muted d-block mb-2">{{job_ad.get_question_three}}</small>
                             <input type="text" name="answer3" id="answer3" class="form-control" placeholder="Enter your answer..." required>
                         </div>
                                 
                                 <div class="form-group">
                                     <label for="resume" class="form-label">Select Resume</label>
                                     <select class="form-select" id="resume" aria-label="Default select example">
-                                <option selected>(no resume)</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
+                                        <option selected>(no resume)</option>
+                                        {% for user_resume in user_resumes %}
+                                            <option value="{{user_resume.id}}">{{user_resume.document_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                         
                                 <div class="d-flex justify-content-end pt-3">
                                     <button type="submit" class="btn btn-primary btn-lg">

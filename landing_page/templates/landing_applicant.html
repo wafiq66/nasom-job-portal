@@ -12,30 +12,11 @@
         {% include "search/search1.html" %}
         <div class="container mb-5">
                 <div id="lower-layout" class="row row-cols-1 row-cols-md-2 g-3">
-                        <div class="col">
-                                {% include "jobcards/job_card1.html" %}
-                        </div>
-                        <div class="col">
-                                {% include "jobcards/job_card1.html" %}
-                        </div>
-                        <div class="col">
-                                {% include "jobcards/job_card1.html" %}
-                        </div>
-                        <div class="col">
-                                {% include "jobcards/job_card1.html" %}
-                        </div>
-                        <div class="col">
-                                {% include "jobcards/job_card1.html" %}
-                        </div>
-                        <div class="col">
-                                {% include "jobcards/job_card1.html" %}
-                        </div>
-                        <div class="col">
-                                {% include "jobcards/job_card1.html" %}
-                        </div>
-                        <div class="col">
-                                {% include "jobcards/job_card1.html" %}
-                        </div>
+                        {% for job in jobs %}
+                                <div class="col">
+                                        {% include "jobcards/job_card1.html" with job=job %}
+                                </div>
+                        {% endfor %}
                 <!-- Add more items as needed -->
                 </div>
         </div>

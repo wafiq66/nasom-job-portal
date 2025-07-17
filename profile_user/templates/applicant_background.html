@@ -173,23 +173,19 @@
                             <form action="{% url 'applicant_education' %}" method="post" class="mb-4">
                                 {% csrf_token %}
                                 <div class="row g-3">
-                                    <div class="col-12">
+                                    <div class="col-md-4">
                                         <label for="course" class="form-label">Course/Qualification/Training *</label>
                                         <input type="text" name="course" class="form-control" placeholder="Add Course/Qualification/Training..." required>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-md-4">
                                         <label for="institution" class="form-label">Institution *</label>
                                         <input type="text" name="institution" class="form-control" placeholder="Add Institution..." required>
                                     </div>
-                                    <div class="col-md-5">
-                                        <label for="startdate" class="form-label">Start Month & Year *</label>
-                                        <input type="month" name="startdate" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <label for="enddate" class="form-label">End Month & Year</label>
                                         <input type="month" name="enddate" class="form-control">
                                     </div>
-                                    <div class="col-md-2 d-flex align-items-end">
+                                    <div class="col-md-1 d-flex align-items-end">
                                         <button type="submit" class="btn btn-primary w-100">
                                             <i class="fa fa-plus"></i>
                                         </button>
@@ -223,20 +219,16 @@
                                             </div>
                                             <div class="read-only">
                                                 <div class="row g-2 mb-2">
-                                                    <div class="col-12">
+                                                    <div class="col-md-6">
                                                         <label class="form-label">Course/Qualification/Training</label>
                                                         <div class="form-control-plaintext">{{ edu.course_title }}</div>
                                                     </div>
-                                                    <div class="col-12">
+                                                    <div class="col-md-6">
                                                         <label class="form-label">Institution</label>
                                                         <div class="form-control-plaintext">{{ edu.institution }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="row g-2">
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Start Month & Year</label>
-                                                        <div class="form-control-plaintext">{{ edu.start_month_input }}</div>
-                                                    </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label">End Month & Year</label>
                                                         <div class="form-control-plaintext">{{ edu.end_month_input }}</div>
@@ -247,17 +239,13 @@
                                             <form method="POST" action="{% url 'update_education' edu.id %}" class="allow-edit mt-3" style="display: none;">
                                                 {% csrf_token %}
                                                 <div class="row g-3">
-                                                    <div class="col-12">
+                                                    <div class="col-md-6">
                                                         <label for="course" class="form-label">Course/Qualification/Training *</label>
                                                         <input type="text" name="course" class="form-control" value="{{ edu.course_title }}" required>
                                                     </div>
-                                                    <div class="col-12">
+                                                    <div class="col-md-6">
                                                         <label for="institution" class="form-label">Institution *</label>
                                                         <input type="text" name="institution" class="form-control" value="{{ edu.institution }}" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="startdate" class="form-label">Start Month & Year *</label>
-                                                        <input type="month" name="startdate" class="form-control" value="{{ edu.start_month_input }}" required>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="enddate" class="form-label">End Month & Year</label>

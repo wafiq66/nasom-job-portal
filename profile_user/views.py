@@ -94,7 +94,7 @@ def manage_resume(request):
             if new_name:
                 resume.document_name = new_name
                 resume.save()
-                messages.success(request, "Resume Successfully Deleted!")
+                messages.success(request, "Resume Successfully Updated!")
 
         elif action == 'delete':
             resume.document_file.delete()
@@ -194,10 +194,6 @@ def manage_education_history(request):
         course_title = request.POST.get('course')
         institution = request.POST.get('institution')
 
-        start_date = request.POST.get('startdate')  # "2024-06"
-        if start_date:
-            year, month = map(int, start_date.split('-'))  # year = 2024, month = 6
-
         end_date = request.POST.get('enddate')
         if end_date:
             end_year, end_month = map(int, end_date.split('-'))
@@ -208,8 +204,6 @@ def manage_education_history(request):
             user=request.user,
             course_title=course_title,
             institution=institution,
-            start_month = month,
-            start_year = year,
             end_month = end_month,
             end_year = end_year
         )
@@ -235,13 +229,6 @@ def update_education(request,edu_id):
 
         edu.course_title = request.POST.get('course')
         edu.institution = request.POST.get('institution')
-
-        # Handle startdate
-        startdate = request.POST.get('startdate')  # "YYYY-MM"
-        if startdate:
-            year, month = map(int, startdate.split('-'))
-            edu.start_year = year
-            edu.start_month = month
 
         # Handle enddate
         enddate = request.POST.get('enddate')

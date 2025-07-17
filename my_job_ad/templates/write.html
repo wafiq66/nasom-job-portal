@@ -15,7 +15,7 @@
         {% include "sidebars/sidebar2.html" %}
         <form method="post" action="{% url 'post_job' %}" class="d-flex flex-column gap-2 w-100">
             {% csrf_token %}
-
+        <input type="hidden" name="jobad_id" value="{{ job_ad.id|default:'' }}">
         <main class="d-flex flex-column gap-4 py-4 w-100">
             <!-- Header Section -->
             <div class="px-4">
@@ -66,15 +66,15 @@
                                     <div class="row g-3">
                                         <div class="col-12">
                                             <label for="jobtitle" class="form-label">Job Title</label>
-                                            <input id="jobtitle" type="text" name="jobtitle" class="form-control" placeholder="e.g., Software Developer, Data Entry Specialist..." required>
+                                            <input id="jobtitle" type="text" name="jobtitle" class="form-control" placeholder="e.g., Software Developer, Data Entry Specialist..." value="{{ job_ad.job_title|default:'' }}" required>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="city" class="form-label">City</label>
-                                            <input id="city" type="text" name="city" class="form-control" placeholder="e.g., Kuala Lumpur" required>
+                                            <input id="city" type="text" name="city" class="form-control" placeholder="e.g., Kuala Lumpur" value="{{ job_ad.get_city|default:'' }}" required>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="state" class="form-label">State</label>
-                                            <input id="state" type="text" name="state" class="form-control" placeholder="e.g., Selangor" required>
+                                            <input id="state" type="text" name="state" class="form-control" placeholder="e.g., Selangor" value="{{ job_ad.get_state|default:'' }}" required>
                                         </div>
                         </div>
                     </div>
@@ -90,13 +90,13 @@
                                 <div class="card-body">
                                     <div class="autism-levels">
                                         <div class="level-option">
-                                            <input type="checkbox" class="btn-check" id="autism-level-1" name="autism-level-1" autocomplete="off" value="autism-level-1">
+                                            <input type="checkbox" class="btn-check" id="autism-level-1" name="autism-level-1" autocomplete="off" {% if job_ad.for_level_one %}checked{% endif %}>
                                             <label class="btn btn-outline-primary" for="autism-level-1">
                                                 <i class="fa fa-user me-2"></i>Level 1
                                             </label>
                     </div>
                                         <div class="level-option">
-                        <input type="checkbox" class="btn-check" id="autism-level-2" name="autism-level-2" autocomplete="off" value="autism-level-2">
+                        <input type="checkbox" class="btn-check" id="autism-level-2" name="autism-level-2" autocomplete="off" {% if job_ad.for_level_two %}checked{% endif %}>
                                             <label class="btn btn-outline-primary" for="autism-level-2">
                                                 <i class="fa fa-users me-2"></i>Level 2
                                             </label>
@@ -125,19 +125,19 @@
                                                 <h6 class="mb-3">Job Category</h6>
                                                 <div class="radio-group">
                                                     <div class="radio-option">
-                        <input type="radio" class="btn-check" id="professional-job" name="job-category" autocomplete="off" value="Professional Job">
+                        <input type="radio" class="btn-check" id="professional-job" name="job-category" autocomplete="off" value="Professional Job" {% if job_ad.job_category == 'Professional Job' %}checked{% endif %}>
                                                         <label class="btn btn-outline-primary" for="professional-job">
                                                             <i class="fa fa-graduation-cap me-2"></i>Professional
                                                         </label>
                                                     </div>
                                                     <div class="radio-option">
-                        <input type="radio" class="btn-check" id="semi-skilled-job" name="job-category" autocomplete="off" value="Semi-Skilled Job">
+                        <input type="radio" class="btn-check" id="semi-skilled-job" name="job-category" autocomplete="off" value="Semi-Skilled Job" {% if job_ad.job_category == 'Semi-Skilled Job' %}checked{% endif %}>
                                                         <label class="btn btn-outline-primary" for="semi-skilled-job">
                                                             <i class="fa fa-cogs me-2"></i>Semi-Skilled
                                                         </label>
                                                     </div>
                                                     <div class="radio-option">
-                        <input type="radio" class="btn-check" id="simple-job" name="job-category" autocomplete="off" value="Simple Job">
+                        <input type="radio" class="btn-check" id="simple-job" name="job-category" autocomplete="off" value="Simple Job" {% if job_ad.job_category == 'Simple Job' %}checked{% endif %}>
                                                         <label class="btn btn-outline-primary" for="simple-job">
                                                             <i class="fa fa-tasks me-2"></i>Simple
                                                         </label>
@@ -150,25 +150,25 @@
                                                 <h6 class="mb-3">Job Types</h6>
                                                 <div class="checkbox-group">
                                                     <div class="checkbox-option">
-                        <input type="checkbox" class="btn-check" id="full-time" name="full-time" autocomplete="off" value="professional-job">
+                        <input type="checkbox" class="btn-check" id="full-time" name="full-time" autocomplete="off" {% if job_ad.can_full_time %}checked{% endif %}>
                                                         <label class="btn btn-outline-primary" for="full-time">
                                                             <i class="fa fa-clock-o me-2"></i>Full-Time
                                                         </label>
                                                     </div>
                                                     <div class="checkbox-option">
-                        <input type="checkbox" class="btn-check" id="part-time" name="part-time" autocomplete="off" value="semi-skilled-job">
+                        <input type="checkbox" class="btn-check" id="part-time" name="part-time" autocomplete="off" {% if job_ad.can_part_time %}checked{% endif %}>
                                                         <label class="btn btn-outline-primary" for="part-time">
                                                             <i class="fa fa-clock-o me-2"></i>Part-Time
                                                         </label>
                                                     </div>
                                                     <div class="checkbox-option">
-                        <input type="checkbox" class="btn-check" id="remote" name="remote" autocomplete="off" value="simple-job">
+                        <input type="checkbox" class="btn-check" id="remote" name="remote" autocomplete="off" {% if job_ad.can_remote %}checked{% endif %}>
                                                         <label class="btn btn-outline-primary" for="remote">
                                                             <i class="fa fa-home me-2"></i>Remote
                                                         </label>
                                                     </div>
                                                     <div class="checkbox-option disabled">
-                            <input class="form-check-input" type="checkbox" value="autism-level-3" id="autism-level-3-1" disabled>
+                            <input class="form-check-input" name="autism-level-3" type="checkbox" id="autism-level-3-1" disabled>
                                                         <label class="btn btn-outline-secondary" for="autism-level-3-1">
                                                             <i class="fa fa-user-plus me-2"></i>Level 3
                             </label>
@@ -193,14 +193,14 @@
                                             <label for="min-pay" class="form-label">Minimum Salary (RM)</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">RM</span>
-                                <input type="number" name="min-pay" class="form-control" placeholder="1200" id="min-pay" required>
+                                <input type="number" name="min-pay" class="form-control" placeholder="1200" id="min-pay" value="{{ job_ad.minimum_salary|default:'' }}" required>
                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="max-pay" class="form-label">Maximum Salary (RM)</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">RM</span>
-                                <input type="number" name="max-pay" class="form-control" placeholder="1500" id="max-pay" required>
+                                <input type="number" name="max-pay" class="form-control" placeholder="1500" id="max-pay" value="{{ job_ad.maximum_salary|default:'' }}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -215,9 +215,11 @@
                             <i class="fa fa-times me-2"></i>Cancel
                         </a>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-outline-primary" value="draft" name="action" formnovalidate>
-                                <i class="fa fa-save me-2"></i>Save as Draft
-                            </button>
+                            {% if job_ad.publish_status != 'active' %}
+                                <button type="submit" class="btn btn-outline-primary" value="draft" name="action" formnovalidate>
+                                    <i class="fa fa-save me-2"></i>Save as Draft
+                                </button>
+                            {% endif %}
                             <button type="button" class="btn btn-primary" onclick="goToStep('write')">
                                 <i class="fa fa-arrow-right me-2"></i>Next
                             </button>
@@ -241,26 +243,26 @@
                                     <div class="row g-4">
                                         <div class="col-12">
                                             <label for="maintask" class="form-label">Main Task</label>
-                                            <textarea name="maintask" id="maintask" class="form-control" placeholder="Describe the primary responsibilities and main tasks for this position..." required></textarea>
+                                            <textarea name="maintask" id="maintask" class="form-control" placeholder="Describe the primary responsibilities and main tasks for this position..." required>{{ job_ad.main_task_desc|default:'' }}</textarea>
                     </div>
                                         
                                         <div class="col-12">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleSubtask" data-bs-toggle="collapse" data-bs-target="#subtaskWrapper">
+                                                                <input class="form-check-input" type="checkbox" id="toggleSubtask" name="toggleSubtaskStatus" data-bs-toggle="collapse" data-bs-target="#subtaskWrapper" {% if job_ad.sub_task_status %}checked{% endif %}>
                         <label class="form-check-label" for="toggleSubtask">
                                                     <i class="fa fa-plus-circle me-2"></i>Sub Task
                         </label>
                     </div>
                     <div class="collapse" id="subtaskWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="subtask" id="subtask" class="form-control" placeholder="Describe any additional sub-tasks or secondary responsibilities..."></textarea>
+                                                    <textarea name="subtask" id="subtask" class="form-control" placeholder="Describe any additional sub-tasks or secondary responsibilities...">{{ job_ad.sub_task_desc|default:'' }}</textarea>
                                                 </div>
                         </div>
                     </div>
 
                                         <div class="col-md-4">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="repetitiveTask" name="repetitiveTask">
+                        <input class="form-check-input" type="checkbox" id="repetitiveTask" name="repetitiveTask" {% if job_ad.repetitive_task_status %}checked{% endif %}>
                         <label class="form-check-label" for="repetitiveTask">
                                                     <i class="fa fa-refresh me-2"></i>Repetitive Task
                         </label>
@@ -268,7 +270,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="easyToPerform" name="easyToPerform">
+                        <input class="form-check-input" type="checkbox" id="easyToPerform" name="easyToPerform" {% if job_ad.easy_to_perform_status %}checked{% endif %}>
                         <label class="form-check-label" for="easyToPerform">
                                                     <i class="fa fa-thumbs-up me-2"></i>Easy to Perform
                         </label>
@@ -276,7 +278,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="easyToRemember" name="easyToRemember">
+                        <input class="form-check-input" type="checkbox" id="easyToRemember" name="easyToRemember" {% if job_ad.easy_to_remember_status %}checked{% endif %}>
                         <label class="form-check-label" for="easyToRemember">
                                                     <i class="fa fa-brain me-2"></i>Easy to Remember
                         </label>
@@ -285,14 +287,14 @@
 
                                         <div class="col-12">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleInteractionWithCustomer" data-bs-toggle="collapse" data-bs-target="#interactionWithCustomerWrapper">
+                                                                <input class="form-check-input" type="checkbox" id="toggleInteractionWithCustomer" name="toggleInteractionWithCustomerStatus" data-bs-toggle="collapse" data-bs-target="#interactionWithCustomerWrapper" {% if job_ad.interaction_with_cust_status %}checked{% endif %}>
                         <label class="form-check-label" for="toggleInteractionWithCustomer">
                                                     <i class="fa fa-comments me-2"></i>Have Interaction with Customer
                         </label>
                     </div>
                     <div class="collapse" id="interactionWithCustomerWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="interactionWithCustomer" id="interactionWithCustomer" class="form-control" placeholder="How do you ensure that customers are aware that your employee is autistic? Describe your approach..."></textarea>
+                                                    <textarea name="interactionWithCustomer" id="interactionWithCustomer" class="form-control" placeholder="How do you ensure that customers are aware that your employee is autistic? Describe your approach...">{{ job_ad.interaction_with_cust_desc|default:'' }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -312,49 +314,49 @@
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleVerbal" data-bs-toggle="collapse" data-bs-target="#verbalWrapper">
+                                                                <input class="form-check-input" type="checkbox" id="toggleVerbal" name="toggleVerbalStatus" data-bs-toggle="collapse" data-bs-target="#verbalWrapper" {% if job_ad.verbal_interview_status %}checked{% endif %}>
                         <label class="form-check-label" for="toggleVerbal">
                                                     <i class="fa fa-microphone me-2"></i>Verbal
                         </label>
                     </div>
                     <div class="collapse" id="verbalWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="verbal" id="verbal" class="form-control" placeholder="Please explain how you conduct verbal interviews..."></textarea>
+                                                    <textarea name="verbal" id="verbal" class="form-control" placeholder="Please explain how you conduct verbal interviews...">{{ job_ad.verbal_interview_desc|default:'' }}</textarea>
                                                 </div>
                         </div>
                     </div>
 
                                         <div class="col-md-6">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleNonVerbal" data-bs-toggle="collapse" data-bs-target="#nonVerbalWrapper">
+                                                                <input class="form-check-input" type="checkbox" id="toggleNonVerbal" name="toggleNonVerbalStatus" data-bs-toggle="collapse" data-bs-target="#nonVerbalWrapper" {% if job_ad.nonverbal_interview_status %}checked{% endif %}>
                         <label class="form-check-label" for="toggleNonVerbal">
                                                     <i class="fa fa-eye me-2"></i>Non-verbal
                         </label>
                     </div>
                     <div class="collapse" id="nonVerbalWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="nonverbal" id="nonverbal" class="form-control" placeholder="Please explain how you conduct non-verbal interviews..."></textarea>
+                                                    <textarea name="nonverbal" id="nonverbal" class="form-control" placeholder="Please explain how you conduct non-verbal interviews...">{{ job_ad.nonverbal_interview_desc|default:'' }}</textarea>
                                                 </div>
                         </div>
                     </div>
 
                                         <div class="col-md-6">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleRepresentative" data-bs-toggle="collapse" data-bs-target="#representativeWrapper">
+                                                                <input class="form-check-input" type="checkbox" id="toggleRepresentative" name="toggleRepresentativeStatus" data-bs-toggle="collapse" data-bs-target="#representativeWrapper" {% if job_ad.representative_interview_status %}checked{% endif %}>
                         <label class="form-check-label" for="toggleRepresentative">
                                                     <i class="fa fa-user-plus me-2"></i>Representative
                         </label>
                     </div>
                     <div class="collapse" id="representativeWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="representative" id="representative" class="form-control" placeholder="Please explain how a representative is involved during interview..."></textarea>
+                                                    <textarea name="representative" id="representative" class="form-control" placeholder="Please explain how a representative is involved during interview...">{{ job_ad.representative_interview_desc|default:'' }}</textarea>
                                                 </div>
                         </div>
                     </div>
 
                                         <div class="col-md-6">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="noInterview" name="noInterview">
+                        <input class="form-check-input" type="checkbox" id="noInterview" name="noInterview" {% if job_ad.no_interview_status %}checked{% endif %}>
                         <label class="form-check-label" for="noInterview">
                                                     <i class="fa fa-times-circle me-2"></i>No Interview
                         </label>
@@ -376,63 +378,63 @@
                                     <div class="row g-4">
                                         <div class="col-md-6">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="toggleSpecialTraining" data-bs-toggle="collapse" data-bs-target="#specialTrainingWrapper">
+                                                <input class="form-check-input" type="checkbox" id="toggleSpecialTraining" name="toggleSpecialTrainingStatus" data-bs-toggle="collapse" data-bs-target="#specialTrainingWrapper" {% if job_ad.special_training_status %}checked{% endif %}>
                                                 <label class="form-check-label" for="toggleSpecialTraining">
                                                     <i class="fa fa-graduation-cap me-2"></i>Special Training
                                                 </label>
                                             </div>
                                             <div class="collapse" id="specialTrainingWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="specialTraining" id="specialTraining" class="form-control" placeholder="Please explain any special training provided for autistic employees..."></textarea>
+                                                    <textarea name="specialTraining" id="specialTraining" class="form-control" placeholder="Please explain any special training provided for autistic employees...">{{ job_ad.special_training_desc|default:'' }}</textarea>
                                                 </div>
                         </div>
                     </div>
 
                                         <div class="col-md-6">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleWorkBuddy" data-bs-toggle="collapse" data-bs-target="#workBuddyWrapper">
+                        <input class="form-check-input" type="checkbox" id="toggleWorkBuddy" name="toggleWorkBuddyStatus" data-bs-toggle="collapse" data-bs-target="#workBuddyWrapper" {% if job_ad.work_buddy_status %}checked{% endif %}>
                         <label class="form-check-label" for="toggleWorkBuddy">
                                                     <i class="fa fa-user-friends me-2"></i>Work Buddy
                         </label>
                     </div>
                     <div class="collapse" id="workBuddyWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="workBuddy" id="workBuddy" class="form-control" placeholder="Please describe the role of a work buddy and how they support the employee..."></textarea>
+                                                    <textarea name="workBuddy" id="workBuddy" class="form-control" placeholder="Please describe the role of a work buddy and how they support the employee...">{{ job_ad.work_buddy_desc|default:'' }}</textarea>
                                                 </div>
                         </div>
                     </div>
 
                                         <div class="col-md-6">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleMentor" data-bs-toggle="collapse" data-bs-target="#mentorWrapper">
+                        <input class="form-check-input" type="checkbox" id="toggleMentor" name="toggleMentorStatus" data-bs-toggle="collapse" data-bs-target="#mentorWrapper" {% if job_ad.mentor_status %}checked{% endif %}>
                         <label class="form-check-label" for="toggleMentor">
                                                     <i class="fa fa-user-graduate me-2"></i>Mentor
                         </label>
                     </div>
                     <div class="collapse" id="mentorWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="mentor" id="mentor" class="form-control" placeholder="Please explain the mentor's involvement in the employee's growth..."></textarea>
+                                                    <textarea name="mentor" id="mentor" class="form-control" placeholder="Please explain the mentor's involvement in the employee's growth...">{{ job_ad.mentor_desc|default:'' }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="toggleCalmingSpace" data-bs-toggle="collapse" data-bs-target="#calmingSpaceWrapper">
+                                                <input class="form-check-input" type="checkbox" id="toggleCalmingSpace" name="toggleCalmingSpaceStatus" data-bs-toggle="collapse" data-bs-target="#calmingSpaceWrapper" {% if job_ad.calming_space_status %}checked{% endif %}>
                                                 <label class="form-check-label" for="toggleCalmingSpace">
                                                     <i class="fa fa-home me-2"></i>Calming Space
                                                 </label>
                                             </div>
                                             <div class="collapse" id="calmingSpaceWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="calmingSpace" id="calmingSpace" class="form-control" placeholder="Please explain if there is a calming space and how it's used..."></textarea>
+                                                    <textarea name="calmingSpace" id="calmingSpace" class="form-control" placeholder="Please explain if there is a calming space and how it's used...">{{ job_ad.calming_space_desc|default:'' }}</textarea>
                                                 </div>
                         </div>
                     </div>
 
                                         <div class="col-md-6">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="lessNoisy" name="lessNoisy">
+                        <input class="form-check-input" type="checkbox" id="lessNoisy" name="lessNoisy" {% if job_ad.less_noisy_env_status %}checked{% endif %}>
                         <label class="form-check-label" for="lessNoisy">
                                                     <i class="fa fa-volume-off me-2"></i>Less Noisy Environment
                         </label>
@@ -441,7 +443,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="lessStressful" name="lessStressful">
+                        <input class="form-check-input" type="checkbox" id="lessStressful" name="lessStressful" {% if job_ad.less_stressful_env_status %}checked{% endif %}>
                         <label class="form-check-label" for="lessStressful">
                                                     <i class="fa fa-heart me-2"></i>Less Stressful Environment
                         </label>
@@ -450,14 +452,14 @@
 
                                         <div class="col-12">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="toggleProgressUpdate" data-bs-toggle="collapse" data-bs-target="#progressUpdateWrapper">
+                                                <input class="form-check-input" type="checkbox" id="toggleProgressUpdate" name="toggleProgressUpdateStatus" data-bs-toggle="collapse" data-bs-target="#progressUpdateWrapper" {% if job_ad.regular_update_status %}checked{% endif %}>
                                                 <label class="form-check-label" for="toggleProgressUpdate">
                                                     <i class="fa fa-chart-line me-2"></i>Regular Progress Updates
                         </label>
                     </div>
                                             <div class="collapse" id="progressUpdateWrapper">
                                                 <div class="mt-3">
-                                                    <textarea name="progressUpdate" id="progressUpdate" class="form-control" placeholder="Please explain how you provide regular updates or feedback on the employee's progress..."></textarea>
+                                                    <textarea name="progressUpdate" id="progressUpdate" class="form-control" placeholder="Please explain how you provide regular updates or feedback on the employee's progress...">{{ job_ad.regular_update_desc|default:'' }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -476,11 +478,11 @@
                                     <div class="toggle-section" id="training-time">
                                         <div class="radio-group">
                                             <div class="radio-option">
-                                                <input class="form-check-input" type="radio" name="training-time" value="one">
+                                                <input class="form-check-input" type="radio" name="training-time" value="one" {% if job_ad.one_training_status %}checked{% endif %}>
                                                 <label class="form-check-label">One Time Training</label>
                                             </div>
                                             <div class="radio-option">
-                                                <input class="form-check-input" type="radio" name="training-time" value="multiple">
+                                                <input class="form-check-input" type="radio" name="training-time" value="multiple" {% if job_ad.multiple_training_status %}checked{% endif %}>
                                                 <label class="form-check-label">Multiple Times Training</label>
                                             </div>
                                             <div class="radio-option">
@@ -489,7 +491,7 @@
                                             </div>
                                         </div>
                                         <div class="collapse mt-3 toggle-form">
-                                            <textarea class="form-control" name="training-description" placeholder="Please explain more about the training frequency..." style="min-height: 150px;"></textarea>
+                                            <textarea class="form-control" name="training-description" placeholder="Please explain more about the training frequency..." style="min-height: 150px;">{{ job_ad.time_training_desc|default:'' }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -506,11 +508,11 @@
                     <div class="toggle-section" id="shift-arrangement">
                                         <div class="radio-group">
                                             <div class="radio-option">
-                                <input class="form-check-input" type="radio" name="shift-arrangement" value="flexible">
+                                <input class="form-check-input" type="radio" name="shift-arrangement" value="flexible" {% if job_ad.full_flexible_status %}checked{% endif %}>
                                 <label class="form-check-label">Fully Flexible Shift</label>
                             </div>
                                             <div class="radio-option">
-                                <input class="form-check-input" type="radio" name="shift-arrangement" value="pool">
+                                <input class="form-check-input" type="radio" name="shift-arrangement" value="pool" {% if job_ad.shift_pool_status %}checked{% endif %}>
                                 <label class="form-check-label">Shift Pool</label>
                             </div>
                                             <div class="radio-option">
@@ -519,7 +521,7 @@
                             </div>
                         </div>
                                         <div class="collapse mt-3 toggle-form">
-                                            <textarea class="form-control" name="shift-description" placeholder="Please explain how shift arrangement is handled, including flexibility or pool system..." style="min-height: 150px;"></textarea>
+                                            <textarea class="form-control" name="shift-description" placeholder="Please explain how shift arrangement is handled, including flexibility or pool system..." style="min-height: 150px;">{{ job_ad.shift_flexicle_desc|default:'' }}</textarea>
                                         </div>
                         </div>
                     </div>
@@ -536,11 +538,11 @@
                     <div class="toggle-section" id="transportation">
                                         <div class="radio-group">
                                             <div class="radio-option">
-                                <input class="form-check-input" type="radio" name="transportation" value="full">
+                                <input class="form-check-input" type="radio" name="transportation" value="full" {% if job_ad.full_transport_status %}checked{% endif %}>
                                 <label class="form-check-label">Fully Provided</label>
                             </div>
                                             <div class="radio-option">
-                                <input class="form-check-input" type="radio" name="transportation" value="partial">
+                                <input class="form-check-input" type="radio" name="transportation" value="partial" {% if job_ad.partial_transport_status %}checked{% endif %}>
                                 <label class="form-check-label">Partially Provided</label>
                             </div>
                                             <div class="radio-option">
@@ -549,7 +551,7 @@
                                             </div>
                                         </div>
                                         <div class="collapse mt-3 toggle-form">
-                                            <textarea class="form-control" name="transportation-description" placeholder="Please explain what kind of transportation assistance is provided or not..." style="min-height: 150px;"></textarea>
+                                            <textarea class="form-control" name="transportation-description" placeholder="Please explain what kind of transportation assistance is provided or not..." style="min-height: 150px;">{{ job_ad.transport_desc|default:'' }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -565,14 +567,14 @@
                         </div>
                                 <div class="card-body">
                                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="toggleOtherNotes" data-bs-toggle="collapse" data-bs-target="#otherNotesWrapper">
+                        <input class="form-check-input" type="checkbox" id="toggleOtherNotes" name="toggleOtherNotesStatus" data-bs-toggle="collapse" data-bs-target="#otherNotesWrapper" {% if job_ad.other_status %}checked{% endif %}>
                         <label class="form-check-label" for="toggleOtherNotes">
                                             <i class="fa fa-plus-circle me-2"></i>Add More Description: Other Notes
                         </label>
                     </div>
                     <div class="collapse" id="otherNotesWrapper">
                                         <div class="mt-3">
-                                            <textarea name="otherNotes" id="otherNotes" class="form-control" placeholder="Write any additional notes or remarks here..." style="min-height: 150px;"></textarea>
+                                            <textarea name="otherNotes" id="otherNotes" class="form-control" placeholder="Write any additional notes or remarks here..." style="min-height: 150px;">{{ job_ad.other_desc|default:'' }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -586,9 +588,11 @@
                             <i class="fa fa-arrow-left me-2"></i>Back
                         </button>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-outline-primary" value="draft" name="action" formnovalidate>
-                                <i class="fa fa-save me-2"></i>Save as Draft
-                            </button>
+                            {% if job_ad.publish_status != 'active' %}
+                                <button type="submit" class="btn btn-outline-primary" value="draft" name="action" formnovalidate>
+                                    <i class="fa fa-save me-2"></i>Save as Draft
+                                </button>
+                            {% endif %}
                             <button type="button" class="btn btn-primary" onclick="goToStep('pre')">
                                 <i class="fa fa-arrow-right me-2"></i>Next
                             </button>
@@ -600,45 +604,50 @@
             <!-- Step 3: Pre Interview Questions -->
             <div id="third-form" class="form-section">
                 <div class="px-4">
-                    <div class="job-form-card">
-                        <div class="card-header">
-                            <h5><i class="fa fa-question-circle me-2"></i>Pre Interview Questions</h5>
-                            <small class="text-muted">Ask your applicant three questions.</small>
-                        </div>
-                        <div class="card-body">
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <label for="question1" class="form-label">Question 1</label>
-                                    <input type="text" name="question1" id="question1" class="form-control" placeholder="Enter your first question..." required>
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="job-form-card">
+                                <div class="card-header">
+                                    <h5><i class="fa fa-question-circle me-2"></i>Pre Interview Questions</h5>
+                                    <small class="text-muted">Ask your applicant three questions.</small>
                                 </div>
-                                <div class="col-12">
-                                    <label for="question2" class="form-label">Question 2</label>
-                            <input type="text" name="question2" id="question2" class="form-control" placeholder="Enter your second question..." required>
-                        </div>
-                                <div class="col-12">
-                                    <label for="question3" class="form-label">Question 3</label>
-                            <input type="text" name="question3" id="question3" class="form-control" placeholder="Enter your third question..." required>
+                                <div class="card-body">
+                                    <div class="row g-4">
+                                        <div class="col-12">
+                                            <label for="question1" class="form-label">Question 1</label>
+                                            <input type="text" name="question1" id="question1" class="form-control" placeholder="Enter your first question..." value="{{ job_ad.question_one|default:'' }}" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="question2" class="form-label">Question 2</label>
+                                            <input type="text" name="question2" id="question2" class="form-control" placeholder="Enter your second question..." value="{{ job_ad.question_two|default:'' }}" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="question3" class="form-label">Question 3</label>
+                                            <input type="text" name="question3" id="question3" class="form-control" placeholder="Enter your third question..." value="{{ job_ad.question_three|default:'' }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Action Buttons -->
+                            <div class="job-form-actions">
+                                <button type="button" class="btn btn-outline-secondary" onclick="goToStep('write')" formnovalidate>
+                                    <i class="fa fa-arrow-left me-2"></i>Back
+                                </button>
+                                <div class="d-flex gap-2">
+                                    {% if job_ad.publish_status != 'active' %}
+                                        <button type="submit" class="btn btn-outline-primary" value="draft" name="action" formnovalidate>
+                                            <i class="fa fa-save me-2"></i>Save as Draft
+                                        </button>
+                                    {% endif %}
+                                    <button type="button" class="btn btn-primary" onclick="goToStep('review')">
+                                        <i class="fa fa-arrow-right me-2"></i>Next
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Action Buttons -->
-                    <div class="job-form-actions">
-                        <button type="button" class="btn btn-outline-secondary" onclick="goToStep('write')" formnovalidate>
-                            <i class="fa fa-arrow-left me-2"></i>Back
-                        </button>
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-outline-primary" value="draft" name="action" formnovalidate>
-                                <i class="fa fa-save me-2"></i>Save as Draft
-                            </button>
-                            <button type="button" class="btn btn-primary" onclick="goToStep('review')">
-                                <i class="fa fa-arrow-right me-2"></i>Next
-                            </button>
-                        </div>
-                        </div>
-                    </div>
                 </div>
+            </div>
 
             <!-- Step 4: Review -->
             <div id="fourth-form" class="form-section">
@@ -653,11 +662,23 @@
                                 <div class="col-12">
                                     <div class="job-preview-header">
                     <div class="d-flex gap-4 align-items-center">
-                        <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="company-logo img-thumbnail" id="company-logo">
+                        {% if request.user.company_logo %}
+                            <img src="{{ request.user.company_logo.url }}" alt="Company Logo" class="company-logo img-thumbnail" id="company-logo">
+                        {% else %}
+                            <img src="{% static 'images/no-image.png' %}" alt="Default Picture" class="company-logo img-thumbnail" id="company-logo">
+                        {% endif %}
                         <div class="d-flex flex-column gap-2">
                                                 <h4 class="m-0" id="previewJobTitle"></h4>
                             <div class="d-flex gap-2 align-items-end">
-                                <p class="m-0">At McDonald</p>
+                                <p class="m-0">
+                                    {% if request.user.company_name %}
+                                        At {{ request.user.company_name }}
+                                    {% else %}
+                                        At Unknown
+                                    {% endif %}
+                                </p>
+
+
                                 <span class="d-none job-tag job-tag-category" id="previewJobCategory"></span>
                                 <span class="d-none job-tag job-tag-type" id="previewFullTime">Full-Time</span>
                                 <span class="d-none job-tag job-tag-type" id="previewPartTime">Part-Time</span>
@@ -758,16 +779,22 @@
 
                     <!-- Action Buttons -->
                     <div class="job-form-actions">
-                        <button class="btn btn-outline-secondary" onclick="goToStep('pre')">
+                        <button type="button" class="btn btn-outline-secondary" onclick="goToStep('pre')">
                             <i class="fa fa-arrow-left me-2"></i>Back
                         </button>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-outline-primary" value="draft" name="action" formnovalidate>
-                                <i class="fa fa-save me-2"></i>Save as Draft
-                            </button>
-                            <button type="submit" class="btn btn-success" value="publish" name="action">
-                                <i class="fa fa-paper-plane me-2"></i>Publish
-                            </button>
+                            {% if job_ad.publish_status == 'active' %}
+                                <button type="submit" class="btn btn-success" value="active" name="action">
+                                    <i class="fa fa-paper-plane me-2"></i>Update
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-outline-primary" value="draft" name="action" formnovalidate>
+                                    <i class="fa fa-save me-2"></i>Save as Draft
+                                </button>
+                                <button type="submit" class="btn btn-success" value="active" name="action">
+                                    <i class="fa fa-paper-plane me-2"></i>Publish
+                                </button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

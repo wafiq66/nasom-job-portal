@@ -10,9 +10,9 @@ class JobAd(models.Model):
     ]
 
     JOB_CATEGORY_CHOICES = [
-        ('professional', 'Professional Job'),
-        ('semi', 'Semi-Skilled Job'),
-        ('simple', 'Simple Job'),
+        ('Professional Job', 'Professional Job'),
+        ('Semi-Skilled Job', 'Semi-Skilled Job'),
+        ('Simple Job', 'Simple Job'),
     ]
 
     user = models.ForeignKey(
@@ -22,8 +22,8 @@ class JobAd(models.Model):
     )
 
     #Job Classification
-    job_title = models.CharField(max_length=255)
-
+    job_title = models.CharField(blank=True,max_length=255)
+    job_location = models.CharField(blank=True,max_length=255)
     for_level_one = models.BooleanField(default=False)
     for_level_two = models.BooleanField(default=False)
     for_level_three = models.BooleanField(default=False)
@@ -79,12 +79,13 @@ class JobAd(models.Model):
     mentor_desc = models.TextField(blank=True, null=True)
 
     less_noisy_env_status = models.BooleanField(default=False)
+    less_stressful_env_status = models.BooleanField(default=False)
     calming_space_status = models.BooleanField(default=False)
     calming_space_desc = models.TextField(blank=True, null=True)
 
     full_flexible_status = models.BooleanField(default=False)
     shift_pool_status = models.BooleanField(default=False)
-    shift_flexicle_desc = models.TextField(blank=True, null=True)
+    shift_flexible_desc = models.TextField(blank=True, null=True)
 
     regular_update_status = models.BooleanField(default=False)
     regular_update_desc = models.TextField(blank=True, null=True)
@@ -110,3 +111,61 @@ class JobAd(models.Model):
 
     def __str__(self):
         return self.job_title
+    
+    def get_city(self):
+        """Extract city from job_location"""
+        if self.job_location:
+            location_parts = self.job_location.split(',')
+            if len(location_parts) >= 1:
+                return location_parts[0].strip()
+        return ""
+    
+    def get_state(self):
+        """Extract state from job_location"""
+        if self.job_location:
+            location_parts = self.job_location.split(',')
+            if len(location_parts) >= 2:
+                return location_parts[1].strip()
+        return ""
+
+    def format_question(self, question):
+        if not question:
+            return ''
+        question = question.strip()
+        # Remove all trailing ? and add one
+        question = question.rstrip('?') + '?'
+        return question
+    
+    def get_question_one(self):
+        return self.format_question(self.question_one)
+
+    def get_question_two(self):
+        return self.format_question(self.question_two)
+
+    def get_question_three(self):
+        return self.format_question(self.question_three)
+    
+    def has_any_benefit_status(self):
+        return any([
+            self.special_training_status,
+            self.one_training_status,
+            self.multiple_training_status,
+            self.work_buddy_status,
+            self.mentor_status,
+            self.less_noisy_env_status,
+            self.less_stressful_env_status,
+            self.calming_space_status,
+            self.full_flexible_status,
+            self.shift_pool_status,
+            self.regular_update_status,
+            self.full_transport_status,
+            self.partial_transport_status
+        ])
+    
+    def has_any_interview_option(self):
+        return any([
+            self.verbal_interview_status,
+            self.nonverbal_interview_status,
+            self.representative_interview_status,
+            self.no_interview_status
+        ])

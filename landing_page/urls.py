@@ -7,7 +7,7 @@ urlpatterns = [
     path('employer/', views.landing_employer,name='landing_employer'),
 
     #display the goat page where we will display application shit
-    path('view/job', views.view_job_ad,name='view_job_ad'),
+    path('view/job/<int:job_id>', views.view_job_ad,name='view_job_ad'),
     path('view/applicant', views.view_applicant_recruit,name='view_applicant_recruit'),
 
     #display the hiring advice page

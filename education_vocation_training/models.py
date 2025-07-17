@@ -11,23 +11,8 @@ class EducationVocationalTraining(models.Model):
     course_title = models.CharField(max_length=255)
     institution = models.CharField(max_length=255)
 
-    start_month = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 13)])
-    start_year = models.PositiveIntegerField()
     end_month = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 13)], null=True, blank=True)
     end_year = models.PositiveIntegerField(null=True, blank=True)
-
-    @property
-    def display_range(self):
-        start_str = f"{calendar.month_name[self.start_month]} {self.start_year}"
-        if self.end_month and self.end_year:
-            end_str = f"{calendar.month_name[self.end_month]} {self.end_year}"
-        else:
-            end_str = "Present"
-        return f"{start_str} - {end_str}"
-
-    @property
-    def start_month_input(self):
-        return f"{self.start_year}-{self.start_month:02d}"
 
     @property
     def end_month_input(self):

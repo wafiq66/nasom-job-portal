@@ -20,7 +20,7 @@
                         <p class="text-muted mb-0">Manage and track your job postings</p>
                     </div>
                 </div>
-                <a href="{% url 'reload_job' %}" class="btn btn-primary">
+                <a href="{% url 'post_job' %}" class="btn btn-primary">
                     <i class="fa fa-plus me-2"></i>Post New Job
                 </a>
             </div>
@@ -42,146 +42,130 @@
         <!-- Job Cards Section -->
         <div class="px-4">
             <div class="row g-4">
-                <!-- Job Card 1 -->
-                <div class="col-lg-6 col-xl-4">
-                    <div class="job-ad-card">
-                        <div class="card-header">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="job-title">
-                                    <h5 class="mb-1">Check Assistant</h5>
-                                    <p class="text-muted mb-0">Software Development</p>
-                                </div>
-                                <div class="status-badge active">
-                                    <i class="fa fa-circle me-1"></i>Active
+
+                {% for job in job_ads %}
+                    <!-- Job Card Iteration -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="job-ad-card">
+                            <div class="card-header">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="job-title">
+                                        <h5 class="mb-1">{{job.job_title}}</h5>
+                                    </div>
+                                    {% if job.publish_status == "active" %}
+                                        <div class="status-badge active">
+                                            <i class="fa fa-circle me-1"></i>{{job.get_publish_status_display}}
+                                        </div>
+                                    {% elif job.publish_status == "draft" %}
+                                        <div class="status-badge draft">
+                                            <i class="fa fa-circle me-1"></i>{{job.get_publish_status_display}}
+                                        </div>
+                                    {% elif job.publish_status == "expired" %}
+                                        <div class="status-badge inactive">
+                                            <i class="fa fa-circle me-1"></i>{{job.get_publish_status_display}}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="job-stats">
-                                <div class="stat-item">
-                                    <i class="fa fa-users text-primary"></i>
-                                    <div>
-                                        <span class="stat-number">25</span>
-                                        <span class="stat-label">Applications</span>
+                            <div class="card-body">
+                                <div class="job-stats">
+                                    <div class="stat-item">
+                                        <i class="fa fa-users text-primary"></i>
+                                        <div>
+                                            <span class="stat-number">0</span>
+                                            <span class="stat-label">Applications</span>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="job-tags">
+                                    {% if job.can_full_time %}
+                                        <span class="job-tag job-tag-type">Full-Time</span>
+                                    {% endif %}
+                                    {% if job.can_part_time %}
+                                        <span class="job-tag job-tag-type">Part-Time</span>
+                                    {% endif %}
+                                    {% if job.can_remote %}
+                                        <span class="job-tag job-tag-type">Remote</span>
+                                    {% endif %}
+                                    {% if job.job_category %}
+                                        <span class="job-tag job-tag-category">{{job.get_job_category_display}}</span>
+                                    {% endif %}
+                                    {% if job.for_level_one %}
+                                        <span class="job-tag job-tag-open">Level 1</span>
+                                    {% endif %}
+                                    {% if job.for_level_two %}
+                                        <span class="job-tag job-tag-open">Level 2</span>
+                                    {% endif %}
+                                    {% if job.for_level_three %}
+                                        <span class="job-tag job-tag-open">Level 3</span>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="job-tags">
-                                <span class="job-tag job-tag-type">Full-Time</span>
-                                <span class="job-tag job-tag-category">Professional</span>
-                                <span class="job-tag job-tag-open">Level 1</span>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="dropdown">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <form method="post" action="" class="dropdown-item m-0 p-0">
-                                            {% csrf_token %}
-                                            <button type="submit" class="dropdown-item">
+                            <div class="card-footer">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="" class="dropdown-item">
                                                 <i class="fa fa-eye me-2"></i>View Applications
-                                            </button>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form method="post" action="{% url 'reload_job' %}" class="dropdown-item m-0 p-0">
-                                            {% csrf_token %}
-                                            <button type="submit" class="dropdown-item">
-                                                <i class="fa fa-edit me-2"></i>Update
-                                            </button>
-                                        </form>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <form method="post" action="" class="dropdown-item m-0 p-0">
-                                            {% csrf_token %}
-                                            <button type="submit" class="dropdown-item text-danger">
-                                                <i class="fa fa-times me-2"></i>Close Job Ad
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Job Card 2 -->
-                <div class="col-lg-6 col-xl-4">
-                    <div class="job-ad-card">
-                        <div class="card-header">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="job-title">
-                                    <h5 class="mb-1">Kitchen Cleaner</h5>
-                                    <p class="text-muted mb-0">Food Service</p>
-                                </div>
-                                <div class="status-badge active">
-                                    <i class="fa fa-circle me-1"></i>Active
+                                            </a>
+                                        </li>
+                                        {% if job.publish_status != "expired" %}
+                                            <li>
+                                                <a href="{% url 'reload_job' job.id %}" class="dropdown-item">
+                                                    <i class="fa fa-edit me-2"></i>Update
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        <li><hr class="dropdown-divider"></li>
+                                        {% if job.publish_status == "expired" %}
+                                            <li>
+                                                <a href="{% url 'republish_job' job.id %}" class="dropdown-item text-success">
+                                                    <i class="fa fa-undo me-2"></i>Republish Job Ad
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'delete_job' job.id %}" class="dropdown-item text-danger">
+                                                    <i class="fa fa-trash me-2"></i>Delete Job Ad
+                                                </a>
+                                            </li>
+                                        {% elif job.publish_status == "draft" %}
+                                            <li>
+                                                <a href="{% url 'delete_job' job.id %}" class="dropdown-item text-danger">
+                                                    <i class="fa fa-trash me-2"></i>Delete Draft
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li>
+                                                <a href="{% url 'close_job' job.id %}" class="dropdown-item text-danger">
+                                                    <i class="fa fa-times me-2"></i>Close Job Ad
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="job-stats">
-                                <div class="stat-item">
-                                    <i class="fa fa-users text-primary"></i>
-                                    <div>
-                                        <span class="stat-number">18</span>
-                                        <span class="stat-label">Applications</span>
-                                    </div>
+                    </div>
+                {% empty %}
+                    <!-- No Job Card -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="job-ad-card empty-state">
+                            <div class="card-body text-center py-5">
+                                <div class="empty-icon">
+                                    <i class="fa fa-plus-circle"></i>
                                 </div>
-                            </div>
-                            <div class="job-tags">
-                                <span class="job-tag job-tag-type">Part-Time</span>
-                                <span class="job-tag job-tag-category">Simple</span>
-                                <span class="job-tag job-tag-open">Level 2</span>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="dropdown">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fa fa-eye me-2"></i>View Applications
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fa fa-edit me-2"></i>Update
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <a class="dropdown-item text-danger" href="#">
-                                            <i class="fa fa-times me-2"></i>Close Job Ad
-                                        </a>
-                                    </li>
-                                </ul>
+                                <h5 class="mt-3 mb-2">No More Jobs</h5>
+                                <p class="text-muted mb-3">You've posted all your job advertisements. Create a new one to get started!</p>
+                                <a href="{% url 'post_job' %}" class="btn btn-primary">
+                                    <i class="fa fa-plus me-2"></i>Post New Job
+                                </a>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Empty State Card -->
-                <div class="col-lg-6 col-xl-4">
-                    <div class="job-ad-card empty-state">
-                        <div class="card-body text-center py-5">
-                            <div class="empty-icon">
-                                <i class="fa fa-plus-circle"></i>
-                            </div>
-                            <h5 class="mt-3 mb-2">No More Jobs</h5>
-                            <p class="text-muted mb-3">You've posted all your job advertisements. Create a new one to get started!</p>
-                            <a href="{% url 'reload_job' %}" class="btn btn-primary">
-                                <i class="fa fa-plus me-2"></i>Post New Job
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </main>

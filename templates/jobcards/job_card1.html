@@ -1,28 +1,48 @@
 {% load static %}
 <div class="jobcard-wrapper">
-  <div class="jobcard-title">Clerk</div>
+  <div class="jobcard-title">{{job.job_title}}</div>
 
   <div class="jobcard-tags">
-    <span class="jobcard-tag jobcard-tag-part-time">PART TIME</span>
-    <span class="jobcard-tag jobcard-tag-suitable">SUITABLE FOR AUTISM LEVEL 1</span>
-    <span class="jobcard-tag jobcard-tag-job-type">PROFESSIONAL JOB</span>
+    {% if job.can_full_time %}
+      <span class="jobcard-tag jobcard-tag-part-time">Full Time</span>
+    {% endif %}
+    {% if job.can_part_time %}
+      <span class="jobcard-tag jobcard-tag-part-time">Part Time</span>
+    {% endif %}
+    {% if job.can_remote %}
+      <span class="jobcard-tag jobcard-tag-part-time">Remote</span>
+    {% endif %}
+    {% if job.for_level_one %}
+      <span class="jobcard-tag jobcard-tag-suitable">For Autim Level 1</span>
+    {% endif %}
+    {% if job.for_level_two %}
+      <span class="jobcard-tag jobcard-tag-suitable">For Autim Level 2</span>
+    {% endif %}
+    {% if job.for_level_three %}
+      <span class="jobcard-tag jobcard-tag-suitable">For Autim Level 3</span>
+    {% endif %}
+    <span class="jobcard-tag jobcard-tag-job-type">{{job.get_job_category_display}}</span>
   </div>
 
-  <div class="jobcard-salary">Salary: RM 800 - RM 1,000</div>
+  <div class="jobcard-salary">Salary: RM {{job.minimum_salary}} - RM {{job.maximum_salary}}</div>
 
   <div class="jobcard-company-info">
     <div class="jobcard-company-details">
       <div class="jobcard-company-logo m-2">
-        <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="jobcard-logo-img">
+        {% if job.user.company_logo.url %}
+          <img src="{{ job.user.company_logo.url }}" alt="Company Logo" class="jobcard-logo-img">
+        {% else %}
+          <img src="{% static 'images/no-image.png' %}" alt="No Logo" class="jobcard-logo-img">
+        {% endif %}
       </div>
       <div>
-        <div class="jobcard-company-name">Twitter Inc.</div>
+        <div class="jobcard-company-name">{{job.user.company_name}}</div>
         <div class="jobcard-company-location">
-          <i class="fas fa-map-marker-alt"></i> Petaling Jaya, Selangor
+          <i class="fas fa-map-marker-alt"></i> {{job.get_city}}, {{job.get_state}}
         </div>
       </div>
     </div>
-    <a href="{% url 'view_job_ad' %}" class="jobcard-next-btn">
+    <a href="{% url 'view_job_ad' job.id %}" class="jobcard-next-btn">
       <i class="fa-sharp fa-solid fa-circle-chevron-right"></i>
     </a>
   </div>
