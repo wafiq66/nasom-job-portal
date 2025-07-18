@@ -7,8 +7,6 @@
 {% endblock %}
 
 {% block content %}
-<div class="d-flex">
-    <main class="w-100 d-flex flex-column gap-4 py-4 bg-light min-vh-100">
         <div class="px-4">
             <div class="d-flex align-items-center gap-3 mb-4">
                 <a href="javascript:history.back()" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center back-btn me-2" style="flex-shrink:0;">
@@ -18,6 +16,16 @@
                     {% include "search/search2.html" %}
                 </div>
             </div>
+            {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
         <div class="w-100">
             <div class="d-flex flex-column gap-4">
@@ -27,14 +35,18 @@
                     <div class="card shadow-sm">
                         <div class="card-body p-4">
                             <div class="d-flex gap-4 align-items-start">
-                                <img src="{% static 'images/no-image.png' %}" alt="Applicant Photo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #e3e3e3;">
+                                {% if applicant.profile_image %}
+                                    <img src="{{ applicant.profile_image.url }}" alt="Applicant Photo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #e3e3e3;">
+                                {% else %}
+                                    <img src="{% static 'images/no-image.png' %}" alt="Applicant Photo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #e3e3e3;">
+                                {% endif %}
                                 <div class="d-flex flex-column gap-2 flex-fill">
-                                    <h4 class="m-0">John Smith</h4>
+                                    <h4 class="m-0">{{applicant.get_full_name}}</h4>
                                     <div class="d-flex gap-2 align-items-center">
                                         <i class="fas fa-map-marker-alt text-muted"></i>
-                                        <p class="m-0 text-muted">Petaling Jaya, Selangor</p>
+                                        <p class="m-0 text-muted">{{applicant.city}}, {{applicant.state}}</p>
                                     </div>
-                                    <div class="applicant-recruit-bio bg-light p-3 rounded">I am a dedicated individual with strong attention to detail and excellent organizational skills. I enjoy working in structured environments and have a passion for data entry and administrative tasks.</div>
+                                    <div class="applicant-recruit-bio bg-light p-3 rounded">{{applicant.biography}}</div>
                                 </div>
                             </div>
                         </div>
@@ -51,13 +63,11 @@
                                 <h5 class="mb-0"><i class="fas fa-tools me-2 text-primary"></i>Skills</h5>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex flex-wrap gap-2">
-                                    <span class="applicant-skill-tag">Data Entry</span>
-                                    <span class="applicant-skill-tag">Microsoft Excel</span>
-                                    <span class="applicant-skill-tag">Administrative Tasks</span>
-                                    <span class="applicant-skill-tag">File Organization</span>
-                                    <span class="applicant-skill-tag">Customer Service</span>
-                                </div>
+                                {% for skill in applicant.skills.all %}
+                                    <span class="applicant-skill-tag">{{skill.skill}}</span>
+                                {% empty %}
+                                    <div class="text-muted fst-italic">No skill records found.</div>
+                                {% endfor %}
                             </div>
                         </div>
 
@@ -72,14 +82,14 @@
                                 </h2>
                                 <div id="educationCollapse" class="accordion-collapse collapse show" aria-labelledby="educationHeading" data-bs-parent="#applicantRecruitAccordion">
                                     <div class="accordion-body">
+                                        {% for edu in applicant.educations.all %}
                                         <div class="applicant-recruit-edu mb-3 p-3 bg-light rounded">
-                                            <strong>Diploma in Business Administration</strong> at Taylor's College<br>
-                                            <span class="text-muted small">2018 - 2020</span>
+                                            <strong>{{edu.course_title}}</strong> at {{edu.institution}}<br>
+                                            <span class="text-muted small">{{edu.end_month_input}}</span>
                                         </div>
-                                        <div class="applicant-recruit-edu mb-3 p-3 bg-light rounded">
-                                            <strong>Certificate in Office Management</strong> at Skills Training Institute<br>
-                                            <span class="text-muted small">2019 - 2020</span>
-                                        </div>
+                                        {% empty %}
+                                            <div class="text-muted fst-italic">No education records found.</div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -93,14 +103,14 @@
                                 </h2>
                                 <div id="workHistoryCollapse" class="accordion-collapse collapse" aria-labelledby="workHistoryHeading" data-bs-parent="#applicantRecruitAccordion">
                                     <div class="accordion-body">
+                                        {% for work in applicant.careers.all %}
                                         <div class="applicant-recruit-job mb-3 p-3 bg-light rounded">
-                                            <strong>Administrative Assistant</strong> at ABC Company<br>
-                                            <span class="text-muted small">2020 - 2022</span>
+                                            <strong>{{work.job_title}}</strong> at {{work.company_name}}<br>
+                                            <span class="text-muted small">{{work.display_range}}</span>
                                         </div>
-                                        <div class="applicant-recruit-job mb-3 p-3 bg-light rounded">
-                                            <strong>Data Entry Clerk</strong> at XYZ Corporation<br>
-                                            <span class="text-muted small">2018 - 2020</span>
-                                        </div>
+                                        {% empty %}
+                                            <div class="text-muted fst-italic">No career history records found.</div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -114,12 +124,11 @@
                                 </h2>
                                 <div id="interestsCollapse" class="accordion-collapse collapse" aria-labelledby="interestsHeading" data-bs-parent="#applicantRecruitAccordion">
                                     <div class="accordion-body">
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <span class="applicant-skill-tag">Puzzle Solving</span>
-                                            <span class="applicant-skill-tag">Reading</span>
-                                            <span class="applicant-skill-tag">Organizing</span>
-                                            <span class="applicant-skill-tag">Quiet Activities</span>
-                                        </div>
+                                        {% for interest in applicant.interest_like.all %}
+                                            <span class="applicant-skill-tag">{{interest.personal_interest}}</span>
+                                        {% empty %}
+                                            <div class="text-muted fst-italic">No personal interest records found.</div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -134,10 +143,11 @@
                                 <div id="workAttitudeCollapse" class="accordion-collapse collapse" aria-labelledby="workAttitudeHeading" data-bs-parent="#applicantRecruitAccordion">
                                     <div class="accordion-body">
                                         <div class="d-flex flex-wrap gap-2">
-                                            <span class="applicant-skill-tag">Detail-Oriented</span>
-                                            <span class="applicant-skill-tag">Structured Environment</span>
-                                            <span class="applicant-skill-tag">Routine-Based</span>
-                                            <span class="applicant-skill-tag">Visual Learner</span>
+                                            {% for work_att in applicant.work_like.all %}
+                                            <span class="applicant-skill-tag">{{work_att.work_attitude}}</span>
+                                            {% empty %}
+                                                <div class="text-muted fst-italic">No work attitude records found.</div>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -153,10 +163,11 @@
                                 <div id="communicationCollapse" class="accordion-collapse collapse" aria-labelledby="communicationHeading" data-bs-parent="#applicantRecruitAccordion">
                                     <div class="accordion-body">
                                         <div class="d-flex flex-wrap gap-2">
-                                            <span class="applicant-skill-tag">Written Communication</span>
-                                            <span class="applicant-skill-tag">Direct Communication</span>
-                                            <span class="applicant-skill-tag">Visual Aids</span>
-                                            <span class="applicant-skill-tag">Structured Conversations</span>
+                                            {% for comm_att in applicant.communicate_like.all %}
+                                            <span class="applicant-skill-tag">{{comm_att.communication_style}}</span>
+                                            {% empty %}
+                                                <div class="text-muted fst-italic">No communication style records found.</div>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -172,7 +183,7 @@
                                 <h6 class="mb-0"><i class="fas fa-map-marker-alt me-2 text-primary"></i>Location</h6>
                             </div>
                             <div class="card-body">
-                                <p class="mb-0">Petaling Jaya, Selangor</p>
+                                <p class="mb-0">{{applicant.city}}, {{applicant.state}}</p>
                             </div>
                         </div>
 
@@ -195,22 +206,19 @@
                                 <h6 class="mb-0"><i class="fas fa-phone me-2"></i>Call to Apply Form</h6>
                             </div>
                             <div class="card-body">
-                                <form>
+                                <form action="{% url 'view_applicant_recruit' applicant.id %}" method='post'>
+                                {% csrf_token %}
                                     <div class="form-group mb-3">
                                         <label for="job_position" class="form-label">Job Position</label>
                                         <select name="job_position" id="job_position" class="form-control" required>
                                             <option value="" disabled selected>Select Job Position</option>
-                                            <option value="clerk">Clerk</option>
-                                            <option value="data_entry">Data Entry Clerk</option>
-                                            <option value="admin_assistant">Administrative Assistant</option>
-                                            <option value="receptionist">Receptionist</option>
-                                            <option value="file_clerk">File Clerk</option>
-                                            <option value="office_assistant">Office Assistant</option>
-                                            <option value="customer_service">Customer Service Representative</option>
-                                            <option value="inventory_clerk">Inventory Clerk</option>
+                                            {% for job in job_ads %}
+                                                <option value="{{ job.id }}">{{ job.job_title }}</option>
+                                            {% empty %}
+                                                <option disabled>No job ads available</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
-                                    
                                     <div class="d-flex justify-content-end">
                                         <button type="submit" class="btn btn-success">Send Invitation</button>
                                     </div>

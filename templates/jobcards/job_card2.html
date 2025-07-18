@@ -16,7 +16,10 @@
     {% endif %}
   </div>
 
+  {% if application.application_status != 'called' %}
   <div class="jobcard-date">Date Applied: {{application.display_applied_date}}</div>
+  {% endif %}
+
   <div class="jobcard-salary">Salary: RM {{application.job_ad.minimum_salary}} - RM {{application.job_ad.maximum_salary}}</div>
 
   <div class="jobcard-company-info">

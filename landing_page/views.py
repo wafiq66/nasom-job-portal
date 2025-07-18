@@ -15,7 +15,8 @@ def landing_applicant(request):
     return render(request,"landing_applicant.html",{'jobs':jobs})
 
 def landing_employer(request):
-    return render(request,"landing_employer.html")
+    applicants = User.objects.all()
+    return render(request,"landing_employer.html",{'applicants':applicants})
 
 #this one is used to render the specific job ad that clicked by the user
 def view_job_ad(request,job_id):
@@ -128,8 +129,44 @@ def toggle_save(request):
 
     return render(request,"job_apply.html")  # or your default fallback page
 
-def view_applicant_recruit(request):
-    return render(request,'applicant_recruit.html')
+def view_applicant_recruit(request,applicant_id):
+    applicant = get_object_or_404(User, id=applicant_id)
+    job_ads = JobAd.objects.filter(user=request.user, publish_status='active')
+
+    if request.method == 'POST':
+        job_id = request.POST.get("job_position")
+        job_ad = get_object_or_404(JobAd, id=job_id)
+
+        existing_application = JobApplication.objects.filter(
+            user=applicant,
+            job_ad=job_ad
+        ).first()
+
+        if existing_application:
+
+            if existing_application.application_status in [None, 'saved', 'rejected']:
+                # Update the application
+                existing_application.application_status = 'called'
+                existing_application.save()
+                messages.success(request, "The employee is successfully called for applying!")
+            else:
+                messages.warning(request, "This applicant has already been called or applied for the position.")
+
+        else:
+            application = JobApplication.objects.create(
+                user=applicant,
+                job_ad=job_ad,
+                application_status='called',
+            )
+            messages.success(request, "The employee is successfully called for applying!")
+            application.save()
+
+        return redirect('view_applicant_recruit',applicant_id)
+
+    return render(request,'applicant_recruit.html', {
+        'applicant':applicant,
+        'job_ads':job_ads,
+        })
 
 def hiring_advice(request):
     return render(request,'hiring_advice.html')
