@@ -582,15 +582,16 @@ function updateStatusBadge() {
     const selectedValue = statusSelect.value;
     const selectedText = statusSelect.options[statusSelect.selectedIndex].text;
     
-    // Remove all status classes
-    statusBadge.classList.remove('status-new', 'status-review', 'status-shortlisted', 'status-interview', 'status-hired', 'status-rejected');
+    // Remove all previous status classes
+    statusBadge.classList.remove('status-pending', 'status-shortlisted', 'status-accepted', 'status-rejected');
     
-    // Add the appropriate status class
+    // Add the new one
     statusBadge.classList.add(`status-${selectedValue}`);
     
     // Update the text
     statusBadge.textContent = selectedText;
 }
+
 
 // Verification file upload preview (handles upload, reupload, and delete)
 function setupVerificationFilePreview() {

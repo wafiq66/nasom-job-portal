@@ -12,8 +12,10 @@
 
 {% block content %}
 <div class="d-flex">
-    {% include "sidebars/sidebar1.html" %}
-    <main class="w-100 d-flex flex-column gap-4 py-4 bg-light">
+    <div style="min-width:240px;max-width:240px;width:240px;">
+        {% include "sidebars/sidebar1.html" %}
+    </div>
+    <main class="flex-grow-1 d-flex flex-column gap-4 py-4 bg-light" style="overflow-x:hidden;">
         <!-- Header Section -->
         <div class="px-4 mb-2">
             <div class="d-flex align-items-center gap-3">
@@ -24,19 +26,12 @@
             </div>
         </div>
         <!-- Job Cards Grid (Static Preview) -->
-        <div id="lower-layout" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 px-4">
-            {# Example: Normal status #}
-            <div class="col">
-                {% include "jobcards/job_card2.html" with status="Under Review" %}
-            </div>
-            {# Example: Shortlisted #}
-            <div class="col">
-                {% include "jobcards/job_card2.html" with status="Shortlisted" %}
-            </div>
-            {# Example: Called by Employer, clickable badge #}
-            <div class="col">
-                {% include "jobcards/job_card2.html" with status="Called by Employer" job_ad_url="/view/job" %}
-            </div>
+        <div id="lower-layout" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" style="margin-right:0;margin-left:0;">
+            {% for application in applied_job_ads %}
+                <div class="col">
+                    {% include "jobcards/job_card2.html" with application=application %}
+                </div>
+            {% endfor %}
         </div>
     </main>
 </div>

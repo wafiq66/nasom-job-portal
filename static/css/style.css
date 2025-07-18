@@ -838,12 +838,26 @@ input[type="radio"]:checked + label.btn-primary {
     font-weight: 500;
 }
 
-.status-new { background-color: #e3f2fd; color: #1976d2; }
-.status-review { background-color: #fff3e0; color: #f57c00; }
-.status-shortlisted { background-color: #e8f5e8; color: #2e7d32; }
-.status-interview { background-color: #f3e5f5; color: #7b1fa2; }
-.status-hired { background-color: #e8f5e8; color: #2e7d32; }
-.status-rejected { background-color: #ffebee; color: #d32f2f; }
+.status-pending {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-shortlisted {
+    background-color: #fff8e1;
+    color: #f9a825;
+}
+
+.status-accepted {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-rejected {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
 
 /* Verification Request Page Styles */
 .verification-container {
@@ -2267,4 +2281,38 @@ input[type="radio"]:checked + label.btn-primary {
         height: 60px;
         font-size: 1.5rem;
     }
+}
+
+html, body {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100%;
+}
+
+.sidebar {
+  min-width: 240px;
+  max-width: 240px;
+  width: 240px;
+}
+
+/* Applicant status badge styles */
+.pending-status {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+.called-status {
+    background-color: #e0f7fa;
+    color: #00838f;
+}
+.shortlisted-status {
+    background-color: #e8f5e8;
+    color: #2e7d32;
+}
+.accepted-status {
+    background-color: #d0f8ce;
+    color: #388e3c;
+}
+.rejected-status {
+    background-color: #ffebee;
+    color: #d32f2f;
 }

@@ -35,15 +35,16 @@
                                 <span class="filter-label">Filter by:</span>
                                 <select id="job-filter" class="filter-select">
                                     <option value="all">All Jobs</option>
-                                    <option value="Software Developer">Software Developer</option>
-                                    <option value="Data Analyst">Data Analyst</option>
-                                    <option value="Marketing Assistant">Marketing Assistant</option>
+                                    {% for job in job_ads %}
+                                    <option value="{{ job.job_title }}">{{job.job_title}}</option>
+                                    {% endfor %}
                                 </select>
                                 <select id="status-filter" class="filter-select">
                                     <option value="all">All Status</option>
-                                    <option value="new">New</option>
-                                    <option value="review">Under Review</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="called">Called</option>
                                     <option value="shortlisted">Shortlisted</option>
+                                    <option value="accepted">Accepted</option>
                                     <option value="rejected">Rejected</option>
                                 </select>
                                 <button id="clear-filters" class="clear-filter-btn">Clear Filters</button>
@@ -56,12 +57,19 @@
         <!-- Applicant cards grid layout -->
         <div class="container-fluid px-4">
             <div id="applicant-layout" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                <div class="col" data-name="Sarah Johnson" data-position="Software Developer" data-status="new" data-location="Kuala Lumpur" data-skills="JavaScript,React,Python,Django">{% include "applicantcards/applicant_card1.html" with name="Sarah Johnson" position="Software Developer" status_label="New Application" status_class="new-status" location="Kuala Lumpur" applied="2 days ago" %}</div>
-                <div class="col" data-name="Michael Chen" data-position="Data Analyst" data-status="shortlisted" data-location="Petaling Jaya" data-skills="Python,SQL,Tableau,R">{% include "applicantcards/applicant_card1.html" with name="Michael Chen" position="Data Analyst" status_label="Shortlisted" status_class="shortlisted-status" location="Petaling Jaya" applied="1 week ago" %}</div>
-                <div class="col" data-name="Emma Rodriguez" data-position="Marketing Assistant" data-status="review" data-location="Subang Jaya" data-skills="Social Media,Content Creation,Google Analytics,Canva">{% include "applicantcards/applicant_card1.html" with name="Emma Rodriguez" position="Marketing Assistant" status_label="Under Review" status_class="review-status" location="Subang Jaya" applied="3 days ago" %}</div>
-                <div class="col" data-name="David Lee" data-position="Software Developer" data-status="rejected" data-location="Kuala Lumpur" data-skills="Java,Spring,MySQL,Docker">{% include "applicantcards/applicant_card1.html" with name="David Lee" position="Software Developer" status_label="Rejected" status_class="rejected-status" location="Kuala Lumpur" applied="5 days ago" %}</div>
-                <div class="col" data-name="Lisa Wong" data-position="Data Analyst" data-status="new" data-location="Petaling Jaya" data-skills="Python,Pandas,Matplotlib,Scikit-learn">{% include "applicantcards/applicant_card1.html" with name="Lisa Wong" position="Data Analyst" status_label="New Application" status_class="new-status" location="Petaling Jaya" applied="1 day ago" %}</div>
+                {% for app in applicants %}
+                    <div class="col"
+                        data-name="{{ app.user.get_full_name }}"
+                        data-position="{{ app.job_ad.job_title }}"
+                        data-status="{{ app.application_status }}"
+                        data-location="{{ app.user.get_location }}">
+                        
+                        {% include "applicantcards/applicant_card1.html" with application=app %}
+                    </div>
+                {% endfor %}
             </div>
+
+
         </div>
     </main>
 </div>

@@ -2,37 +2,42 @@
 <div class="jobcard-wrapper">
   <input type="hidden" name="job_id" value="123">
 
-  <div class="jobcard-title">Clerk</div>
+  <div class="jobcard-title">{{application.job_ad.job_title}}</div>
 
-  <!-- Status Badge or Apply Link -->
-  {% if status == 'Called by Employer' %}
-    <div class="jobcard-status mb-2">
-      <span class="badge bg-success">Called by Employer</span>
-    </div>
-  {% else %}
-    <div class="jobcard-status mb-2">
-      <span class="badge bg-primary">{{ status|default:'Under Review' }}</span>
-    </div>
-  {% endif %}
+  <div class="jobcard-status mb-2">
+    {% if application.application_status == 'pending' or application.application_status == 'shortlisted' %}
+      <span class="badge bg-primary">{{ application.get_application_status_display }}</span>
+    {% elif application.application_status == 'accepted' or application.application_status == 'called' %}
+      <span class="badge bg-success">{{ application.get_application_status_display }}</span>
+    {% elif application.application_status == 'rejected' %}
+      <span class="badge bg-danger">{{ application.get_application_status_display }}</span>
+    {% else %}
+      <span class="badge bg-secondary">{{ application.get_application_status_display }}</span>
+    {% endif %}
+  </div>
 
-  <div class="jobcard-date">Date Applied: 7 Jun 2023</div>
-  <div class="jobcard-salary">Salary: RM 800 - RM 1,000</div>
+  <div class="jobcard-date">Date Applied: {{application.display_applied_date}}</div>
+  <div class="jobcard-salary">Salary: RM {{application.job_ad.minimum_salary}} - RM {{application.job_ad.maximum_salary}}</div>
 
   <div class="jobcard-company-info">
     <div class="jobcard-company-details">
       <div class="jobcard-company-logo m-2">
-        <img src="{% static 'images/no-image.png' %}" alt="Company Logo" class="jobcard-logo-img">
+        {% if application.job_ad.user.company_logo.url %}
+          <img src="{{ application.job_ad.user.company_logo.url }}" alt="Company Logo" class="jobcard-logo-img">
+        {% else %}
+          <img src="{% static 'images/no-image.png' %}" alt="No Logo" class="jobcard-logo-img">
+        {% endif %}
       </div>
       <div>
-        <div class="jobcard-company-name">Twitter Inc.</div>
+        <div class="jobcard-company-name">{{application.job_ad.user.company_name}}</div>
         <div class="jobcard-company-location">
-          <i class="fas fa-map-marker-alt"></i> Petaling Jaya, Selangor
+          <i class="fas fa-map-marker-alt"></i> {{application.job_ad.get_city}}, {{application.job_ad.get_state}}
         </div>
       </div>
     </div>
   </div>
 
-  {% if status == 'Called by Employer' and job_ad_url %}
-    <a href="{{ job_ad_url }}" class="btn btn-success btn-sm w-100 mt-3">Apply Now</a>
+  {% if application.application_status == 'called' %}
+    <a href="{% url 'view_job_ad' application.job_ad.id %}" class="btn btn-success btn-sm w-100 mt-3">Apply Now</a>
   {% endif %}
 </div>

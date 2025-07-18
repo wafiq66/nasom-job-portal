@@ -7,6 +7,10 @@ from django.utils.timezone import now
 
 def view_job_table(request):
     job_ads = JobAd.objects.filter(user=request.user)
+
+    for job in job_ads:
+        job.submitted_applications_count = job.has_applications.exclude(application_status='saved').count()
+
     return render(request,'advertisement_list.html',{'job_ads':job_ads})
 
 def reload_job(request,job_id):

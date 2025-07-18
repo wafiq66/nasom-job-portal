@@ -40,8 +40,6 @@ class ApplicationUser(AbstractUser):
     # Company-related (for employer accounts)
     company_name = models.CharField(max_length=255, blank=True, null=True)
     company_address = models.CharField(max_length=255, blank=True, null=True)
-    company_email = models.EmailField(blank=True, null=True)
-    company_phone_number = models.CharField(max_length=20,null=True,blank=True)
     company_description = models.TextField(blank=True, null=True)
     company_logo = models.ImageField(
         upload_to='company_logos/',
@@ -51,6 +49,13 @@ class ApplicationUser(AbstractUser):
 
     #to ensure the user is not dependent
     looking_job_status = models.BooleanField(default=True)
+
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}".strip()
+    
+    def get_location(self):
+        return f"{self.city}, {self.state}".strip(', ')
+
 
     # 🔽 Optional: toString representation
     def __str__(self):

@@ -17,5 +17,10 @@ urlpatterns = [
     path('search/company', views.search_company, name='search_company'),
 
     #display the view company page
-    path('view/company', views.view_company, name='view_company'),
+    path('view/company/<int:company_id>', views.view_company, name='view_company'),
+
+    #this one is to submit application into the database
+    path('view/job/submit/application', views.register_application, name='register_application'),
+    #this one is used to toggle job save into the database
+    path('view/job/save', views.toggle_save, name='toggle_save'),
 ]

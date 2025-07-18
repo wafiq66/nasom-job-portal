@@ -12,8 +12,10 @@
 
 {% block content %}
 <div class="d-flex">
-    {% include "sidebars/sidebar1.html" %}
-    <main class="w-100 d-flex flex-column gap-4 py-4 bg-light">
+    <div style="min-width:240px;max-width:240px;width:240px;">
+        {% include "sidebars/sidebar1.html" %}
+    </div>
+    <main class="flex-grow-1 d-flex flex-column gap-4 py-4 bg-light" style="overflow-x:hidden;">
         <!-- Header Section -->
         <div class="px-4 mb-2">
             <div class="d-flex align-items-center gap-3">
@@ -24,11 +26,12 @@
             </div>
         </div>
         <!-- Job Cards Grid (Static Preview) -->
-        <div id="lower-layout" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 px-4">
-            {# Static preview cards #}
-            <div class="col">{% include "jobcards/job_card1.html" %}</div>
-            <div class="col">{% include "jobcards/job_card1.html" %}</div>
-            <div class="col">{% include "jobcards/job_card1.html" %}</div>
+        <div id="lower-layout" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3" style="margin-right:0;margin-left:0;">
+            {% for job in saved_job_ads %}
+                <div class="col">
+                    {% include "jobcards/job_card1.html" with job=job %}
+                </div>
+            {% endfor %}
         </div>
     </main>
 </div>

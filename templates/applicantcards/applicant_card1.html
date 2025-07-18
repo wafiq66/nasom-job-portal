@@ -2,12 +2,29 @@
 <div class="applicant-card">
     <div class="applicant-header">
         <div class="applicant-photo">
-            <img src="{% if photo_url %}{{ photo_url }}{% else %}{% static 'images/no-image.png' %}{% endif %}" alt="Applicant Photo" class="applicant-img">
+            {% if application.user.profile_image %}
+                <img src="{{ application.user.profile_image.url }}" alt="Applicant Photo" class="applicant-img">
+            {% else %}
+                <img src="{% static 'images/no-image.png' %}" alt="No Image" class="applicant-img">
+            {% endif %}
+
         </div>
         <div class="applicant-basic-info">
-            <h6 class="applicant-name mb-1">{{ name }}</h6>
-            <span class="applicant-position text-muted">{{ position }}</span>
-            <div class="applicant-status {{ status_class|default:'new-status' }}">{{ status_label|default:'New Application' }}</div>
+            <h6 class="applicant-name mb-1">{{ application.user.get_full_name }}</h6>
+            <span class="applicant-position text-muted">{{ application.job_ad.job_title }}</span>
+            {% if application.application_status == 'pending' %}
+                <div class="applicant-status pending-status">{{ application.get_application_status_display }}</div>
+            {% elif application.application_status == 'called' %}
+                <div class="applicant-status called-status">{{ application.get_application_status_display }}</div>
+            {% elif application.application_status == 'shortlisted' %}
+                <div class="applicant-status shortlisted-status">{{ application.get_application_status_display }}</div>
+            {% elif application.application_status == 'accepted' %}
+                <div class="applicant-status accepted-status">{{ application.get_application_status_display }}</div>
+            {% elif application.application_status == 'rejected' %}
+                <div class="applicant-status rejected-status">{{ application.get_application_status_display }}</div>
+            {% else %}
+                <div class="applicant-status">{{ application.get_application_status_display }}</div>
+            {% endif %}
         </div>
         <div class="applicant-actions">
             <div class="dropdown">
@@ -15,22 +32,37 @@
                     <i class="fas fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu">
-                    {% if actions %}
-                        {% for action in actions %}
-                        <li>
-                            <a class="dropdown-item {{ action.class }}" href="{{ action.url }}">
-                                <i class="{{ action.icon }} me-2"></i>{{ action.label }}
-                            </a>
-                        </li>
-                        {% if not forloop.last and action.divider %}<li><hr class="dropdown-divider"></li>{% endif %}
-                        {% endfor %}
-                    {% else %}
-                        <li><a class="dropdown-item" href="{% url 'applicant_manage' %}"><i class="fas fa-eye me-2"></i>View Profile</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Download Resume</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-success" href="#"><i class="fas fa-check me-2"></i>Shortlist</a></li>
-                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times me-2"></i>Reject</a></li>
-                    {% endif %}
+                        <li><a class="dropdown-item" href="{% url 'applicant_manage' application.id %}"><i class="fas fa-eye me-2"></i>View Profile</a></li>
+                        {% if application.document and application.document.document_file %}
+                            <li>
+                                <a class="dropdown-item" href="{{ application.document.document_file.url }}" target="_blank">
+                                    <i class="fas fa-download me-2"></i>View Resume
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if application.application_status != 'rejected' and application.application_status != 'accepted'%}
+                            <li><hr class="dropdown-divider"></li>
+                            {% if application.application_status == 'pending' %}
+                                <li>
+                                    <a class="dropdown-item text-success" href="{% url 'shortlist_applicant' application.id %}">
+                                        <i class="fas fa-check me-2"></i>Shortlist
+                                    </a>
+                                </li>
+                            {% elif application.application_status == 'shortlisted' %}
+                                <li>
+                                    <a class="dropdown-item text-primary" href="{% url 'accept_applicant' application.id %}">
+                                        <i class="fas fa-user-check me-2"></i>Accept
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if application.application_status != 'rejected' and application.application_status != 'accepted'%}
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{% url 'reject_applicant' application.id %}">
+                                        <i class="fas fa-times me-2"></i>Reject
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
                 </ul>
             </div>
         </div>
@@ -38,11 +70,11 @@
     <div class="applicant-details">
         <div class="detail-row">
             <span class="detail-label"><i class="fas fa-map-marker-alt me-2"></i>Location:</span>
-            <span class="detail-value">{{ location }}</span>
+            <span class="detail-value">{{ application.user.get_location }}</span>
         </div>
         <div class="detail-row">
             <span class="detail-label"><i class="fas fa-calendar me-2"></i>Applied:</span>
-            <span class="detail-value">{{ applied }}</span>
+            <span class="detail-value">{{ application.display_applied_date }}</span>
         </div>
     </div>
 </div>

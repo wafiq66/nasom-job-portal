@@ -10,12 +10,25 @@
 <main class="d-flex flex-column align-items-center">
     {% include "search/search1.html" %}
     
+    <!-- Messages Section -->
+    {% if messages %}
+        <div class="w-75 m-2">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <i class="fa fa-info-circle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="w-75 m-2">
         <!-- Header Section -->
         <div class="px-4 py-3">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
-                    <a href="javascript:history.back()" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <a href="{% url 'landing_applicant' %}" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                         <i class="bi bi-arrow-left text-dark"></i>
                     </a>
                     <div>
@@ -23,9 +36,17 @@
                         <small class="text-muted">Return to job search results</small>
                     </div>
                 </div>
-                <button class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;">
-                    <i class="fa-sharp fa-solid fa-bookmark"></i>
+                <button id="bookmark-btn" class="btn btn-outline-primary rounded-circle" style="width: 40px; height: 40px;" type="button" onclick="document.getElementById('bookmark-form').submit();">
+                    {% if saved %}
+                        <i class="fa-solid fa-bookmark text-primary"></i>
+                    {% else %}
+                        <i class="fa-regular fa-bookmark"></i>
+                    {% endif %}
                 </button>
+                <form id="bookmark-form" action="{% url 'toggle_save' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="jobid" value="{{job_ad.id}}">
+                </form>
             </div>
         </div>
 
@@ -299,7 +320,9 @@
                             <small class="text-muted">Complete your application</small>
                         </div>
                         <div class="card-body">
-                            <form class="d-flex flex-column gap-3">
+                            <form action="{% url 'register_application' %}" method="post" class="d-flex flex-column gap-3">
+                                {% csrf_token %}
+                                <input type="hidden" name="jobid" value="{{job_ad.id}}">
                                 <div class="form-group">
                                     <label for="answer1" class="form-label">Answer 1</label>
                                     <small class="text-muted d-block mb-2">{{job_ad.get_question_one}}</small>
@@ -309,19 +332,19 @@
                                 <div class="form-group">
                                     <label for="answer2" class="form-label">Answer 2</label>
                                     <small class="text-muted d-block mb-2">{{job_ad.get_question_two}}</small>
-                            <input type="text" name="answer2" id="answer2" class="form-control" placeholder="Enter your answer..." required>
-                        </div>
+                                    <input type="text" name="answer2" id="answer2" class="form-control" placeholder="Enter your answer..." required>
+                                </div>
                                 
                                 <div class="form-group">
                                     <label for="answer3" class="form-label">Answer 3</label>
                                     <small class="text-muted d-block mb-2">{{job_ad.get_question_three}}</small>
-                            <input type="text" name="answer3" id="answer3" class="form-control" placeholder="Enter your answer..." required>
-                        </div>
+                                    <input type="text" name="answer3" id="answer3" class="form-control" placeholder="Enter your answer..." required>
+                                </div>
                                 
                                 <div class="form-group">
                                     <label for="resume" class="form-label">Select Resume</label>
-                                    <select class="form-select" id="resume" aria-label="Default select example">
-                                        <option selected>(no resume)</option>
+                                    <select class="form-select" name="resume" id="resume" aria-label="Default select example">
+                                        <option value="" selected>(no resume)</option>
                                         {% for user_resume in user_resumes %}
                                             <option value="{{user_resume.id}}">{{user_resume.document_name}}</option>
                                         {% endfor %}

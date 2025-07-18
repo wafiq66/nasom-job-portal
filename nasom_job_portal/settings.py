@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "my_job_list", #page - this one is more to the applicant
     "manage_applicant",#page
     "verify_applicant",#page
+    "job_application", #model
     "application_user", #model
     "document", #model
     "education_vocation_training",#model
