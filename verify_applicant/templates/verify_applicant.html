@@ -7,31 +7,33 @@
 {% block content %}
 <div class="verify-applicant-bg py-4">
   <div class="verify-applicant-row">
-    <!-- Left: Applicant Info -->
+    
+{% if vr.verification_status != "verified" and vr.verification_status != "rejected" %}
+<!-- Left: Applicant Info -->
     <div class="verify-applicant-col applicant-info-col">
       <div class="verify-applicant-card">
         <div class="verify-applicant-details-card mb-3">
           <div class="d-flex align-items-center">
             <div class="d-flex flex-column align-items-center me-3">
-              <img src="{% if applicant_photo %}{{ applicant_photo }}{% else %}{% static 'images/no-image.png' %}{% endif %}" alt="Applicant Photo" class="verify-applicant-photo-lg mb-2">
+              <img src="{% if vr.user.profile_image %}{{ vr.user.profile_image.url }}{% else %}{% static 'images/no-image.png' %}{% endif %}" alt="Applicant Photo" class="verify-applicant-photo-lg mb-2">
             </div>
             <div class="verify-applicant-details-grid">
             <div class="verify-applicant-detail-label">Name</div>
-              <div class="verify-applicant-detail-value"><b>Alicia Sardor</b></div>
+              <div class="verify-applicant-detail-value"><b>{{vr.user.get_full_name}}</b></div>
               <div class="verify-applicant-detail-label">City</div>
-              <div class="verify-applicant-detail-value">Shah Alam</div>
+              <div class="verify-applicant-detail-value">{{vr.user.city}}</div>
               <div class="verify-applicant-detail-label">State</div>
-              <div class="verify-applicant-detail-value">Selangor</div>
+              <div class="verify-applicant-detail-value">{{vr.user.state}}</div>
               <div class="verify-applicant-detail-label">Phone Number</div>
-              <div class="verify-applicant-detail-value">010-678 4564</div>
+              <div class="verify-applicant-detail-value">{{vr.user.phone_number}}</div>
               <div class="verify-applicant-detail-label">Email</div>
-              <div class="verify-applicant-detail-value">aliciasardor@gmail.com</div>
+              <div class="verify-applicant-detail-value">{{vr.user.email}}</div>
             </div>
           </div>
         </div>
         <div class="mb-3">
           <div class="fw-semibold mb-1">Message From The Applicant:</div>
-          <textarea class="form-control verify-applicant-message" rows="4" readonly>I kindly request your verification of my involvement with your organization as part of my job application. Your confirmation of my ability to work would be greatly appreciated. Thank you.</textarea>
+          <textarea class="form-control verify-applicant-message" rows="4" readonly>{{vr.applicant_message}}</textarea>
         </div>
         <div>
           <div class="fw-semibold mb-1">Attachment:</div>
@@ -40,42 +42,91 @@
               <i class="fa fa-file-text-o verify-applicant-pdf-icon" aria-hidden="true"></i>
             </div>
             <div class="verify-applicant-attachment-name">
-              <a href="#" class="text-decoration-none" download>Training_Letter.pdf</a>
+              <a href="{{ vr.document.document_file.url }}" class="text-decoration-none" target="_blank">{{vr.document.document_name}}</a>
             </div>
           </div>
         </div>
       </div>
     </div>
     <!-- Right: Verification Form -->
-    <div class="verify-applicant-col verification-form-col">
-      <div class="verify-applicant-card">
-        <div class="fw-bold mb-3">Verification</div>
-        <form method="post">
-          {% csrf_token %}
-          <div class="verify-applicant-form-row mb-3">
-            <div class="verify-applicant-form-group">
-              <label class="form-label small mb-1">Verified By:</label>
-              <input type="text" name="verifier_name" class="form-control verify-applicant-input" placeholder="Enter your name">
+
+      <div class="verify-applicant-col verification-form-col">
+        <div class="verify-applicant-card">
+          <div class="fw-bold mb-3">Verification</div>
+
+          <form method="post" action="{% url 'verify_applicant' vr.id %}">
+            {% csrf_token %}
+            <div class="verify-applicant-form-row mb-3">
+              <div class="verify-applicant-form-group">
+                <label class="form-label small mb-1">Verified By:</label>
+                <input type="text" name="verifier_name" class="form-control verify-applicant-input" placeholder="Enter your name" value="{{vr.full_name|default:''}}" required>
+              </div>
+              <div class="verify-applicant-form-group">
+                <label class="form-label small mb-1">Position:</label>
+                <input type="text" name="verifier_position" class="form-control verify-applicant-input" placeholder="Enter your position" value="{{vr.position|default:''}}" required>
+              </div>
             </div>
-            <div class="verify-applicant-form-group">
-              <label class="form-label small mb-1">Position:</label>
-              <input type="text" name="verifier_position" class="form-control verify-applicant-input" placeholder="Enter your position">
+            <div class="mb-3">
+              <label class="form-label small mb-1">Message For Applicants:</label>
+              <div class="small text-muted mb-1 verify-applicant-note">Please Note That Your Message May Be Viewed By The Employer If The Applicant Is Verified.</div>
+              <textarea name="verifier_message" class="form-control verify-applicant-message" rows="5" placeholder="Please ensure your message described the applicant's experience with the NGO..." required>{{vr.ngo_message|default:''}}</textarea>
             </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label small mb-1">Message For Applicants:</label>
-            <div class="small text-muted mb-1 verify-applicant-note">Please Note That Your Message May Be Viewed By The Employer If The Applicant Is Verified.</div>
-            <textarea name="verifier_message" class="form-control verify-applicant-message" rows="5" placeholder="Please ensure your message described the applicant's experience with the NGO..."></textarea>
-          </div>
-          <div class="d-flex justify-content-end gap-3">
-            <button type="submit" name="action" value="reject" class="btn btn-danger px-4">Reject</button>
-            <button type="submit" name="action" value="verify" class="btn btn-primary px-4">Verify</button>
-          </div>
-        </form>
+            
+            <div class="d-flex justify-content-end gap-3">
+              <button type="submit" name="action" value="rejected" class="btn btn-danger px-4">Reject</button>
+              <button type="submit" name="action" value="verified" class="btn btn-primary px-4">Verify</button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+{% else %}
+
+<div class="verification-complete-container">
+  <div class="verification-complete-content">
+    <i class="fa fa-check-circle verification-complete-icon"></i>
+    <h1>VERIFICATION REQUEST COMPLETE</h1>
+    <p>Your verification request has been processed.<br>
+    Thank you for your submission!</p>
   </div>
 </div>
+{% endif %}
+  </div>
+</div>
+
+<style>
+.verification-complete-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    width: 100%;
+    background: #f8f9fa;
+}
+.verification-complete-content {
+    text-align: center;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+    padding: 60px 40px;
+    max-width: 600px;
+    margin: 40px auto;
+}
+.verification-complete-icon {
+    font-size: 5rem;
+    color: #388e3c;
+    margin-bottom: 24px;
+}
+.verification-complete-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 16px;
+}
+.verification-complete-content p {
+    font-size: 1.25rem;
+    color: #555;
+}
+</style>
 {% endblock %}
 {% block footer %}
     {% include "footers/footer3.html" %}

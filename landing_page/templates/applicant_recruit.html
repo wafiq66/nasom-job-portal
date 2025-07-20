@@ -41,7 +41,12 @@
                                     <img src="{% static 'images/no-image.png' %}" alt="Applicant Photo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #e3e3e3;">
                                 {% endif %}
                                 <div class="d-flex flex-column gap-2 flex-fill">
-                                    <h4 class="m-0">{{applicant.get_full_name}}</h4>
+                                    <h4 class="m-0 d-inline-flex align-items-center">
+                                        {{ applicant.get_full_name }}
+                                        {% if applicant.check_verification_status %}
+                                            <i class="fas fa-check-circle text-primary ms-2" title="Verified" style="font-size: 0.95em;"></i>
+                                        {% endif %}
+                                    </h4>
                                     <div class="d-flex gap-2 align-items-center">
                                         <i class="fas fa-map-marker-alt text-muted"></i>
                                         <p class="m-0 text-muted">{{applicant.city}}, {{applicant.state}}</p>
@@ -187,19 +192,23 @@
                             </div>
                         </div>
 
+                        {% if applicant.check_verification_status %}
+
                         <!-- Verification Card -->
                         <div class="card shadow-sm mb-4">
                             <div class="card-header bg-info text-white">
                                 <h6 class="mb-0"><i class="fas fa-user-check me-2"></i>Verification</h6>
                             </div>
                             <div class="card-body">
-                                <div class="mb-2"><strong>Name:</strong> John Smith</div>
-                                <div class="mb-2"><strong>Organization:</strong> Taylor's College</div>
-                                <div class="mb-2"><strong>Position:</strong> Lecturer</div>
-                                <div><strong>Description:</strong> John is highly detail-oriented and adapts well to structured environments. He consistently demonstrates reliability and strong communication skills.</div>
+                                <div class="mb-2"><strong>Name:</strong> {{applicant.get_verifier_name}}</div>
+                                <div class="mb-2"><strong>Organization:</strong> {{applicant.get_verifier_organization}}</div>
+                                <div class="mb-2"><strong>Position:</strong> {{applicant.get_verifier_position}}</div>
+                                <div><strong>Description:</strong> {{applicant.get_verifier_message}}</div>
                             </div>
                         </div>
                         
+                        {% endif %}
+
                         <!-- Call to Apply Form -->
                         <div class="card shadow-sm">
                             <div class="card-header bg-success text-white">

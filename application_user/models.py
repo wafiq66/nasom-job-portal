@@ -56,6 +56,46 @@ class ApplicationUser(AbstractUser):
     def get_location(self):
         return f"{self.city}, {self.state}".strip(', ')
 
+    def get_latest_verification_request(self):
+        return self.sent_verification_request.order_by('-request_date').first()
+
+    def check_verification_status(self):
+        vr = self.get_latest_verification_request()
+        if vr:
+            if vr.verification_status == 'verified':
+                return True
+            else:
+                return False
+        else:
+            return False
+        
+    def get_verifier_name(self):
+        vr = self.get_latest_verification_request()
+        if vr:
+            return vr.full_name
+        else:
+            return None
+        
+    def get_verifier_organization(self):
+        vr = self.get_latest_verification_request()
+        if vr:
+            return vr.organization_name
+        else:
+            return None
+        
+    def get_verifier_position(self):
+        vr = self.get_latest_verification_request()
+        if vr:
+            return vr.position
+        else:
+            return None
+        
+    def get_verifier_message(self):
+        vr = self.get_latest_verification_request()
+        if vr:
+            return vr.ngo_message
+        else:
+            return None
 
     # 🔽 Optional: toString representation
     def __str__(self):

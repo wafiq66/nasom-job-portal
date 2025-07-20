@@ -45,12 +45,18 @@
                     <div class="mb-4">
                         <div class="d-flex align-items-center gap-2">
                             <span class="fw-bold">Status:</span>
-                            <span class="verification-status">Not Verified</span>
+                            {% if  vr %}
+                                <span class="verification-status {{vr.verification_status}}">{{vr.get_verification_status_display}}</span>
+                            {% else %}
+                                <span class="verification-status">Not Verified</span>
+                            {% endif %}
                         </div>
                     </div>
 
-                    <!-- Verification Form -->
-                    <form method="post" enctype="multipart/form-data">
+                    <!-- Verification Form (Fully Editable) -->
+                    {% if vr is None or vr.verification_status == 'rejected' %}
+                    
+                    <form method="post" enctype="multipart/form-data" action="{% url 'send_email' %}">
                         {% csrf_token %}
                         <div class="row g-4">
                             <!-- NGO Selection -->
@@ -66,7 +72,6 @@
                                 <input type="hidden" id="ngo_selected_name" name="ngo_selected_name">
                                 <input type="hidden" id="ngo_selected_email" name="ngo_selected_email">
                             </div>
-
                             <!-- Other NGO Fields -->
                             <div id="other-ngo-fields" class="col-12 d-none">
                                 <div class="row g-3">
@@ -80,7 +85,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Message Section -->
                             <div class="col-12">
                                 <label for="short_message" class="form-label">Short Message:</label>
@@ -89,7 +93,6 @@
                                 </div>
                                 <textarea id="short_message" name="short_message" class="form-control" rows="5" placeholder="Please ensure your message described the applicant's experience with the NGO..."></textarea>
                             </div>
-
                             <!-- File Upload Section -->
                             <div class="col-12">
                                 <label class="form-label">Attachment:</label>
@@ -114,7 +117,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Submit Button -->
                             <div class="col-12">
                                 <div class="d-flex justify-content-end">
@@ -125,6 +127,142 @@
                             </div>
                         </div>
                     </form>
+
+                    {% elif vr.verification_status == 'pending' %}
+                    
+                    <!-- Verification Form (Partially Editable) -->
+                    <form method="post" enctype="multipart/form-data" action="{% url 'update_request' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="vrpendingid" value='{{ vr.id }}'>
+                        <div class="row g-4">
+                            <!-- NGO Selection -->
+                            <div class="col-12">
+                                <label for="ngo2" class="form-label">Sent to:</label>
+                            </div>
+                            <!-- Other NGO Fields -->
+                            <div id="other-ngo-fields2" class="col-12">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="other_ngo_name2" class="form-label">Organization Name</label>
+                                        <input type="text" id="other_ngo_name2" name="other_ngo_name2" class="form-control" value="{{ vr.organization_name }}" disabled>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="other_ngo_email2" class="form-label">Organization Email</label>
+                                        <input type="email" id="other_ngo_email2" name="other_ngo_email2" class="form-control" value="{{ vr.email }}" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Message Section -->
+                            <div class="col-12">
+                                <label for="short_message2" class="form-label">Short Message:</label>
+                                <textarea id="short_message2" name="short_message2" class="form-control" rows="5" placeholder="Please ensure your message described the applicant's experience with the NGO..." >{{ vr.applicant_message }}</textarea>
+                            </div>
+                            <!-- File Upload Section -->
+                            <div class="col-12">
+                                <label class="form-label">Attachment:</label>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="d-flex flex-column gap-2">
+                                            <label class="btn btn-outline-secondary d-flex align-items-center gap-2">
+                                                <i class="fa fa-upload"></i> Upload
+                                                <input type="file" name="verification_file2" accept=".pdf,.doc,.docx,image/*" class="verification-file-input" id="verification-upload-input2">
+                                            </label>
+                                            <button type="button" id="delete-file-btn2" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="verification-file-preview{% if vr.verification_file %} uploaded{% else %} empty{% endif %}" id="verification-file-preview2">
+                                            <img src="" alt="Preview" class="preview-img d-none" id="verification-preview-img2">
+
+                                            {% if vr.document %}
+                                                <i class="fa fa-file verification-file-icon" id="verification-file-icon2"></i>
+                                                <div class="verification-file-name" id="verification-file-name2">{{ vr.document.document_name }}</div>
+                                            {% else %}
+                                                <i class="fa fa-file-o verification-file-icon" id="verification-file-icon2"></i>
+                                                <div class="verification-file-name" id="verification-file-name2">No file uploaded</div>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fa fa-paper-plane me-2"></i>Update Request
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    {% elif vr.verification_status == 'verified' %}
+
+                    <!-- Verification Notification Form -->
+                    <h5 class="mb-3">Verification Notice</h5>
+                    <form>
+                    <div id="other-ngo-fields3" class="col-12">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="other_ngo_name3" class="form-label">Organization Name</label>
+                                <input type="text" id="other_ngo_name3" name="other_ngo_name3" class="form-control" value="{{vr.organization_name}}" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="other_ngo_email3" class="form-label">Organization Email</label>
+                                <input type="email" id="other_ngo_email3" name="other_ngo_email3" class="form-control" value="{{vr.email}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- Message Section -->
+                    <div class="col-12">
+                        <label for="short_message3" class="form-label">Your Short Message:</label>
+                        <textarea id="short_message3" name="short_message3" class="form-control" rows="5" placeholder="Please ensure your message described the applicant's experience with the NGO..." readonly>{{vr.applicant_message|default:"No message was sent"}}</textarea>
+                    </div><br>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="reject_name" class="form-label">Verifier Name</label>
+                                <input type="text" id="reject_name" name="reject_name" class="form-control" value="{{vr.full_name}}" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="reject_email" class="form-label">Verifier Position</label>
+                                <input type="email" id="reject_email" name="reject_email" class="form-control" value="{{vr.position}}" readonly>
+                            </div>
+                            <div class="col-12">
+                                <label for="reject_reason" class="form-label">Verification Note</label>
+                                <textarea id="reject_reason" name="reject_reason" class="form-control bg-light" rows="5" readonly style="color: #5bb02aff; font-weight: 500;" >{{vr.ngo_message|default:'No reason was mentioned'}}</textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                    {% endif %}
+
+                    {% if vr.verification_status == 'rejected' %}
+
+                    <hr class="my-5" style="border-top: 2px dashed #bbb;">
+
+                    <!-- Rejection Notification Form -->
+                    <h5 class="mb-3">Rejection Notice</h5>
+                    <form>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="reject_name" class="form-label">Verifier Name</label>
+                                <input type="text" id="reject_name" name="reject_name" class="form-control" value="{{vr.full_name}}" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="reject_email" class="form-label">Verifier Position</label>
+                                <input type="email" id="reject_email" name="reject_email" class="form-control" value="{{vr.position}}" readonly>
+                            </div>
+                            <div class="col-12">
+                                <label for="reject_reason" class="form-label">Reason for Rejection</label>
+                                <textarea id="reject_reason" name="reject_reason" class="form-control bg-light" rows="5" readonly style="color: #b02a37; font-weight: 500;" >{{vr.ngo_message|default:'No reason was mentioned'}}</textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -132,88 +270,105 @@
 </div>
 
 <script>
-const ngoSelect = document.getElementById('ngo');
-const otherFields = document.getElementById('other-ngo-fields');
-const otherName = document.getElementById('other_ngo_name');
-const otherEmail = document.getElementById('other_ngo_email');
-const hiddenName = document.getElementById('ngo_selected_name');
-const hiddenEmail = document.getElementById('ngo_selected_email');
+function setupFilePreview(uploadInputId, previewId, previewImgId, fileIconId, fileNameId, deleteBtnSelector) {
+    const uploadInput = document.getElementById(uploadInputId);
+    const preview = document.getElementById(previewId);
+    const previewImg = document.getElementById(previewImgId);
+    const fileIcon = document.getElementById(fileIconId);
+    const fileName = document.getElementById(fileNameId);
+    const deleteBtn = document.querySelector(deleteBtnSelector);
 
-ngoSelect.addEventListener('change', function() {
-  if (ngoSelect.value === 'other') {
-    otherFields.classList.remove('d-none');
-    otherName.required = true;
-    otherEmail.required = true;
-    hiddenName.value = '';
-    hiddenEmail.value = '';
-  } else {
-    otherFields.classList.add('d-none');
-    otherName.required = false;
-    otherEmail.required = false;
-    // Fill hidden fields from selected option
-    const selected = ngoSelect.options[ngoSelect.selectedIndex];
-    hiddenName.value = selected.getAttribute('data-name') || '';
-    hiddenEmail.value = ngoSelect.value || '';
-    // Optionally clear custom fields
-    otherName.value = '';
-    otherEmail.value = '';
-  }
-});
-
-// --- File Upload Preview ---
-const uploadInput = document.getElementById('verification-upload-input');
-const preview = document.getElementById('verification-file-preview');
-const previewImg = document.getElementById('verification-preview-img');
-const fileIcon = document.getElementById('verification-file-icon');
-const fileName = document.getElementById('verification-file-name');
-const deleteBtn = document.querySelector('button[name="delete_file"]');
-
-function showFilePreview(file) {
-    if (!file) {
-        preview.classList.remove('has-file');
-        previewImg.classList.add('d-none');
-        fileIcon.className = 'fa fa-file-o verification-file-icon';
-        fileIcon.classList.remove('d-none');
-        fileName.textContent = 'No file uploaded';
-        return;
-    }
-    preview.classList.add('has-file');
-    fileName.textContent = file.name;
-    if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            previewImg.src = e.target.result;
-            previewImg.classList.remove('d-none');
-            fileIcon.classList.add('d-none');
-        };
-        reader.readAsDataURL(file);
-    } else {
-        previewImg.classList.add('d-none');
-        fileIcon.classList.remove('d-none');
-        if (file.type === 'application/pdf') {
-            fileIcon.className = 'fa fa-file-pdf-o verification-file-icon';
-        } else if (file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-            fileIcon.className = 'fa fa-file-word-o verification-file-icon';
-        } else {
+    function showFilePreview(file) {
+        if (!file) {
+            preview.classList.remove('has-file');
+            previewImg.classList.add('d-none');
             fileIcon.className = 'fa fa-file-o verification-file-icon';
+            fileIcon.classList.remove('d-none');
+            fileName.textContent = 'No file uploaded';
+            return;
+        }
+        preview.classList.add('has-file');
+        fileName.textContent = file.name;
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                previewImg.classList.remove('d-none');
+                fileIcon.classList.add('d-none');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewImg.classList.add('d-none');
+            fileIcon.classList.remove('d-none');
+            if (file.type === 'application/pdf') {
+                fileIcon.className = 'fa fa-file-pdf-o verification-file-icon';
+            } else if (file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                fileIcon.className = 'fa fa-file-word-o verification-file-icon';
+            } else {
+                fileIcon.className = 'fa fa-file-o verification-file-icon';
+            }
         }
     }
+
+    if (uploadInput) {
+        uploadInput.addEventListener('change', function() {
+            const file = uploadInput.files && uploadInput.files[0];
+            showFilePreview(file);
+        });
+    }
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (uploadInput) uploadInput.value = '';
+            showFilePreview(null);
+        });
+    }
 }
 
-if (uploadInput) {
-    uploadInput.addEventListener('change', function() {
-        const file = uploadInput.files && uploadInput.files[0];
-        showFilePreview(file);
+// Setup for main form
+setupFilePreview(
+    'verification-upload-input',
+    'verification-file-preview',
+    'verification-preview-img',
+    'verification-file-icon',
+    'verification-file-name',
+    'button[name="delete_file"]'
+);
+// Setup for pending form
+setupFilePreview(
+    'verification-upload-input2',
+    'verification-file-preview2',
+    'verification-preview-img2',
+    'verification-file-icon2',
+    'verification-file-name2',
+    '#delete-file-btn2'
+);
+
+document.addEventListener('DOMContentLoaded', function () {
+    const ngoSelect = document.getElementById('ngo');
+    const nameField = document.getElementById('ngo_selected_name');
+    const emailField = document.getElementById('ngo_selected_email');
+    const otherFields = document.getElementById('other-ngo-fields');
+
+    ngoSelect.addEventListener('change', function () {
+        const selectedOption = ngoSelect.options[ngoSelect.selectedIndex];
+
+        if (ngoSelect.value === 'other') {
+            // Show other NGO fields
+            otherFields.classList.remove('d-none');
+            nameField.value = '';
+            emailField.value = '';
+        } else {
+            // Hide other NGO fields
+            otherFields.classList.add('d-none');
+            const ngoName = selectedOption.getAttribute('data-name');
+            const ngoEmail = selectedOption.value;
+
+            nameField.value = ngoName;
+            emailField.value = ngoEmail;
+        }
     });
-}
-if (deleteBtn) {
-    deleteBtn.addEventListener('click', function(e) {
-        // Prevent form submit if JS is handling
-        e.preventDefault();
-        uploadInput.value = '';
-        showFilePreview(null);
-    });
-}
+});
 </script>
 
 {% endblock %}

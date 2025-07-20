@@ -1,5 +1,4 @@
 .env
-
 staticfiles
-
 .env.docker
+media

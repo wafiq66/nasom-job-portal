@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Verification Request</title>
+</head>
+<body style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6fa; padding: 0; margin: 0;">
+    <div style="max-width: 600px; margin: 40px auto; background: #fff; border-radius: 16px; padding: 32px 28px 24px 28px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #e0e0e0;">
+        <div style="text-align: center; margin-bottom: 24px;">
+            <img src="https://nasom.org.my/wp-content/uploads/2021/07/nasom-logo.png" alt="NASOM Logo" style="height: 60px; margin-bottom: 8px;">
+            <h2 style="color: #0A65CC; font-weight: 700; margin: 0; font-size: 2rem; letter-spacing: 1px;">Verification Request</h2>
+        </div>
+        <div style="border-top: 1px solid #e0e0e0; margin-bottom: 24px;"></div>
+        <p style="font-size: 1.1rem; color: #222; margin-bottom: 8px;">Dear <b>{{ ngo_name }}</b>,</p>
+        <p style="font-size: 1.05rem; color: #333; margin-bottom: 18px;"><b>{{ user_name }}</b> has submitted a request for verification on the NASOM Job Hiring Portal.</p>
+        <div style="background: #f8f9fa; border-radius: 8px; padding: 18px 20px; margin-bottom: 18px; border-left: 4px solid #0A65CC;">
+            <div style="font-size: 1rem; color: #0A65CC; font-weight: 600; margin-bottom: 6px;">Applicant's Message:</div>
+            <div style="font-size: 1rem; color: #444; white-space: pre-line;">{{ message }}</div>
+        </div>
+        <p style="font-size: 1.05rem; color: #333; margin-bottom: 24px;">You can review and verify this applicant using the button below:</p>
+        <div style="text-align: center; margin-bottom: 32px;">
+            <a href="{{ verify_url }}" style="
+                background: linear-gradient(90deg, #0A65CC 0%, #1976d2 100%);
+                color: white;
+                padding: 14px 36px;
+                text-decoration: none;
+                border-radius: 8px;
+                font-size: 1.15rem;
+                font-weight: 600;
+                box-shadow: 0 2px 8px rgba(10,101,204,0.08);
+                display: inline-block;
+                letter-spacing: 0.5px;">
+                ✅ Review Applicant
+            </a>
+        </div>
+        <div style="border-top: 1px solid #e0e0e0; margin-bottom: 16px;"></div>
+        <p style="font-size: 0.98rem; color: #888; text-align: center; margin-bottom: 0;">
+            This is an automated message from the <b>NASOM Job Hiring Portal</b>.<br>
+        </p>
+    </div>
+</body>
+</html>

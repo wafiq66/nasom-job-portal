@@ -42,4 +42,9 @@ urlpatterns = [
 
     #Section page to view change password form
     path('applicant/profile/change/password', views.change_password, name='change_password'),
+
+    #Section to send email
+    path('applicant/profile/send/email', views.send_email, name='send_email'),
+    #Section to update content of the verification send email
+    path('applicant/profile/update/request', views.update_request, name='update_request'),
 ]

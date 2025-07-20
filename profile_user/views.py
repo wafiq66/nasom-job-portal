@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.contrib import messages
+import uuid
 
 from document.models import Document
 from career_history.models import CareerHistory
@@ -10,11 +13,18 @@ from communication_style.models import CommunicationStyle
 from personal_interest.models import PersonalInterest
 
 from skill.models import Skill
+
+from verification_request.models import VerificationRequest
+
 import os
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.conf import settings
 import pandas as pd
+from django.utils.timezone import now
+from django.core.files.storage import default_storage
+from django.urls import reverse
+
 # Create your views here.
 
 #PROFILE INFORMATION
@@ -399,11 +409,117 @@ def applicant_verification_request(request):
         email = row.iloc[1]
         if pd.notna(name) and pd.notna(email):
             ngo_list.append({'name': name, 'email': email})
+
+    vr = request.user.get_latest_verification_request()
+
     if request.method == 'POST':
         return redirect('applicant_verification_request')
-    return render(request, 'applicant_verification_request.html', {'ngo_list': ngo_list})
+    return render(request, 'applicant_verification_request.html', {
+        'ngo_list': ngo_list,
+        'vr': vr,
+        })
 
 #for change password form
 @login_required
 def change_password(request):
     return render(request, 'account_password_change.html')
+
+def send_email(request):
+    if request.method == "POST":
+        uploaded_file = request.FILES.get("verification_file")
+        generated_id = uuid.uuid4()
+        vr = VerificationRequest(id=generated_id)
+
+        #ini bahagin untuk save document yg attached to the document, akan pair terus sekali dengan vr object yg kita dah buat
+        if uploaded_file:
+            document = Document.objects.create(
+                user=request.user,
+                document_file=uploaded_file,
+                document_name=uploaded_file.name,
+                document_type='verification'  # or 'resume', depending on use
+            )
+            document.save()
+            vr.document = document
+
+        #this one nk baca email, ngo name dengan message yg diaorang hantar then will be saved to the database.
+        selected_email = request.POST.get("ngo")
+        ngo_name = None
+
+        if selected_email == "other":
+            ngo_name = request.POST.get("other_ngo_name")
+            selected_email = request.POST.get("other_ngo_email")
+            print("🟡 Using custom NGO:", ngo_name, selected_email)
+        else:
+            ngo_name = request.POST.get("ngo_selected_name")
+            print("🟢 Using selected NGO:", ngo_name, selected_email)
+
+        message = request.POST.get("short_message")
+
+        vr.user = request.user
+        vr.email = selected_email
+        vr.organization_name = ngo_name
+        vr.applicant_message = message
+        vr.verification_status = 'pending'
+        vr.request_date = now()
+    
+        print("📨 Message body:", message)
+        if uploaded_file:
+            print("📎 File attached:", uploaded_file.name)
+        else:
+            print("📎 No file attached")
+
+        #create the url yeah little b
+        verify_url = request.build_absolute_uri(
+            reverse("verify_applicant", kwargs={"vr_id": generated_id})
+        )
+
+        if selected_email and message:
+            # Render email content
+            html_content = render_to_string("email_send.html", {
+                "ngo_name": ngo_name or "NGO",
+                "user_name": request.user.get_full_name() or request.user.username,
+                "message": message,
+                "verify_url": verify_url,
+            })
+
+            subject = "📩 Verification Request from {}".format(request.user.get_full_name() or request.user.username)
+            plain_text = "This is a verification request."
+
+            email = EmailMultiAlternatives(
+                subject,
+                plain_text,
+                settings.DEFAULT_FROM_EMAIL,
+                [selected_email]
+            )
+            email.attach_alternative(html_content, "text/html")
+
+            try:
+                email.send()
+                vr.save()
+                print("✅ Email successfully sent to:", selected_email)
+            except Exception as e:
+                print("❌ Email sending failed:", e)
+
+            return redirect('applicant_verification_request')
+
+    return render(request, "applicant_verification_request.html")
+
+def update_request(request):
+    uploaded_file = request.FILES.get("verification_file2")
+    vr_id = request.POST.get('vrpendingid')
+    vr = get_object_or_404(VerificationRequest, id=vr_id)
+
+    if uploaded_file:
+        old_file = vr.document.document_file
+        if old_file and default_storage.exists(old_file.name):
+            default_storage.delete(old_file.name)
+
+        vr.document.document_file=uploaded_file
+        vr.document.document_name=uploaded_file.name
+        vr.document.save()
+        
+    applicant_message = request.POST.get('short_message2')
+    vr.applicant_message = applicant_message
+    vr.save()
+
+    return redirect('applicant_verification_request')

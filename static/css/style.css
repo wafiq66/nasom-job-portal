@@ -884,10 +884,26 @@ input[type="radio"]:checked + label.btn-primary {
 .verification-help-text {
     font-size: 0.9em;
 }
-.verification-status {
-    color: #ff6f00;
+.verification-status{
+    color: #9e9e9e;  /* Grey */
     font-weight: 600;
 }
+
+.verification-status.pending {
+    color: #ff9800;  /* Amber */
+    font-weight: 600;
+}
+
+.verification-status.verified {
+    color: #4caf50;  /* Green */
+    font-weight: 600;
+}
+
+.verification-status.rejected {
+    color: #f44336;  /* Red */
+    font-weight: 600;
+}
+
 .verification-buttons {
     min-width: 200px;
 }
@@ -2315,4 +2331,26 @@ html, body {
 .rejected-status {
     background-color: #ffebee;
     color: #d32f2f;
+}
+
+/* Verification status badge styles (scoped) */
+.verification-container .status-badge {
+    display: inline-block;
+    padding: 0.4em 1.2em;
+    border-radius: 1em;
+    font-weight: 600;
+    font-size: 1em;
+    margin-bottom: 1em;
+}
+.verification-container .status-pending {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+.verification-container .status-verified {
+    background: #d0f8ce;
+    color: #388e3c;
+}
+.verification-container .status-rejected {
+    background: #ffebee;
+    color: #b02a37;
 }

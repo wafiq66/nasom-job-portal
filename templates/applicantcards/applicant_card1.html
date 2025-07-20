@@ -10,7 +10,13 @@
 
         </div>
         <div class="applicant-basic-info">
-            <h6 class="applicant-name mb-1">{{ application.user.get_full_name }}</h6>
+            <h6 class="applicant-name mb-1 d-inline-flex align-items-center">
+                {{ application.user.get_full_name }}
+                {% if application.user.check_verification_status %}
+                    <i class="fas fa-check-circle text-primary ms-2" title="Verified" style="font-size: 0.95em;"></i>
+                {% endif %}
+            </h6>
+            <br>
             <span class="applicant-position text-muted">{{ application.job_ad.job_title }}</span>
             {% if application.application_status == 'pending' %}
                 <div class="applicant-status pending-status">{{ application.get_application_status_display }}</div>
