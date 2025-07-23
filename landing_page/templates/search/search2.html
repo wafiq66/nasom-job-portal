@@ -1,14 +1,15 @@
 {% load static %}
 <div id="upper-layout" class="w-100  d-flex flex-column justify-content-between align-items-center py-4">
     <div class="d-flex search-container w-75">
-        <form class="demo-section d-flex gap-2 flex-fill align-items-center" >
+        <form class="demo-section d-flex gap-2 flex-fill align-items-center" method='post' action='{% url "landing_employer" %}'>
+        {% csrf_token %}
             <div class="my-custom-search" style="flex: 2;">
                     <label for="search1"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></label>
-                    <input type="text" name="" id="search1" placeholder="Name, skills, position, etc...">
+                    <input type="text" name="applicantName" id="search1" placeholder="Name, skills, position, etc...">
             </div>
             <div class="my-custom-search" style="flex: 2;">
                     <label for="search2"><i class="fa-sharp fa-solid fa-location-dot"></i></label>
-                    <input type="text" name="" id="search2" placeholder="City or State...">
+                    <input type="text" name="applicantLocation" id="search2" placeholder="City or State...">
             </div>
             <button class="btn btn-primary" id="searchButton"> Search</button>
         </form>

@@ -19,6 +19,9 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+#THis is for the api key for the gemini AI
+AI_API_KEY = config("AI_API_KEY")
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 

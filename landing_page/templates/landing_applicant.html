@@ -19,9 +19,102 @@
                         {% endfor %}
                 <!-- Add more items as needed -->
                 </div>
+                <div id="job-pagination" class="d-flex justify-content-center align-items-center mt-4"></div>
         </div>
 
 </main>
+
+<style>
+.job-pagination-btn {
+    background: #fff;
+    color: #0A65CC;
+    border: 1.5px solid #0A65CC;
+    border-radius: 999px;
+    padding: 8px 20px;
+    margin: 0 6px;
+    font-size: 1.08rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 
+        background 0.18s, 
+        color 0.18s, 
+        box-shadow 0.18s, 
+        border-color 0.18s;
+    box-shadow: 0 2px 8px rgba(10,101,204,0.07);
+    outline: none;
+}
+.job-pagination-btn.active, .job-pagination-btn:focus, .job-pagination-btn:hover {
+    background: linear-gradient(90deg, #0A65CC 0%, #1976d2 100%);
+    color: #fff;
+    border-color: #1976d2;
+    box-shadow: 0 4px 16px rgba(10,101,204,0.13);
+}
+.job-pagination-btn:disabled {
+    background: #f0f0f0;
+    color: #bdbdbd;
+    border-color: #e0e0e0;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const jobsPerPage = 10;
+    const jobContainer = document.getElementById('lower-layout');
+    const jobs = Array.from(jobContainer.getElementsByClassName('col'));
+    const pagination = document.getElementById('job-pagination');
+    let currentPage = 1;
+    const totalPages = Math.ceil(jobs.length / jobsPerPage);
+
+    function showPage(page) {
+        // Hide all jobs
+        jobs.forEach((job, idx) => {
+            job.style.display = (idx >= (page-1)*jobsPerPage && idx < page*jobsPerPage) ? '' : 'none';
+        });
+        // Update pagination
+        renderPagination(page);
+    }
+
+    function renderPagination(page) {
+        pagination.innerHTML = '';
+        if (totalPages <= 1) return;
+        // Prev button
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = 'Prev';
+        prevBtn.className = 'job-pagination-btn';
+        prevBtn.disabled = page === 1;
+        prevBtn.onclick = () => showPage(page-1);
+        pagination.appendChild(prevBtn);
+
+        // Page numbers (show up to 5 pages for compactness)
+        let start = Math.max(1, page-2);
+        let end = Math.min(totalPages, page+2);
+        if (page <= 2) end = Math.min(5, totalPages);
+        if (page >= totalPages-1) start = Math.max(1, totalPages-4);
+
+        for (let i = start; i <= end; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.className = 'job-pagination-btn' + (i === page ? ' active' : '');
+            btn.disabled = i === page;
+            btn.onclick = () => showPage(i);
+            pagination.appendChild(btn);
+        }
+
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = 'Next';
+        nextBtn.className = 'job-pagination-btn';
+        nextBtn.disabled = page === totalPages;
+        nextBtn.onclick = () => showPage(page+1);
+        pagination.appendChild(nextBtn);
+    }
+
+    // Initial display
+    showPage(currentPage);
+});
+</script>
 
 {% endblock %}
 

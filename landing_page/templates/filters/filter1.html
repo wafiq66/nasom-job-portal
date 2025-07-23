@@ -1,27 +1,27 @@
 {% load static %}
 <div class="btn-group">
     <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-            Filter Options
+        Filter Options
     </button>
     <ul class="dropdown-menu dropdown-menu-right px-3" style="min-width: 250px;">
-    <!-- Job Type -->
+        <!-- Job Type -->
         <li><strong class="text-muted small">Job Type</strong></li>
         <li>
             <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="professional" id="filterProfessional">
-            <label class="form-check-label" for="filterProfessional">Professional Job</label>
+                <input class="form-check-input" type="checkbox" name="job_type_professional" value="professional" id="filterProfessional">
+                <label class="form-check-label" for="filterProfessional">Professional Job</label>
             </div>
         </li>
         <li>
             <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="semiskilled" id="filterSemiSkilled">
-            <label class="form-check-label" for="filterSemiSkilled">Semi-Skilled Job</label>
+                <input class="form-check-input" type="checkbox" name="job_type_semiskilled" value="semiskilled" id="filterSemiSkilled">
+                <label class="form-check-label" for="filterSemiSkilled">Semi-Skilled Job</label>
             </div>
         </li>
         <li>
             <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="simple" id="filterSimple">
-            <label class="form-check-label" for="filterSimple">Simple Job</label>
+                <input class="form-check-input" type="checkbox" name="job_type_simple" value="simple" id="filterSimple">
+                <label class="form-check-label" for="filterSimple">Simple Job</label>
             </div>
         </li>
 
@@ -31,20 +31,20 @@
         <li><strong class="text-muted small">Work Type</strong></li>
         <li>
             <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="fulltime" id="filterFullTime">
-            <label class="form-check-label" for="filterFullTime">Full Time</label>
+                <input class="form-check-input" type="checkbox" name="work_type_full" value="fulltime" id="filterFullTime">
+                <label class="form-check-label" for="filterFullTime">Full Time</label>
             </div>
         </li>
         <li>
             <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="parttime" id="filterPartTime">
-            <label class="form-check-label" for="filterPartTime">Part Time</label>
+                <input class="form-check-input" type="checkbox" name="work_type_part" value="parttime" id="filterPartTime">
+                <label class="form-check-label" for="filterPartTime">Part Time</label>
             </div>
         </li>
         <li>
             <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="remote" id="filterRemote">
-            <label class="form-check-label" for="filterRemote">Remote</label>
+                <input class="form-check-input" type="checkbox" name="work_type_remote" value="remote" id="filterRemote">
+                <label class="form-check-label" for="filterRemote">Remote</label>
             </div>
         </li>
 
@@ -54,20 +54,20 @@
         <li><strong class="text-muted small">Autism Level</strong></li>
         <li>
             <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="autismlevel1" id="filterLevel1">
-            <label class="form-check-label" for="filterLevel1">Level 1</label>
+                <input class="form-check-input" type="checkbox" name="autism_level1" value="autismlevel1" id="filterLevel1">
+                <label class="form-check-label" for="filterLevel1">Level 1</label>
             </div>
         </li>
         <li>
             <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="autismlevel2" id="filterLevel2">
-            <label class="form-check-label" for="filterLevel2">Level 2</label>
+                <input class="form-check-input" type="checkbox" name="autism_level2" value="autismlevel2" id="filterLevel2">
+                <label class="form-check-label" for="filterLevel2">Level 2</label>
             </div>
         </li>
         <li>
             <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="autismlevel3" id="filterLevel3">
-            <label class="form-check-label" for="filterLevel3">Level 3</label>
+                <input class="form-check-input" type="checkbox" name="autism_level3" value="autismlevel3" id="filterLevel3">
+                <label class="form-check-label" for="filterLevel3">Level 3</label>
             </div>
         </li>
 
@@ -76,12 +76,11 @@
         <!-- Pay Range -->
         <li><strong class="text-muted small">Minimum Pay Range (RM)</strong></li>
         <li class="px-2 py-1">
-            <input type="range" class="form-range" min="500" max="5000" step="100" id="payRange">
+            <input type="range" class="form-range" name="pay_range" min="500" max="5000" step="100" id="payRange" value="500">
             <div class="d-flex justify-content-between small">
-            <span>RM 500</span>
-            <span>RM 5000+</span>
+                <span>RM 500</span>
+                <span>RM 5000+</span>
             </div>
         </li>
     </ul>
-
 </div>

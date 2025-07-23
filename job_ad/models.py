@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from rapidfuzz import fuzz
 
 class JobAd(models.Model):
 
@@ -169,3 +170,125 @@ class JobAd(models.Model):
             self.representative_interview_status,
             self.no_interview_status
         ])
+    
+    def calculate_relevance_score(self):
+        score = 0
+
+        # Basic info
+        if self.job_title:
+            score += 2
+        if self.job_location:
+            score += 2
+
+        # Job classification
+        if self.for_level_one or self.for_level_two or self.for_level_three:
+            score += 5
+
+        # Salary range
+        if self.minimum_salary and self.maximum_salary:
+            score += 3
+
+        # Job category
+        if self.job_category:
+            score += 1
+
+        # Employment type
+        for field in ['can_full_time', 'can_part_time', 'can_remote']:
+            if getattr(self, field):
+                score += 1
+
+        # Description fields
+        desc_fields = [
+            'main_task_desc', 'sub_task_desc', 'interaction_with_cust_desc',
+            'verbal_interview_desc', 'nonverbal_interview_desc', 'representative_interview_desc',
+            'special_training_desc', 'time_training_desc', 'work_buddy_desc', 'mentor_desc',
+            'calming_space_desc', 'shift_flexible_desc', 'regular_update_desc', 'transport_desc', 'other_desc'
+        ]
+        
+        for field in desc_fields:
+            if getattr(self, field):
+                score += 2
+
+        # Boolean support flags
+        boolean_fields = [
+            'sub_task_status', 'repetitive_task_status', 'easy_to_perform_status',
+            'easy_to_remember_status', 'interaction_with_cust_status',
+            'verbal_interview_status', 'nonverbal_interview_status',
+            'representative_interview_status', 'no_interview_status',
+            'special_training_status', 'one_training_status', 'multiple_training_status',
+            'work_buddy_status', 'mentor_status', 'less_noisy_env_status',
+            'less_stressful_env_status', 'calming_space_status',
+            'full_flexible_status', 'shift_pool_status', 'regular_update_status',
+            'full_transport_status', 'partial_transport_status', 'other_status'
+        ]
+
+        for field in boolean_fields:
+            if getattr(self, field):
+                score += 1
+
+        # Optional: question fields
+        if self.question_one and self.question_two and self.question_three:
+            score += 10
+
+        return score
+
+    def apply_filter_score(self,minpaysalary,job_professional,job_semiskilled,job_simple,work_full,work_part,work_remote,for_aut_1,for_aut_2,for_aut_3):
+        score = 0
+
+        if self.minimum_salary is not None and self.minimum_salary >= minpaysalary:
+            score += 50
+        #filter out by the category
+        if job_professional and self.job_category == 'Professional Job':
+            score+=50
+        if job_semiskilled and self.job_category == 'Semi-Skilled Job':
+            score+=50
+        if job_simple and self.job_category == 'Simple Job':
+            score+=50
+        #filter out by can full time, part time, remote
+        if work_full and self.can_full_time:
+            score+=50
+        if work_part and self.can_part_time:
+            score+=50
+        if work_remote and self.can_remote:
+            score+=50
+        #filter out by autism level
+        if for_aut_1 and self.for_level_one:
+            score+=50
+        if for_aut_2 and self.for_level_two:
+            score+=50
+        if for_aut_3 and self.for_level_three:
+            score+=50
+        print(f"{self.job_title}: {score}")
+        return score
+
+    def keyword_location_score(self,keyword,locations):
+        score = 0
+
+        if keyword:
+            #calculate the keyword jobtitle or company name similarities
+            similarity = fuzz.ratio(self.job_title.lower(), keyword.lower())
+            if similarity > 70:
+                score += (similarity*2)  # or some weighted score
+            elif similarity > 50:
+                score += (similarity)  # or some weighted score
+            similarity = fuzz.ratio(self.user.company_name.lower() , keyword.lower())
+            if similarity > 70:
+                score += (similarity)  # or some weighted score
+            elif similarity > 50:
+                score += (similarity/2)  # or some weighted score
+        if locations:
+            #calculate the location similarities. for city and state
+            for location in locations:
+                similarity = fuzz.ratio(self.get_city().lower(), location.lower())
+                if similarity > 90:
+                    score += (similarity*2)  # or some weighted score
+                elif similarity > 80:
+                    score += (similarity)  # or some weighted score
+                similarity = fuzz.ratio(self.get_state().lower(), location.lower())
+                if similarity > 90:
+                    score += (similarity*2)  # or some weighted score
+                elif similarity > 80:
+                    score += (similarity)  # or some weighted score
+
+        print(f"{self.job_title}: {score}")
+        return score

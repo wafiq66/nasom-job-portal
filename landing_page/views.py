@@ -5,6 +5,8 @@ from job_ad.models import JobAd
 from document.models import Document
 from job_application.models import JobApplication
 from django.utils import timezone
+from .location_genai import get_location_result
+
 
 # Create your views here.
 
@@ -12,16 +14,95 @@ User = get_user_model()
 
 def landing_applicant(request):
     jobs = JobAd.objects.filter(publish_status='active')
-    return render(request,"landing_applicant.html",{'jobs':jobs})
+    sorted_jobs = sorted(jobs, key=lambda job: job.calculate_relevance_score(), reverse=True)
+    if request.method == "POST":
+
+        # Read form input
+        job_keyword = request.POST.get('jobkeyword', '').lower()
+        job_location = request.POST.get('joblocation', '').strip().lower()
+
+        if job_location:  # Only proceed if there is input
+            job_location = get_location_result(job_location)
+            
+            for loc in job_location:
+                print(loc)
+
+
+        # Read filter values from request
+        min_pay_range = request.POST.get('pay_range')  # optional slider
+        if min_pay_range:
+            min_pay_range = int(min_pay_range)
+        else:
+            min_pay_range = 0
+
+        # Get checkbox filters
+
+        #job type
+        job_professional = bool(request.POST.get('job_type_professional'))     
+        job_semiskilled = bool(request.POST.get('job_type_semiskilled'))   
+        job_simple = bool(request.POST.get('job_type_simple')) 
+
+        #work type
+        work_full = bool(request.POST.get('work_type_full'))     
+        work_part = bool(request.POST.get('work_type_part'))   
+        work_remote = bool(request.POST.get('work_type_remote')) 
+
+        #autism level
+        for_aut_1 = bool(request.POST.get('autism_level1'))   
+        for_aut_2 = bool(request.POST.get('autism_level2'))   
+        for_aut_3 = bool(request.POST.get('autism_level3'))
+
+        sorted_jobs = sorted(jobs, key=lambda job: (
+            job.keyword_location_score(
+                job_keyword,
+                job_location,
+            ),
+            job.apply_filter_score(
+                min_pay_range,
+                job_professional,
+                job_semiskilled,
+                job_simple,
+                work_full,
+                work_part,
+                work_remote,
+                for_aut_1,
+                for_aut_2,
+                for_aut_3),
+            job.calculate_relevance_score(),
+            ), 
+            reverse=True)
+    return render(request,"landing_applicant.html",{'jobs':sorted_jobs})
 
 def landing_employer(request):
     applicants = User.objects.all()
-    return render(request,"landing_employer.html",{'applicants':applicants})
+    sorted_applicants = sorted(applicants, key=lambda applicants: applicants.get_applicant_relevance_score(), reverse=True)
+
+    if request.method == 'POST':
+        applicant_keyword = request.POST.get('applicantName', '').lower()
+        applicant_location = request.POST.get('applicantLocation', '').strip().lower()
+
+        if applicant_location:  # Only proceed if there is input
+            applicant_location = get_location_result(applicant_location)
+            
+            for loc in applicant_location:
+                print(loc)
+
+        sorted_applicants = sorted(applicants, key=lambda user: (
+            user.applicant_keyword_location_score(
+                applicant_keyword,
+                applicant_location,
+            ),
+            user.get_applicant_relevance_score(),
+            ), 
+            reverse=True)
+
+    return render(request,"landing_employer.html",{'applicants':sorted_applicants})
 
 #this one is used to render the specific job ad that clicked by the user
+
 def view_job_ad(request,job_id):
     resume_docs = Document.objects.filter(user=request.user, document_type='resume')
-    job_ad = get_object_or_404(JobAd,id=job_id,user=request.user)
+    job_ad = get_object_or_404(JobAd,id=job_id)
     saved = False
     existing_application = JobApplication.objects.filter(user=request.user, job_ad=job_ad).first()
 
@@ -173,8 +254,28 @@ def hiring_advice(request):
 
 def search_company(request):
     users = User.objects.filter(company_name__isnull=False).exclude(company_name='')
+    sorted_companies = sorted(users, key=lambda user: user.get_company_relevance_score(), reverse=True)
+    if request.method == 'POST':
+        company_keyword = request.POST.get('companyKeyword', '').lower()
+        company_location = request.POST.get('companyLocation', '').strip().lower()
+
+        if company_location:  # Only proceed if there is input
+            company_location = get_location_result(company_location)
+            
+            for loc in company_location:
+                print(loc)
+
+        sorted_companies = sorted(users, key=lambda user: (
+            user.keyword_location_score(
+                company_keyword,
+                company_location,
+            ),
+            user.get_company_relevance_score(),
+            ), 
+            reverse=True)
+
     return render(request,'search_company.html',{
-        'companies':users,
+        'companies':sorted_companies,
     })
 
 def view_company(request,company_id):
