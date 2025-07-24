@@ -2,9 +2,10 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib import messages
 from job_ad.models import JobAd
 from django.utils.timezone import now
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required
 def view_job_table(request):
     job_ads = JobAd.objects.filter(user=request.user)
 
@@ -12,7 +13,7 @@ def view_job_table(request):
         job.submitted_applications_count = job.has_applications.exclude(application_status='saved').count()
 
     return render(request,'advertisement_list.html',{'job_ads':job_ads})
-
+@login_required
 def reload_job(request,job_id):
     job_ad = get_object_or_404(JobAd, id=job_id, user = request.user)
     return render(request, 'write.html', {'job_ad':job_ad})
@@ -20,6 +21,7 @@ def reload_job(request,job_id):
 
 #bahagian ini adalah bahagian coding untuk alpha sigma post job
 #dan juga digunakan untuk update job ad
+@login_required
 def post_job(request):
     if request.method == 'POST':
 
@@ -143,6 +145,7 @@ def post_job(request):
     return render(request, 'write.html')
 
 #this one function untuk delete the job ad
+@login_required
 def close_job(request,job_id):
     myJobAd = get_object_or_404(JobAd,id=job_id,user=request.user)
     myJobAd.publish_status = 'expired'
@@ -150,12 +153,14 @@ def close_job(request,job_id):
     messages.success(request, "Job Advertisement is Successfully Closed!")
     return redirect('view_job_table')
 
+@login_required
 def delete_job(request,job_id):
     myJobAd = get_object_or_404(JobAd, id=job_id,user=request.user)
     myJobAd.delete()
     messages.success(request, "Job Advertisement is Successfully Deleted!")
     return redirect('view_job_table')
 
+@login_required
 def republish_job(request,job_id):
     myJobAd = get_object_or_404(JobAd,id=job_id,user=request.user)
     myJobAd.publish_status = 'active'

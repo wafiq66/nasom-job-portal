@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import update_session_auth_hash
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib import messages
@@ -422,8 +423,27 @@ def applicant_verification_request(request):
 #for change password form
 @login_required
 def change_password(request):
+    if request.method == 'POST':
+        old_password = request.POST.get("old_password")
+        new_password = request.POST.get("new_password1")
+        user = request.user
+
+        if not user.check_password(old_password):
+            messages.error(request, "Old password is incorrect.")
+            return redirect('change_password')
+
+        user.set_password(new_password)
+        user.save()
+
+        # Important: keeps the user logged in after password change
+        update_session_auth_hash(request, user)
+
+        messages.success(request, "Your password has been successfully changed.")
+
+        return redirect('change_password')
     return render(request, 'account_password_change.html')
 
+@login_required
 def send_email(request):
     if request.method == "POST":
         uploaded_file = request.FILES.get("verification_file")

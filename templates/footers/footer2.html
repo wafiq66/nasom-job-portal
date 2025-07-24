@@ -14,18 +14,18 @@
             <ul class="footer-list">
                 <li><b>Candidate</b></li>
                 <li><a href="{% url 'applicant_profile' %}">Home</a></li>
-                <li><a href="">Find Jobs</a></li>
-                <li><a href="">Job Application</a></li>
-                <li><a href="">Saved Jobs</a></li>
+                <li><a href="{% url 'landing_applicant' %}">Find Jobs</a></li>
+                <li><a href="{% url 'applied_list' %}">Job Application</a></li>
+                <li><a href="{% url 'saved_list' %}">Saved Jobs</a></li>
             </ul>
         </div>
         <div style="width: 300px;">
             <ul class="footer-list">
                 <li><b>Employers</b></li>
-                <li><a href="">Dashboard</a></li>
-                <li><a href="">Find Candidate</a></li>
-                <li><a href="">My Job Ads</a></li>
-                <li><a href="">Manage Applicants</a></li>
+                <li><a href="{% url 'employer_profile' %}">Home</a></li>
+                <li><a href="{% url 'landing_employer' %}">Find Candidate</a></li>
+                <li><a href="{% url 'view_job_table' %}">My Job Ads</a></li>
+                <li><a href="{% url 'applicant_list' %}">Manage Applicants</a></li>
             </ul>
         </div>
     </div>
@@ -41,16 +41,16 @@
         </div>
         <div style="width: 300px;">
             <ul class="footer-list">
-                <li><a href="">Home</a></li>
-                <li><a href="">Find Jobs</a></li>
-                <li><a href="">Hiring Advice</a></li>
-                <li><a href="">Companies</a></li>
+                <li><a href="{% url 'login_user' %}">Home</a></li>
+                <li><a href="{% url 'landing_applicant' %}">Find Jobs</a></li>
+                <li><a href="{% url 'hiring_advice' %}">Hiring Advice</a></li>
+                <li><a href="{% url 'search_company' %}">Companies</a></li>
             </ul>
         </div>
         <div style="width: 300px;">
             <ul class="footer-list">
-                <li><a href="">Login</a></li>
-                <li><a href="">Register</a></li>
+                <li><a href="{% url 'login_user' %}">Login</a></li>
+                <li><a href="{% url 'register_user' %}">Register</a></li>
             </ul>
         </div>
     </div>
@@ -60,13 +60,13 @@
             <p class="m-0">&copy; 2025 NASOM - Job Portal. All rights Reserved</p>
         </div>
         <div class="d-flex align-items-center">
-            <a href="https://facebook.com" target="_blank" class="me-3 d-flex align-items-center">
+            <a href="https://www.facebook.com/nasomcares" target="_blank" class="me-3 d-flex align-items-center">
                 <i class="fab fa-facebook-f fa-lg"></i>
             </a>
-            <a href="https://youtube.com" target="_blank" class="me-3 d-flex align-items-center">
+            <a href="https://www.youtube.com/@nasomthenationalautismsoci8854" target="_blank" class="me-3 d-flex align-items-center">
                 <i class="fab fa-youtube fa-lg"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" class="d-flex align-items-center">
+            <a href="https://www.instagram.com/nasomcares" target="_blank" class="d-flex align-items-center">
                 <i class="fab fa-instagram fa-lg"></i>
             </a>
         </div>

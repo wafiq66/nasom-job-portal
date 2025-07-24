@@ -6,6 +6,7 @@ from document.models import Document
 from job_application.models import JobApplication
 from django.utils import timezone
 from .location_genai import get_location_result
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -74,7 +75,7 @@ def landing_applicant(request):
     return render(request,"landing_applicant.html",{'jobs':sorted_jobs})
 
 def landing_employer(request):
-    applicants = User.objects.all()
+    applicants = User.objects.filter(is_staff=False, is_superuser=False)
     sorted_applicants = sorted(applicants, key=lambda applicants: applicants.get_applicant_relevance_score(), reverse=True)
 
     if request.method == 'POST':
@@ -99,7 +100,7 @@ def landing_employer(request):
     return render(request,"landing_employer.html",{'applicants':sorted_applicants})
 
 #this one is used to render the specific job ad that clicked by the user
-
+@login_required
 def view_job_ad(request,job_id):
     resume_docs = Document.objects.filter(user=request.user, document_type='resume')
     job_ad = get_object_or_404(JobAd,id=job_id)
@@ -116,6 +117,7 @@ def view_job_ad(request,job_id):
         })
 
 #this one to register the application of the user into the database
+@login_required
 def register_application(request):
     if request.method == 'POST':
         #to read the input from the user
@@ -170,6 +172,7 @@ def register_application(request):
 
     return render(request,"job_apply.html")
 
+@login_required
 def toggle_save(request):
     if request.method == "POST":
         job_id = request.POST.get("jobid")
@@ -210,6 +213,7 @@ def toggle_save(request):
 
     return render(request,"job_apply.html")  # or your default fallback page
 
+@login_required
 def view_applicant_recruit(request,applicant_id):
     applicant = get_object_or_404(User, id=applicant_id)
     job_ads = JobAd.objects.filter(user=request.user, publish_status='active')
@@ -278,6 +282,7 @@ def search_company(request):
         'companies':sorted_companies,
     })
 
+@login_required
 def view_company(request,company_id):
     company = User.objects.filter(id=company_id).first()
     jobs = company.post_job.filter(publish_status='active')

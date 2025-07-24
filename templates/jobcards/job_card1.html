@@ -29,7 +29,7 @@
   <div class="jobcard-company-info">
     <div class="jobcard-company-details">
       <div class="jobcard-company-logo m-2">
-        {% if job.user.company_logo.url %}
+        {% if job.user.company_logo %}
           <img src="{{ job.user.company_logo.url }}" alt="Company Logo" class="jobcard-logo-img">
         {% else %}
           <img src="{% static 'images/no-image.png' %}" alt="No Logo" class="jobcard-logo-img">

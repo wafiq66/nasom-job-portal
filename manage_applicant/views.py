@@ -3,8 +3,10 @@ from django.shortcuts import redirect
 from job_ad.models import JobAd
 from job_application.models import JobApplication
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def applicant_list(request):
      # Step 1: Get job ads posted by the current user (the company)
     job_ads = JobAd.objects.filter(user=request.user)
@@ -19,6 +21,7 @@ def applicant_list(request):
         'job_ads':job_ads,
     })
 
+@login_required
 def shortlist_applicant(request,application_id):
 
     application = get_object_or_404(JobApplication, id=application_id)
@@ -27,6 +30,7 @@ def shortlist_applicant(request,application_id):
 
     return redirect("applicant_list")
 
+@login_required
 def accept_applicant(request,application_id):
 
     application = get_object_or_404(JobApplication, id=application_id)
@@ -35,6 +39,7 @@ def accept_applicant(request,application_id):
 
     return redirect("applicant_list")
 
+@login_required
 def reject_applicant(request,application_id):
 
     application = get_object_or_404(JobApplication, id=application_id)
@@ -43,6 +48,7 @@ def reject_applicant(request,application_id):
 
     return redirect("applicant_list")
 
+@login_required
 def applicant_manage(request,application_id):
     application = get_object_or_404(JobApplication, id=application_id)
     if request.method == 'POST':

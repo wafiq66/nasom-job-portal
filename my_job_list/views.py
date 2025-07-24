@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from job_application.models import JobApplication
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+@login_required
 def saved_list(request):
     saved_applications = JobApplication.objects.filter(
         user=request.user,
@@ -14,6 +15,7 @@ def saved_list(request):
         'saved_job_ads': saved_job_ads
     })
 
+@login_required
 def applied_list(request):
     applied_applications = JobApplication.objects.exclude(
         application_status='saved'

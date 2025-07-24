@@ -5,10 +5,10 @@
     <a href="{% url 'landing_employer' %}" class="top-header-nav">Find Employee</a>
     <a href="{% url 'hiring_advice' %}" class="top-header-nav">Hiring Advice</a>
 {% else%}
-    <a href="{% url 'landing_applicant' %}" class="top-header-nav">Home</a>
+    <a href="{% url 'employer_profile' %}" class="top-header-nav">Home</a>
     <a href="{% url 'landing_applicant' %}" class="top-header-nav">Find Job</a>
     <a href="{% url 'hiring_advice' %}" class="top-header-nav">Hiring Advice</a>
-    <a href="" class="top-header-nav">Companies</a>
+    <a href="{% url 'search_company' %}" class="top-header-nav">Companies</a>
 {% endif %}
 </div>
 
