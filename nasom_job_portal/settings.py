@@ -33,7 +33,10 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="").split(",")
 
-
+#django premium host
+DJANGO_SUPERUSER_USERNAME = config("DJANGO_SUPERUSER_USERNAME", default="admin")
+DJANGO_SUPERUSER_EMAIL = config("DJANGO_SUPERUSER_EMAIL", default="admin@example.com")
+DJANGO_SUPERUSER_PASSWORD = config("DJANGO_SUPERUSER_PASSWORD", default="admin123")
 
 # Application definition
 

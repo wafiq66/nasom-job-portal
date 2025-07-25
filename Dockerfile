@@ -8,6 +8,8 @@ WORKDIR /app
 
 # Copy and install dependencies first (layer caching)
 COPY requirements.txt .
+COPY .env.docker /app/.env
+
 
 RUN pip install --upgrade pip
 RUN pip install --default-timeout=120 --retries=10 -r requirements.txt
