@@ -2,3 +2,5 @@
 staticfiles
 .env.docker
 media
+.env.dev
+.env.prod

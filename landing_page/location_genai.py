@@ -1,11 +1,11 @@
 import google.generativeai as genai
-from decouple import config
+from django.conf import settings
 from functools import lru_cache
 from django.core.cache import cache
 # Create your views here.
 
 #this is the API key configuration
-genai.configure(api_key=config("AI_API_KEY"))
+genai.configure(api_key=settings.AI_API_KEY)
 
 #Method to get the query by using AI
 @lru_cache(maxsize=128)

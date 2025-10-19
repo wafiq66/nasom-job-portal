@@ -1,43 +1,42 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:16
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - "127.0.0.1:5432:5432"  # Only accessible from VPS
-    env_file:
-      - .env.docker
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    restart: always
-
+  # 1. Django Web/Gunicorn Service (INTERNAL Application)
   web:
     build: .
     command: >
       sh -c "python manage.py migrate &&
-            python manage.py create_admin &&
-            python manage.py collectstatic --noinput &&
-            gunicorn nasom_job_portal.wsgi:application --bind 0.0.0.0:8000"
+             python manage.py collectstatic --noinput &&
+             gunicorn nasom_job_portal.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - .:/app
-      - ./staticfiles:/app/staticfiles
-      - ./media:/app/media
-    ports:
-      - "8000:8000"  # ✅ this line exposes it to your browser
-    depends_on:
-      - db
+      # **CORRECTION 1:** Point Django's STATIC/MEDIA output to the named volume location
+      - static_data:/vol/static # Django runs collectstatic to this path
+      - media_data:/vol/media   # Django saves uploads to this path
+    # **CORRECTION 2:** REMOVE THE PUBLIC PORT EXPOSURE
+    # The 'web' app is now INTERNAL only.
     env_file:
-      - .env.docker
+      - .env.prod
     environment:
-      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
-      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
-      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+      - DJANGO_ENV=prod
+    restart: always
 
+  # 2. Nginx Reverse Proxy Service (EXTERNAL Gateway)
+  nginx:
+    image: nginx:1.27.0-alpine
+    ports:
+      - "80:80" # Nginx is the public entry point
+    volumes:
+      # Mount the Nginx config file (must be created by you on the host)
+      - ./nginx/app.conf:/etc/nginx/conf.d/default.conf:ro
+      # Map the same named volumes so Nginx can access the files created by Django
+      - static_data:/vol/static
+      - media_data:/vol/media
+    depends_on:
+      - web
     restart: always
 
 volumes:
-  postgres_data:
+  # Define the named volumes that are shared between 'web' and 'nginx'
+  static_data:
+  media_data:

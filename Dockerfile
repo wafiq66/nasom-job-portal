@@ -6,17 +6,14 @@ ENV PIP_CACHE_DIR=/tmp/pip-cache
 
 WORKDIR /app
 
-# Copy and install dependencies first (layer caching)
+# Dependency layer (optimized for caching)
 COPY requirements.txt .
-COPY .env.docker /app/.env
-
-
 RUN pip install --upgrade pip
 RUN pip install --default-timeout=120 --retries=10 -r requirements.txt
 
-# ✅ NOW copy the full Django app
-COPY . .
+# Application code layer
+COPY . . 
+# REMOVE: COPY .env.docker /app/.env  <-- Not needed due to docker-compose env_file
 
-
-# ✅ Start the app with Gunicorn
+# Optional: Since docker-compose overrides it, you can simplify the CMD or leave it.
 CMD ["gunicorn", "nasom_job_portal.wsgi:application", "--bind", "0.0.0.0:8000"]
